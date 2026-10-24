@@ -165,6 +165,14 @@ pre code { background: none; padding: 0; font-size: inherit; }
 .verdict p { font-size: var(--s-small); }
 .fine { font-size: var(--s-small); color: var(--ink-soft); }
 
+
+.lab-legend { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4vw; margin-top: 72px; }
+.lab-legend h3 { font-family: var(--display); font-size: var(--s-lead); margin-bottom: 12px; }
+.lab-legend dl { margin: 0; display: grid; gap: 6px; }
+.lab-legend dl > div { display: grid; grid-template-columns: minmax(0, 9.5em) minmax(0, 1fr); gap: 12px; background: var(--paper); padding: 10px 14px; }
+.lab-legend dt { font-weight: 600; font-size: var(--s-small); }
+.lab-legend dd { margin: 0; font-size: var(--s-small); }
+
 /* 막대 */
 .stages { background: var(--paper); }
 .stages h2 { font-family: var(--display); font-size: var(--s-head); line-height: 0.95; margin-bottom: 64px; max-width: 14em; }
@@ -314,6 +322,8 @@ pre code { background: none; padding: 0; font-size: inherit; }
   .ux-open-grid, .principle { grid-template-columns: 1fr; }
   .sv-list > div, .qa-grid { grid-template-columns: 1fr; gap: 8px; }
   .be-more { grid-template-columns: 1fr; gap: 40px; }
+  .lab-legend { grid-template-columns: 1fr; }
+  .lab-legend dl > div { grid-template-columns: 1fr; gap: 2px; }
   .quote-field blockquote { margin-left: 0; }
   .qa-list li { flex-direction: column; gap: 2px; }
   .principle.flip .p-text, .principle.flip .p-media { order: 0; }
@@ -575,6 +585,7 @@ pre code { background: none; padding: 0; font-size: inherit; }
         <button class="chip" type="button" data-preset="known" aria-pressed="false">답을 아는 모델</button>
       </div>
       <p class="fine" style="margin-top:16px">징역형, 집행유예 없음으로 단순화했습니다. 칸을 비우면 응답이 오지 않은 것으로 봅니다.</p>
+      <p class="fine" style="margin-top:12px">이 데모는 판정 규칙이 어떻게 동작하는지 보여 줄 뿐, 검사가 오염을 정확히 가려낸다는 증거는 아닙니다.</p>
     </div>
     <div class="lab-form">
       <div class="lab-row">
@@ -587,6 +598,28 @@ pre code { background: none; padding: 0; font-size: inherit; }
         <div class="verdict"><strong id="v-old">-</strong><p class="who">이전 기준</p><p id="r-old"></p></div>
         <div class="verdict new"><strong id="v-new">-</strong><p class="who">새 기준, BE-37</p><p id="r-new"></p></div>
       </div>
+    </div>
+  </div>
+  <div class="lab-legend">
+    <div>
+      <h3>응답 분류 (모델의 응답 한 건)</h3>
+      <dl>
+        <div><dt><code>KNOWS</code></dt><dd>사건을 안다고 답함</dd></div>
+        <div><dt><code>EXACT</code> 정확</dt><dd>형벌 종류, 형량, 집행유예까지 정확히 맞힘</dd></div>
+        <div><dt><code>CLOSE</code> 가까움</dt><dd>형량이 허용 오차 안(징역은 실제 형량의 15%, 1~6개월)</dd></div>
+        <div><dt><code>SAME_TYPE</code></dt><dd>사형 · 무기징역의 형벌 종류만 맞힘. 형량 값이 없어 우연히 맞기 쉬워 따로 둠</dd></div>
+        <div><dt><code>INVALID</code></dt><dd>응답 형식이 어긋남</dd></div>
+        <div><dt><code>FAR</code> 멂</dt><dd>그 밖의 경우(형벌 종류가 다르거나 형량이 멂)</dd></div>
+      </dl>
+    </div>
+    <div>
+      <h3>결과 분류 (10회 묶음 판정)</h3>
+      <dl>
+        <div><dt><code>CONTAMINATED</code> 오염</dt><dd><code>KNOWS</code>가 하나라도 있거나, <code>EXACT</code> 비율이 50% 이상. 파이프라인이 멈춤</dd></div>
+        <div><dt><code>SUSPECT</code> 의심</dt><dd><code>EXACT</code>가 일부 있거나, 가까운 응답이 절반 이상이거나, 형식 오류가 있음. 진행하되 팀이 확인</dd></div>
+        <div><dt><code>INSUFFICIENT</code> 보류</dt><dd>응답이 5개 미만이라 판정을 확정하지 않음. 파이프라인이 멈춤</dd></div>
+        <div><dt><code>CLEAN</code></dt><dd>위에 해당하지 않음</dd></div>
+      </dl>
     </div>
   </div>
 </section>
