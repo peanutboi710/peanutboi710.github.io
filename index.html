@@ -177,35 +177,36 @@ pre code { background: none; padding: 0; font-size: inherit; }
 .lab-legend dd { margin: 0; font-size: var(--s-small); }
 
 
-/* 그림 애니메이션: 화면에 들어올 때 한 번. 스크립트가 꺼져 있거나 움직임 줄이기 · 인쇄에서는 완성된 상태 */
-.sv-art { display: block; width: 100%; max-width: 320px; margin-top: 28px; }
+/* 그림 애니메이션: 화면 가운데쯤 들어오면 한 번. 스크립트가 꺼져 있거나 움직임 줄이기 · 인쇄에서는 완성된 상태 */
+.sv-art { display: block; width: 100%; max-width: 340px; margin-top: 28px; }
 .sv-art svg { display: block; width: 100%; height: auto; overflow: visible; }
-.sv-art .draw { fill: none; stroke: var(--ink); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
-.sv-art .wobble { stroke: var(--orange); }
-.sv-art .pt circle { fill: var(--orange); stroke: var(--ink); stroke-width: 3; }
-.sv-art .pt, .sv-art .grow, .sv-art .core, .sv-art .ring { transform-box: fill-box; transform-origin: center; }
-.sv-art .grow { fill: var(--ink); transform-origin: left center; }
-.sv-art .lbl { font-family: var(--text); font-size: 15px; font-weight: 600; fill: var(--ink); letter-spacing: 0; }
-.sv-art .ring { fill: none; stroke: var(--ink); stroke-width: 8; }
-.sv-art .core { fill: var(--orange); transform: scale(.42); }
+.sv-art svg.clip { overflow: hidden; }
+.sv-art .draw { fill: none; stroke: var(--ink); stroke-linecap: square; stroke-linejoin: miter; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.sv-art .wobble { stroke: var(--orange); stroke-linecap: round; stroke-linejoin: round; }
+.sv-art .o { fill: var(--orange); }
+.sv-art .k { fill: var(--ink); }
+.sv-art .pt, .sv-art .core { transform-box: fill-box; transform-origin: center; }
+.sv-art .grow { transform-box: fill-box; transform-origin: left center; }
+.sv-art .lbl { font-family: var(--display); fill: var(--ink); letter-spacing: -0.01em; }
+.sv-art .frame { fill: none; stroke: var(--ink); stroke-width: 10; }
+.sv-art .floor { fill: var(--acid); }
 @media screen {
-  html.anim [data-anim]:not(.on) .draw { stroke-dashoffset: 1; }
-  html.anim [data-anim]:not(.on) .pt { transform: scale(0); opacity: 0; }
+  html.anim [data-anim]:not(.on) .draw { stroke-dashoffset: 1; opacity: 0; }
+  html.anim [data-anim]:not(.on) .pt { transform: scale(0) rotate(-25deg); opacity: 0; }
   html.anim [data-anim]:not(.on) .lbl { opacity: 0; }
   html.anim [data-anim]:not(.on) .grow { transform: scaleX(0); }
-  html.anim [data-anim]:not(.on) .ring { opacity: 0; transform: scale(1.15); }
-  html.anim [data-anim]:not(.on) .core { transform: scale(.12); }
-  html.anim [data-anim]:not(.on) .seg { clip-path: inset(0 100% 0 0); }
-  html.anim .sv-art .draw { transition: stroke-dashoffset 1.8s cubic-bezier(.45, 0, .2, 1); }
-  html.anim .sv-art .pt { transition: transform .45s cubic-bezier(.2, 1.5, .4, 1) var(--d), opacity .2s ease var(--d); }
-  html.anim .sv-art .lbl { transition: opacity .4s ease var(--d); }
-  html.anim .sv-art .grow { transition: transform .9s cubic-bezier(.3, 0, .2, 1) var(--d); }
-  html.anim .sv-art.on .core { animation: immerse 2s cubic-bezier(.4, 0, .2, 1) both; }
-  html.anim .sv-art.on .ring { animation: distance 2s cubic-bezier(.4, 0, .2, 1) both; }
+  html.anim [data-anim]:not(.on) .core { transform: scale(3.4); }
+  html.anim [data-anim]:not(.on) .frame, html.anim [data-anim]:not(.on) .floor { opacity: 0; }
+  html.anim .sv-art .draw { transition: stroke-dashoffset var(--t, 1.4s) cubic-bezier(.65, 0, .35, 1) var(--d, 0s), opacity 0s linear var(--d, 0s); }
+  html.anim .sv-art .pt { transition: transform .5s cubic-bezier(.2, 1.6, .4, 1) var(--d), opacity .15s linear var(--d); }
+  html.anim .sv-art .lbl { transition: opacity .35s ease var(--d); }
+  html.anim .sv-art .grow { transition: transform .35s cubic-bezier(.3, 0, .2, 1) var(--d); }
+  html.anim .sv-art .core { transition: transform 1.3s cubic-bezier(.7, 0, .2, 1) .45s; }
+  html.anim .sv-art .floor { transition: opacity .5s ease 1.25s; }
+  html.anim .sv-art .frame { transition: opacity .5s ease 1.05s; }
   html.anim .bar .seg { clip-path: inset(0 0 0 0); transition: clip-path var(--t) linear var(--d); }
+  html.anim [data-anim]:not(.on) .seg { clip-path: inset(0 100% 0 0); }
 }
-@keyframes immerse { 0% { transform: scale(.12); } 45% { transform: scale(1); } 60% { transform: scale(1); } 100% { transform: scale(.42); } }
-@keyframes distance { 0%, 55% { opacity: 0; transform: scale(1.15); } 100% { opacity: 1; transform: scale(1); } }
 
 /* 막대 */
 .stages { background: var(--paper); }
@@ -360,7 +361,7 @@ pre code { background: none; padding: 0; font-size: inherit; }
   .sv-list > div, .qa-grid { grid-template-columns: 1fr; gap: 8px; }
   .be-more { grid-template-columns: 1fr; gap: 40px; }
   .lab-legend { grid-template-columns: 1fr; }
-  .sv-art { max-width: 280px; margin-top: 16px; }
+  .sv-art { max-width: 300px; margin-top: 16px; }
   .sv-list > div > dt, .sv-list > div > .sv-art-cell, .sv-list > div > dd:not(.sv-art-cell) { grid-column: 1; grid-row: auto; }
   .lab-legend dl > div { grid-template-columns: 1fr; gap: 2px; }
   .quote-field blockquote { margin-left: 0; }
@@ -451,17 +452,19 @@ pre code { background: none; padding: 0; font-size: inherit; }
   <dl class="sv-list">
     <div>
       <dt>시선과 동선</dt>
-      <dd class="sv-art-cell"><span class="sv-art" data-anim><svg viewBox="0 0 320 240" role="img" aria-label="데이터가 지나는 길: 원문, 로컬 추출, 모델, 비공개 적재 순서로 지그재그로 내려가는 선">
-          <path class="draw" pathLength="1" d="M24 30 L120 90 L24 150 L120 210" />
-          <g class="pt" style="--d:0s"><circle cx="24" cy="30" r="10" /></g>
-          <g class="pt" style="--d:.5s"><circle cx="120" cy="90" r="10" /></g>
-          <g class="pt" style="--d:1s"><circle cx="24" cy="150" r="10" /></g>
-          <g class="pt" style="--d:1.5s"><circle cx="120" cy="210" r="10" /></g>
+      <dd class="sv-art-cell"><span class="sv-art" data-anim><svg viewBox="0 0 340 250" role="img" aria-label="데이터가 지나는 길: 원문, 로컬 추출, 모델, 비공개 적재 순서로 꺾이며 내려가는 선. 아래로 갈수록 멀어진다">
+          <path class="draw" pathLength="1" style="--d:.1s;--t:.6s;stroke-width:11" d="M34 32 L246 82" />
+          <path class="draw" pathLength="1" style="--d:.7s;--t:.55s;stroke-width:8" d="M246 82 L78 152" />
+          <path class="draw" pathLength="1" style="--d:1.25s;--t:.45s;stroke-width:5.5" d="M78 152 L210 214" />
+          <g transform="rotate(-8 34 32)"><rect class="pt o" style="--d:0s" x="22" y="20" width="24" height="24" /></g>
+          <g transform="rotate(6 246 82)"><rect class="pt o" style="--d:.65s" x="236.5" y="72.5" width="19" height="19" /></g>
+          <g transform="rotate(-4 78 152)"><rect class="pt o" style="--d:1.2s" x="70.5" y="144.5" width="15" height="15" /></g>
+          <g transform="rotate(10 210 214)"><rect class="pt k" style="--d:1.7s" x="204" y="208" width="12" height="12" /></g>
           <g aria-hidden="true">
-            <text class="lbl" style="--d:0s" x="150" y="35">원문</text>
-            <text class="lbl" style="--d:.5s" x="150" y="95">로컬 추출</text>
-            <text class="lbl" style="--d:1s" x="150" y="155">모델</text>
-            <text class="lbl" style="--d:1.5s" x="150" y="215">비공개 적재</text>
+            <text class="lbl" style="--d:.1s" x="24" y="84" font-size="21">원문</text>
+            <text class="lbl" style="--d:.75s" x="264" y="89" font-size="17">로컬 추출</text>
+            <text class="lbl" style="--d:1.3s" x="18" y="186" font-size="15">모델</text>
+            <text class="lbl" style="--d:1.75s" x="226" y="219" font-size="13">비공개 적재</text>
           </g>
         </svg></span></dd>
       <dd>
@@ -471,16 +474,23 @@ pre code { background: none; padding: 0; font-size: inherit; }
     </div>
     <div>
       <dt>경험과 체험</dt>
-      <dd class="sv-art-cell"><span class="sv-art" data-anim aria-hidden="true"><svg viewBox="0 0 320 160">
-          <text class="lbl" style="--d:0s" x="0" y="22">체험</text>
-          <g class="pt" style="--d:.1s"><circle cx="24" cy="54" r="9" /></g>
-          <g class="pt" style="--d:.3s"><circle cx="72" cy="54" r="9" /></g>
-          <g class="pt" style="--d:.5s"><circle cx="120" cy="54" r="9" /></g>
-          <g class="pt" style="--d:.7s"><circle cx="168" cy="54" r="9" /></g>
-          <g class="pt" style="--d:.9s"><circle cx="216" cy="54" r="9" /></g>
-          <g class="pt" style="--d:1.1s"><circle cx="264" cy="54" r="9" /></g>
-          <text class="lbl" style="--d:1.4s" x="0" y="106">경험</text>
-          <rect class="grow" style="--d:1.4s" x="15" y="120" width="258" height="18" />
+      <dd class="sv-art-cell"><span class="sv-art" data-anim aria-hidden="true"><svg viewBox="0 0 340 170">
+          <text class="lbl" style="--d:0s" x="0" y="20" font-size="17">체험</text>
+          <rect class="pt o" style="--d:0.1s" x="18" y="44" width="14" height="14" />
+          <rect class="pt k" style="--d:0.3s" x="58" y="62" width="9" height="9" />
+          <rect class="pt o" style="--d:0.5s" x="92" y="38" width="18" height="18" />
+          <rect class="pt k" style="--d:0.7s" x="146" y="64" width="11" height="11" />
+          <rect class="pt o" style="--d:0.9s" x="182" y="46" width="15" height="15" />
+          <rect class="pt k" style="--d:1.1s" x="232" y="60" width="8" height="8" />
+          <rect class="pt o" style="--d:1.3s" x="262" y="40" width="13" height="13" />
+          <text class="lbl" style="--d:.2s" x="0" y="116" font-size="17">경험</text>
+          <rect class="grow o" style="--d:0.25s" x="12" y="128" width="48.7" height="24" />
+          <rect class="grow k" style="--d:0.45s" x="60.7" y="128" width="31.3" height="24" />
+          <rect class="grow o" style="--d:0.65s" x="92.0" y="128" width="62.6" height="24" />
+          <rect class="grow k" style="--d:0.85s" x="154.6" y="128" width="38.2" height="24" />
+          <rect class="grow o" style="--d:1.05s" x="192.8" y="128" width="52.2" height="24" />
+          <rect class="grow k" style="--d:1.25s" x="245.0" y="128" width="27.8" height="24" />
+          <rect class="grow o" style="--d:1.45s" x="272.8" y="128" width="45.2" height="24" />
         </svg></span></dd>
       <dd>
         <p class="sv-stage">체험은 공연이 진행되는 동안 관객이 겪는 순간이고, 경험은 극장을 나선 뒤에 남는 것입니다. 좋은 공연은 체험으로 끝나지 않고 경험을 남깁니다.</p>
@@ -489,9 +499,10 @@ pre code { background: none; padding: 0; font-size: inherit; }
     </div>
     <div>
       <dt>몰입과 거리두기</dt>
-      <dd class="sv-art-cell"><span class="sv-art" data-anim aria-hidden="true"><svg viewBox="0 0 320 180">
-          <circle class="ring" cx="160" cy="90" r="64" />
-          <circle class="core" cx="160" cy="90" r="64" />
+      <dd class="sv-art-cell"><span class="sv-art" data-anim aria-hidden="true"><svg viewBox="0 0 340 190" class="clip">
+          <polygon class="floor" points="78,150 262,150 328,188 12,188" />
+          <rect class="frame" x="73" y="22" width="194" height="128" />
+          <rect class="core o" x="116" y="60" width="108" height="90" />
         </svg></span></dd>
       <dd>
         <p class="sv-stage">브레히트의 낯설게하기는 관객이 극에 빠져들기만 하지 않고 한 발 물러서서 보게 만드는 기법입니다. 몰입시킨 뒤 거리를 만들어야 관객이 스스로 판단합니다.</p>
@@ -500,11 +511,19 @@ pre code { background: none; padding: 0; font-size: inherit; }
     </div>
     <div>
       <dt>시스템과 사람</dt>
-      <dd class="sv-art-cell"><span class="sv-art" data-anim aria-hidden="true"><svg viewBox="0 0 320 160">
-          <text class="lbl" style="--d:0s" x="0" y="24">시스템</text>
-          <path class="draw" pathLength="1" d="M15 48 H300" />
-          <text class="lbl" style="--d:0s" x="0" y="96">사람</text>
-          <path class="draw wobble" pathLength="1" d="M15 126 C 50 96, 80 152, 118 122 S 186 98, 214 130 S 266 146, 300 116" />
+      <dd class="sv-art-cell"><span class="sv-art" data-anim aria-hidden="true"><svg viewBox="0 0 340 170">
+          <text class="lbl" style="--d:0s" x="0" y="20" font-size="17">시스템</text>
+          <path class="draw" pathLength="1" style="--d:0s;--t:1.2s;stroke-width:8" d="M4 46 H332" />
+          <rect class="pt k" style="--d:0.10s" x="4" y="38" width="16" height="16" />
+          <rect class="pt k" style="--d:0.25s" x="50" y="38" width="16" height="16" />
+          <rect class="pt k" style="--d:0.40s" x="96" y="38" width="16" height="16" />
+          <rect class="pt k" style="--d:0.55s" x="142" y="38" width="16" height="16" />
+          <rect class="pt k" style="--d:0.70s" x="188" y="38" width="16" height="16" />
+          <rect class="pt k" style="--d:0.85s" x="234" y="38" width="16" height="16" />
+          <rect class="pt k" style="--d:1.00s" x="280" y="38" width="16" height="16" />
+          <rect class="pt k" style="--d:1.15s" x="326" y="38" width="16" height="16" />
+          <text class="lbl" style="--d:.2s" x="0" y="100" font-size="17">사람</text>
+          <path class="draw wobble" pathLength="1" style="--d:.3s;--t:1.7s;stroke-width:9" d="M6 136 C 30 112, 52 160, 84 132 S 128 100, 150 142 S 176 164, 206 120 S 262 104, 280 146 S 318 150, 334 124" />
         </svg></span></dd>
       <dd>
         <p class="sv-stage">음향 큐시트를 직접 만들고 현장에서 플레이하며 배운 것은, 큐시트대로 전환이 돌아가도 무대 위의 사람은 매일 다르다는 점입니다. 예측할 수 있는 일을 시스템이 맡아야 사람이 예측할 수 없는 일에 집중합니다.</p>
@@ -1091,7 +1110,7 @@ pre code { background: none; padding: 0; font-size: inherit; }
   document.documentElement.classList.add('anim');
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
-  }, { threshold: 0.35 });
+  }, { threshold: 0.6, rootMargin: '0px 0px -18% 0px' });
   items.forEach((el) => io.observe(el));
 })();
 
