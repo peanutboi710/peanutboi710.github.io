@@ -91,6 +91,22 @@ p { margin: 0; }
 .stair figure img { aspect-ratio: 3 / 2; object-fit: cover; object-position: top; width: 100%; }
 .stair .note { grid-column: 1 / -1; font-size: var(--s-small); color: #b9b9b2; max-width: 46ch; }
 
+/* 지금 풀 문제와 미룰 문제 */
+.defer { background: var(--paper); }
+.defer-head { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 4vw; align-items: end; margin-bottom: 64px; }
+.defer h2 { font-family: var(--display); font-size: var(--s-head); line-height: 0.95; }
+.defer .lede { font-size: var(--s-lead); line-height: 1.5; max-width: 30em; }
+.defer-table { width: 100%; border-collapse: separate; border-spacing: 0 6px; }
+.defer-table th, .defer-table td { text-align: left; vertical-align: top; padding: 18px 20px; font-weight: 400; font-size: var(--s-body); line-height: 1.6; }
+.defer-table thead th { font-size: var(--s-small); color: var(--ink-soft); padding-block: 0 4px; }
+.defer-table tbody th, .defer-table tbody td { background: var(--paper-2); }
+.defer-table tbody th { width: 30%; font-family: var(--display); font-size: var(--s-lead); line-height: 1.2; }
+.defer-table tbody td { width: 35%; }
+.defer-table tbody th a { text-decoration: none; transition: color 150ms ease; }
+.defer-table tbody th a:hover { color: var(--orange); }
+.defer-table tbody tr { transition: transform 150ms ease; }
+.defer-note { margin-top: 40px; max-width: 40em; }
+
 /* 작업 목록 */
 .ledger { background: var(--paper); }
 .ledger-col { width: min(780px, 100%); margin-left: 14vw; position: relative; }
@@ -284,6 +300,7 @@ pre code { background: none; padding: 0; font-size: inherit; }
 .principle.tone-sage { background: var(--sage); }
 .principle.ux-dark { background: var(--black); color: var(--ink-light); }
 .principle.ux-dark .ref, .principle.ux-dark .cap { color: #b9b9b2; }
+.anchor { background: var(--paper-2); }
 .ux-close { background: var(--acid); }
 .ux-close .log ul { margin: 0; padding-left: 1.1em; display: grid; gap: 12px; }
 
@@ -337,6 +354,7 @@ pre code { background: none; padding: 0; font-size: inherit; }
 .foot { background: var(--black); color: #7d7d77; font-size: var(--s-small); padding-block: 0 40px; }
 
 .print-only { display: none; }
+.cover { display: none; }
 
 @media screen and (max-width: 860px) {
   .hero-name { font-size: 17.5vw; margin-top: 14vh; white-space: nowrap; }
@@ -351,6 +369,13 @@ pre code { background: none; padding: 0; font-size: inherit; }
   .stair p.st span:nth-child(5) { padding-left: 20vw; }
   .stair figure { grid-template-columns: 1fr 1fr; margin-top: 0; }
   .ledger-col { margin-left: 0; }
+  .defer-head { grid-template-columns: 1fr; gap: 24px; margin-bottom: 40px; }
+  .defer-table, .defer-table tbody, .defer-table tr, .defer-table th, .defer-table td { display: block; width: auto !important; }
+  .defer-table thead { display: none; }
+  .defer-table tbody tr { background: var(--paper-2); margin-bottom: 6px; padding: 16px; }
+  .defer-table tbody th, .defer-table tbody td { padding: 0; background: none; }
+  .defer-table tbody td { margin-top: 12px; }
+  .defer-table tbody td::before { content: attr(data-label); display: block; font-size: var(--s-small); color: var(--ink-soft); }
   .ledger li a { grid-template-columns: 1fr auto; min-height: 56px; padding-block: 6px; }
   .ledger li a .k { grid-column: 1; grid-row: 2; font-size: var(--s-small); }
   .ledger li a .y { grid-row: 1 / span 2; grid-column: 2; }
@@ -392,13 +417,30 @@ pre code { background: none; padding: 0; font-size: inherit; }
 @media print {
   @page { size: 1440px 1650px; margin: 0; }
   .band { break-before: page; min-height: 1650px; }
-  .hero { break-before: auto; }
+  .hero { display: none; }
+  .cover { display: grid; break-before: auto; min-height: 1650px; background: var(--orange); color: var(--ink); grid-template-rows: auto 1fr auto; padding-block: 72px; }
+  .cover-top { font-size: 26px; }
+  .cover-name { align-self: center; font-family: var(--display); font-size: 270px; line-height: 0.84; letter-spacing: -0.02em; white-space: nowrap; }
+  .cover-name span { display: block; }
+  .cover-name span:first-child { color: var(--ink-light); }
+  .cover-foot { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: end; font-size: 26px; line-height: 1.5; }
+  .cover-foot p { max-width: 24em; }
+  .cover-foot dl { margin: 0; display: grid; gap: 10px; }
+  .cover-foot dl div { display: grid; grid-template-columns: 8em 1fr; gap: 12px; }
+  .cover-foot dt { color: var(--ink); opacity: .7; }
+  .cover-foot dd { margin: 0; }
+  .cover-foot a { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 2px; }
+  .print-web { display: block; margin-top: 40px; }
+  .project { padding-block: 72px; }
+  .project .media-full { aspect-ratio: 16 / 8; }
+  .project-head, .project .facts { margin-bottom: 0; }
+  .project-head { margin-bottom: 40px; }
   .contact { min-height: 1586px; }
   .foot { break-before: avoid; min-height: 0; }
   body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   video { display: none !important; }
   .print-only { display: block; }
-  .hero, .stair { min-height: 1650px; }
+  .stair { min-height: 1650px; }
   .hero-name { font-size: 270px; white-space: nowrap; }
   .hero-top nav { display: none; }
   .preview { display: none; }
@@ -409,6 +451,22 @@ pre code { background: none; padding: 0; font-size: inherit; }
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}</style>
 </head>
 <body>
+<header class="band cover" aria-label="표지">
+  <p class="cover-top">포트폴리오</p>
+  <h2 class="cover-name" aria-label="김해송 KIM HAESONG"><span>KIM</span><span>HAESONG</span></h2>
+  <div class="cover-foot">
+    <div>
+      <p>김해송. Software Engineer 인턴 지원, AI Productivity &amp; Agents.</p>
+      <p style="margin-top:16px">AI에게 맡길 일과 사람이 판단할 일의 경계를 먼저 정하고, 그 기준대로 시스템을 설계합니다.</p>
+    </div>
+    <dl>
+      <div><dt>웹 포트폴리오</dt><dd><a href="https://peanutboi710.github.io">peanutboi710.github.io</a></dd></div>
+      <div><dt>메일</dt><dd><a href="mailto:figaro0928@gmail.com">figaro0928@gmail.com</a></dd></div>
+      <div><dt>GitHub</dt><dd><a href="https://github.com/peanutboi710">github.com/peanutboi710</a></dd></div>
+    </dl>
+  </div>
+</header>
+
 <header class="band hero" id="top">
   <div class="hero-top">
     <span>김해송</span>
@@ -427,7 +485,7 @@ pre code { background: none; padding: 0; font-size: inherit; }
       <a class="btn" href="#work">작업 보기</a>
       <a class="link" href="https://github.com/peanutboi710" target="_blank" rel="noopener">GitHub</a>
     </div>
-    <p>김해송. 공연예술 출신 개발자입니다. AI 파이프라인이 어디서 틀리는지 재고, 사람이 판단할 자리를 설계합니다.</p>
+    <p>김해송. 공연예술 출신 개발자입니다. AI에게 맡길 일과 사람이 판단할 일의 경계를 먼저 정하고, 그 기준대로 시스템을 설계합니다.</p>
   </div>
 </header>
 
@@ -443,7 +501,7 @@ pre code { background: none; padding: 0; font-size: inherit; }
     <img src="assets/s-verdict-range.jpg" width="1440" height="900" alt="내Law남불 판결 입력 화면. 선고할 수 있는 범위와 양형기준 권고 범위가 막대로 표시된다" loading="lazy">
     <img src="assets/s-ai.jpg" width="1440" height="900" alt="내Law남불 AI 판사 세 명이 판단 요소를 하나씩 짚는 장면" loading="lazy">
   </figure>
-  <p class="note">2026년 9월 29일부터 10월 23일까지 최종 프로젝트에서 PR 120건을 올리고 의사결정 기록 67건을 썼습니다.</p>
+  <p class="note">2026년 9월 29일부터 10월 26일까지 최종 프로젝트에서 PR 130건을 올리고 의사결정 기록 73건을 썼습니다.</p>
 </section>
 
 <section class="band stage-values" id="stage" aria-labelledby="sv-h">
@@ -490,7 +548,7 @@ pre code { background: none; padding: 0; font-size: inherit; }
         </svg></span></dd>
       <dd>
         <p class="sv-stage">무대조감독의 일에 가까운 음향 큐시트(효과음 · 음악 재생 순서표)를 제작하고 운영했습니다. 큐시트는 바뀌지 않지만 무대 위의 상황은 매일 다릅니다. 돌발상황에는 유연하게 대처해야 했습니다. 예측할 수 있는 일을 시스템이 맡아야 사람이 예측할 수 없는 일에 집중할 수 있습니다.</p>
-                <p>반복되고 예측 가능한 일은 시스템이, 예외와 판단은 사람이 맡도록 경계를 설계합니다. 실패를 덮지 않고 멈추는 것도 설계입니다. 파이프라인에서는 과부하와 한도를 재시도와 모델 폴백이 맡고, 품질 문제는 다른 모델로 덮지 않고 멈춥니다. 자동 검사가 못 막는 요약의 왜곡은 관리자가 원문과 대조하고, 가치관 축(판결 성향을 나누는 네 가지 기준) 투표가 갈리면 관리자 확인 대상으로 표시합니다.</p>
+                <p>반복되고 예측 가능한 일은 시스템이, 예외와 판단은 사람이 맡도록 경계를 설계합니다. 실패를 덮지 않고 멈추는 것도 설계입니다. 파이프라인에서는 과부하와 한도를 재시도와 모델 폴백이 맡고, 품질 문제는 다른 모델로 덮지 않고 멈춥니다. 관리자의 확인도 일부는 자동으로 돌렸습니다. 발췌와 근거를 원문과 글자 단위로 대조하는 기계적 점검은 이미 자동입니다. 다만 요약이 뜻을 왜곡하거나 한쪽으로 치우쳤는지는 사람이 가려야 한다고 보고 관리자의 몫으로 남겼습니다. 이것도 보정으로 자동화할 수 있지만 검증을 위한 검증이 될 수 있다고 판단했습니다. 가치관 축(판결 성향을 나누는 네 가지 기준) 투표가 갈리면 관리자 확인 대상으로 표시합니다.</p>
               </dd>
     </div>
   
@@ -531,7 +589,57 @@ pre code { background: none; padding: 0; font-size: inherit; }
                 <p>기능을 쓰는 순간보다 쓰고 난 뒤에 남는 것을 기준으로 설계합니다. 내Law남불은 정답을 알려 주는 대신 "나는 이런 걸 무겁게 보는구나"를 남기려 했고, 사용자가 고른 판단 요소(형량을 무겁게 · 가볍게 하는 사정)마다 가치관 축이 붙어 있어 체험이 쌓이면 성향 카드의 변화로 보여 줍니다.</p>
       </dd>
     </div></dl>
-  <p class="ref" style="margin-top:48px">근거: BE-31, BE-36, BE-37, BE-38, BE-45, BE-47, BE-49, BE-51, FE-32, FE-43, FE-70 의사결정 기록, PRODUCT.md. BE-31 같은 번호는 팀 Jira 이슈 키이면서 공개 저장소의 <a class="link" href="" target="_blank" rel="noopener">docs/decisions</a> 문서 이름입니다.</p>
+  <p class="ref" style="margin-top:48px">근거: BE-31, BE-36, BE-37, BE-38, BE-45, BE-47, BE-49, BE-51, FE-32, FE-43, FE-70 의사결정 기록, PRODUCT.md. BE-31 같은 번호는 팀 Jira 이슈 키이면서 공개 저장소의 <a class="link" href="https://github.com/prgrms-aibe-devcourse/AIBE7_FinalProject_Team2/tree/develop/docs/decisions" target="_blank" rel="noopener">docs/decisions</a> 문서 이름입니다.</p>
+</section>
+
+<section class="band defer" id="defer" aria-labelledby="df-h">
+  <div class="defer-head">
+    <h2 id="df-h">지금 풀 문제와 미룰 문제</h2>
+    <p class="lede">기술적으로 끝까지 가는 대신 지금 필요한 만큼 만들고, 하지 않은 것은 이유와 다시 볼 조건을 결정 기록에 함께 적었습니다.</p>
+  </div>
+  <table class="defer-table" aria-labelledby="df-h">
+    <thead>
+      <tr><th scope="col">문제</th><th scope="col">지금 한 것</th><th scope="col">하지 않은 것과 이유</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row"><a href="#pipeline">AI 판결의 공개</a></th>
+        <td data-label="지금 한 것">비공개로 적재하고, 관리자가 원문과 대조해 공개를 승인합니다. 글자 단위 대조 같은 기계적 점검은 자동입니다.</td>
+        <td data-label="하지 않은 것과 이유">의미 왜곡과 편향 검수의 자동화. 검증을 위한 검증이 될 수 있다고 봤습니다.</td>
+      </tr>
+      <tr>
+        <th scope="row"><a href="#signature">판결 파일철에서 겹치던 4막</a></th>
+        <td data-label="지금 한 것">없애지 않고 건너뛰게 했습니다.</td>
+        <td data-label="하지 않은 것과 이유">4막 삭제. 서버 상태, API, URL 경로가 모두 바뀌는 별도 이슈 규모였습니다.</td>
+      </tr>
+      <tr>
+        <th scope="row"><a href="#rag">판례 검색 속도</a></th>
+        <td data-label="지금 한 것">수백 건 규모라 인덱스 없이 전체를 비교합니다.</td>
+        <td data-label="하지 않은 것과 이유">halfvec과 HNSW 인덱스. 수만 건이 되면 바꿉니다.</td>
+      </tr>
+      <tr>
+        <th scope="row"><a href="#anchor">6막의 분류 이름</a></th>
+        <td data-label="지금 한 것">"나만 고려하지 않은 요소"가 사용자를 놓친 쪽으로 틀어 읽혀서, 화면 라벨만 "AI · 재판부만 고려한 요소"로 바꿨습니다.</td>
+        <td data-label="하지 않은 것과 이유">서버 값 이름(<code>ONLY_ME_MISSED</code>) 변경. API 계약이라 BE 후속으로 남겼습니다.</td>
+      </tr>
+      <tr>
+        <th scope="row"><a href="#access">움직임 줄이기 설정</a></th>
+        <td data-label="지금 한 것">CSS 22개 파일을 고치는 대신 규칙 하나로 모든 애니메이션 길이를 0으로 만들었습니다.</td>
+        <td data-label="하지 않은 것과 이유">애니메이션 삭제. 지우면 끝 이벤트가 사라져 연출을 기다리는 코드가 멈춥니다.</td>
+      </tr>
+      <tr>
+        <th scope="row"><a href="#assets">이미지 생성</a></th>
+        <td data-label="지금 한 것">이미지 프롬프트는 Claude로 만들고, 출력은 GPT로 수동 진행합니다.</td>
+        <td data-label="하지 않은 것과 이유">CLI 자동화. 할 수 있었지만 비용을 따져 미뤘습니다.</td>
+      </tr>
+      <tr>
+        <th scope="row"><a href="#contamination">모델이 정답을 아는지</a></th>
+        <td data-label="지금 한 것">의심되는 사건을 걸러 사람이 보게 하는 선별 장치로 두었습니다.</td>
+        <td data-label="하지 않은 것과 이유">우연 일치 기준선. 가상 사건으로 재는 것을 다음 과제로 두었습니다.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="defer-note">배포한 뒤에는 처음부터 끝까지 다시 돌려 보고, 고친 것과 남은 것을 나눠 적습니다. <a class="link" href="#qa">배포하고 다시 본 것</a></p>
 </section>
 
 <section class="band quote-field" aria-label="연출에 대해 쓴 글에서">
@@ -547,12 +655,13 @@ pre code { background: none; padding: 0; font-size: inherit; }
     <img class="preview" alt="" aria-hidden="true">
     <p class="group">내Law남불, 최종 프로젝트</p>
     <ul>
+      <li><a href="#pipeline" data-img="assets/s-court.jpg"><span>판결문에서 적재까지 한 명령으로</span><span class="k">AI 파이프라인</span><span class="y">2026.10</span></a></li>
       <li><a href="#contamination" data-img="assets/s-ai-stage.jpg"><span>AI가 답을 이미 아는지 가려내기</span><span class="k">AI 파이프라인</span><span class="y">2026.10</span></a></li>
       <li><a href="#retry" data-img="assets/s-ai.jpg"><span>막히면 기다리고, 안 되면 넘기기</span><span class="k">AI 파이프라인</span><span class="y">2026.10</span></a></li>
-      <li><a href="#pipeline" data-img="assets/s-court.jpg"><span>판결문에서 적재까지 한 명령으로</span><span class="k">AI 파이프라인</span><span class="y">2026.10</span></a></li>
       <li><a href="#rag" data-img="assets/s-ai.jpg"><span>실제 판결은 숨기고 판례는 참고하게</span><span class="k">RAG, DB</span><span class="y">2026.10</span></a></li>
-      <li><a href="#signature" data-img="assets/s-verdict-1.jpg"><span>서명으로 확정하는 판결 파일철</span><span class="k">UX, 프론트엔드</span><span class="y">2026.10</span></a></li>
       <li><a href="#ux" data-img="assets/s-main.jpg"><span>화면 설계 기준</span><span class="k">UX, 프론트엔드</span><span class="y">2026.10</span></a></li>
+      <li><a href="#signature" data-img="assets/s-verdict-1.jpg"><span>서명으로 확정하는 판결 파일철</span><span class="k">UX, 프론트엔드</span><span class="y">2026.10</span></a></li>
+      <li><a href="#qa" data-img="assets/s-main.jpg"><span>배포하고 다시 본 것</span><span class="k">QA, 회고</span><span class="y">2026.10</span></a></li>
       <li><a href="#assets" data-img="assets/s-compare.jpg"><span>AI와 일하는 규칙과 기록</span><span class="k">작업 체계</span><span class="y">2026.10</span></a></li>
     </ul>
     <p class="group">MatchEAT, 2차 프로젝트</p>
@@ -577,9 +686,9 @@ pre code { background: none; padding: 0; font-size: inherit; }
   <img class="print-only media-full" src="assets/s-main.jpg" alt="내Law남불 메인 책상 화면">
   <p class="cap">메인 화면. 책상 위 물건이 메뉴이고, 신문을 누르면 오늘의 사건 지면이 펼쳐집니다. 화면은 개발 중인 로컬 화면을 모의(mock) 데이터로 찍었습니다.</p>
   <div class="facts">
-    <div><p class="n">120</p><p>올린 PR. 팀 전체 271건 중이고, 114건이 머지됐습니다.</p></div>
-    <div><p class="n">590</p><p>커밋. 팀 전체 1,173건의 절반 남짓입니다.</p></div>
-    <div><p class="n">67</p><p>직접 쓴 의사결정 기록. 팀 전체 124건 중입니다.</p></div>
+    <div><p class="n">130</p><p>올린 PR. 팀 전체 287건 중이고, 121건이 머지됐습니다.</p></div>
+    <div><p class="n">641</p><p>커밋. 팀 전체 1,256건의 절반 남짓입니다.</p></div>
+    <div><p class="n">73</p><p>직접 쓴 의사결정 기록. 팀 전체 135건 중입니다.</p></div>
     <div><p class="n">76</p><p>AI 판결 도구 폴더에 남긴 커밋. 배치형 파이프라인 대부분을 만들었습니다.</p></div>
   </div>
 </section>
@@ -613,7 +722,7 @@ pre code { background: none; padding: 0; font-size: inherit; }
       </div>
       <div>
         <h3>한계로 남긴 것</h3>
-        <p>재판부 판결 초안(실제 판결문을 LLM이 요약·정리한 초안)의 자동 검사는 원문 인용 대조와 주문(판결의 결론 부분) 형량 교차 확인처럼 형식적 정확성만 보장합니다. 요약이 뜻을 왜곡했는지는 공개 전에 사람이 원문과 대조합니다.</p>
+        <p>재판부 판결 초안(실제 판결문을 LLM이 요약·정리한 초안)의 자동 검사는 원문 인용 대조와 주문(판결의 결론 부분) 형량 교차 확인처럼 형식적 정확성만 보장합니다. 요약이 뜻을 왜곡하거나 편향됐는지는 공개 전에 사람이 원문과 대조합니다. 이 검수도 보정을 거쳐 자동화할 수 있지만, 검증을 위한 검증이 될 수 있다고 보고 사람의 몫으로 남겼습니다.</p>
       </div>
       <p class="ref">근거: BE-30, BE-31, BE-35, BE-38 의사결정 기록과 PR #73, #75, #77, #78</p>
     </div>
@@ -659,7 +768,7 @@ pre code { background: none; padding: 0; font-size: inherit; }
     return max(criteria["closeMinMonths"], min(criteria["closeMaxMonths"], criteria["closeRatio"] * actual_months))</code></pre>
       <div>
         <h3>한계로 남긴 것</h3>
-        <p>이 검사는 오염을 증명하지 않고, 의심되는 사건을 걸러 사람이 보게 하는 선별 장치입니다. 흔한 형량이 우연히 맞는 비율(기저율)은 아직 재지 못했습니다. 다음에는 모델이 알 수 없는 가상 사건에 같은 검사를 돌려 우연 일치 기준선을 잡아 볼 계획입니다.</p>
+        <p>이 검사는 오염을 증명하지 않고, 의심되는 사건을 걸러 사람이 보게 하는 선별 장치입니다. 흔한 형량이 우연히 맞는 비율(기저율)은 아직 재지 못했습니다. 같은 사건인데 요약 유사도가 0.95에 못 미쳐 검색에서 빠지지 않는 경우도 남습니다. 평가는 검사한 곳보다 놓친 곳이 결정한다고 배웠습니다. 다음에는 모델이 알 수 없는 가상 사건에 같은 검사를 돌려 우연 일치 기준선부터 재 볼 계획입니다.</p>
       </div>
       <p class="ref">근거: BE-37 의사결정 기록, PR #80, <code>tools/ai-judgment/check_contamination.py</code></p>
     </div>
@@ -826,14 +935,14 @@ pre code { background: none; padding: 0; font-size: inherit; }
   <div class="ux-open-grid">
     <h2 id="ux-h">화면을 만드는 기준</h2>
     <div class="ux-open-text">
-      <p>프론트엔드는 이 프로젝트에서 처음 제대로 해 봤습니다. 프레임워크 없이 HTML과 JavaScript로 화면 단위 모듈을 짰고, 차트도 라이브러리 없이 DOM과 SVG로 그렸습니다. 모르는 만큼 기준을 먼저 정하고, 고칠 때마다 1280px과 390px에서 직접 재서 확인했습니다.</p>
+      <p>프론트엔드는 이 프로젝트에서 처음 제대로 해 봤습니다. 프레임워크 없이 HTML과 JavaScript로 화면 단위 모듈을 짰고, 차트도 라이브러리 없이 DOM과 SVG로 그렸습니다. 모르는 만큼 기준을 먼저 정하고, 고칠 때마다 1280px과 390px에서 직접 재서 확인했습니다. 디자인 토큰 205개를 점검한 뒤 DESIGN.md로 규칙화했습니다.</p>
       <p>이 섹션은 프론트엔드 상세입니다. 백엔드 사례를 먼저 보셨다면 건너뛰셔도 됩니다. 서비스 전체 흐름은 "막"(1~6막), 판결 파일철 안의 페이지는 "장"(5장)이라고 부릅니다.</p>
     </div>
   </div>
   <div class="facts ux-facts">
-    <div><p class="n">59</p><p>프론트엔드 PR</p></div>
-    <div><p class="n">47</p><p>프론트 의사결정 기록</p></div>
-    <div><p class="n">268</p><p>frontend 폴더 커밋</p></div>
+    <div><p class="n">68</p><p>프론트엔드 PR</p></div>
+    <div><p class="n">52</p><p>프론트 의사결정 기록</p></div>
+    <div><p class="n">308</p><p>frontend 폴더 커밋</p></div>
   </div>
 </section>
 
@@ -925,7 +1034,35 @@ pre code { background: none; padding: 0; font-size: inherit; }
   </figure>
 </section>
 
-<section class="band ux-close" aria-labelledby="ux-c-h">
+<section class="band anchor" id="anchor" aria-labelledby="an-h">
+  <div class="case">
+    <div>
+      <h2 id="an-h">남의 답을 먼저 보여 주지 않기</h2>
+      <p class="lede">판단은 사용자의 것이라고 말하는 서비스에서 화면이 정답처럼 보이면 안 됩니다. 화면마다 비평을 돌려 나온 결정 중, 남의 형량과 실제 판결이 내 판단을 앞서 묶지 않게 한 것들입니다.</p>
+    </div>
+    <div class="log">
+      <div>
+        <h3>판결하기 전에는 접어 두기</h3>
+        <p>커뮤니티에서 사건을 아직 판결하지 않은 사람에게 남의 형량("징역 12년")이 먼저 보였습니다. 숨기면 이미 결과를 알고 온 사람까지 막고, 그대로 두면 앵커링이 남습니다. 그래서 접어 두고 "그래도 보기"로 펼치게 했습니다. 판결 여부는 화면이 따로 불러와 비교하지 않고, 서버가 글 응답에 실어 주게 했습니다.</p>
+      </div>
+      <div>
+        <h3>실제 판결을 잣대로 두지 않기</h3>
+        <p>6막 편집부 의견이 첫인상과 실제 판결을 비교해 "실제 사건보다 가볍게 판단했어요"처럼 읽혔습니다. 비교 대상을 내 최종 판결로 바꿔 "처음 생각보다 무겁게 판결했어요"로 고쳤고, 서버가 이미 계산하던 값이라 새로 만들 것이 없었습니다. 다른 독자의 평균 별점도 내가 엽서를 보낸 뒤에야 보입니다.</p>
+      </div>
+      <div>
+        <h3>막지 않고 되묻기</h3>
+        <p>판단 요소를 하나도 고르지 않아도 서명할 수 있게 두고, "그대로 서명할까요?"만 한 번 묻습니다. 최소 한 개를 고르게 막는 안은 판단을 대신하는 일이고, 서버 규칙까지 확인해야 해서 하지 않았습니다.</p>
+      </div>
+      <div>
+        <h3>한계로 남긴 것</h3>
+        <p>커뮤니티는 아직 목 데이터 기준이고, 판결 여부 값의 이름과 의미는 백엔드와 다시 정해야 합니다. 실제 서버가 만드는 차이 문장은 아직 옛 문구라, 실제 모드에서는 화면과 어긋날 수 있어 백엔드 후속으로 넘겼습니다.</p>
+      </div>
+      <p class="ref">근거: FE-93, FE-98 의사결정 기록과 PR #278, #283</p>
+    </div>
+  </div>
+</section>
+
+<section class="band ux-close" id="access" aria-labelledby="ux-c-h">
   <div class="case">
     <div>
       <h2 id="ux-c-h">누구나 끝까지</h2>
@@ -950,27 +1087,28 @@ pre code { background: none; padding: 0; font-size: inherit; }
   <div class="qa-grid">
     <div>
       <h2 id="qa-h">배포하고 다시 본 것</h2>
-      <p class="lede">배포 환경에서 처음부터 끝까지 다시 돌려 보며 찾은 것과, 출시 전에 더할 것입니다. 고친 것은 고쳤다고, 남은 것은 남았다고 적습니다. 이 페이지의 화면과 영상은 개발 중인 서비스를 로컬에서 모의 데이터로 찍은 것입니다.</p>
+      <p class="lede">배포 환경에서 처음부터 끝까지 다시 돌려 보며 찾은 것과, 출시 전에 더할 것입니다. 고친 것은 고쳤다고, 남은 것은 남았다고 적습니다. 10월 26일에는 화면마다 디자인 비평을 돌려 확실한 결함을 원인별로 고치기 시작했습니다. 이 페이지의 화면과 영상은 개발 중인 서비스를 로컬에서 모의 데이터로 찍은 것입니다.</p>
     </div>
     <div class="qa-lists">
       <div>
         <h3>배포 QA에서 찾은 것</h3>
         <ul class="qa-list">
-          <li><span>엽서 창이 화면 아래로 잘림</span><b>해결</b></li>
-          <li><span>신문 세부 지면에서 시작하기 버튼이 안 보임</span><b>진행 중</b></li>
-          <li><span>신문을 넘길 때 흰 잔상이 남음</span><b>진행 중</b></li>
-          <li><span>판결 입력의 다음 버튼과 접힌 제출 버튼이 직관적이지 않음</span><b>진행 중</b></li>
+          <li><span>엽서 창이 화면 아래로 잘림(배포 압축이 <code>translate</code>를 지움)</span><b>해결</b></li>
+          <li><span>신문 세부 지면에서 시작하기 버튼이 안 보임</span><b>수정, 기기 확인 전</b></li>
+          <li><span>신문을 넘길 때 흰 잔상이 남음(원인 미확정)</span><b>일부 조정</b></li>
+          <li><span>판결 입력의 다음 버튼과 접힌 제출 버튼이 직관적이지 않음</span><b>수정, 기기 확인 전</b></li>
           <li><span>화면 폭 네 구간(데스크톱, 태블릿, 좁은 창, 모바일) 점검</span><b>진행 중</b></li>
+          <li><span>화면별 비평 결함 정리(커뮤니티 · 성향 테스트는 머지, 판결 체험 · 메인 · 마이페이지 · 사건 목록은 리뷰 중)</span><b>진행 중</b></li>
         </ul>
       </div>
       <div>
         <h3>출시 전에 더할 것</h3>
         <ul class="qa-list">
-          <li><span>첫 화면에서 스크롤 전에 할 일이 보이게</span><b>예정</b></li>
-          <li><span>모바일에서 스크롤해도 따라오는 시작 버튼</span><b>예정</b></li>
+          <li><span>첫 화면에서 스크롤 전에 할 일이 보이게</span><b>리뷰 중</b></li>
+          <li><span>모바일에서 스크롤해도 따라오는 시작 버튼</span><b>일부 반영</b></li>
           <li><span>페이지마다 다른 제목, 설명, 공유 썸네일</span><b>예정</b></li>
           <li><span>레벨 API와 레벨로 해금되는 칭호(프로필 카드 꾸미기 포함)</span><b>예정</b></li>
-          <li><span>이용약관과 개인정보처리방침</span><b>예정</b></li>
+          <li><span>이용약관과 개인정보처리방침(초안을 올렸고 법무 검토 전)</span><b>초안</b></li>
         </ul>
       </div>
     </div>
@@ -980,12 +1118,13 @@ pre code { background: none; padding: 0; font-size: inherit; }
 <section class="band poster" id="assets" aria-label="AI와 일하는 규칙과 기록">
   <ul>
     <li><b>작업 승인 절차</b><span>모델과 추론 강도(effort)를 먼저 제안하고, 동의와 시작 지시가 있어야 실행합니다</span></li>
-    <li><b>개인 규칙</b><span>팀 CLAUDE.md를 바탕으로 내 작업 방식에 맞게 다시 쓴 규칙. 프론트 디자인 스킬은 승인한 것만 켜기, 리뷰 반영 흐름</span></li>
+    <li><b>개인 규칙</b><span>팀 CLAUDE.md를 바탕으로 내 작업 방식에 맞게 다시 쓴 규칙. 평소에는 포니테일 스킬을 켜 두고, 프론트 작업에서는 창의적 의도를 막는 일부 스킬을 끕니다. 작업이 끝나면 DESIGN.md를 최신화합니다</span></li>
+    <li><b>작업별 모델 조율</b><span>코드와 이미지 프롬프트는 Claude, 스크립트(글)는 Gemini 무료 키. 이미지 출력은 GPT로 수동 진행. 품질과 비용을 비교해 정했고, 출력은 CLI로 자동화할 수 있었지만 비용을 따져 수동으로 남겼습니다</span></li>
     <li><b>메모리</b><span>세션이 바뀌어도 남는 결정과 지적받은 사항</span></li>
-    <li><b>결정 기록 67건</b><span>문제, 검토한 대안, 선택, 제약, 재검토 조건</span></li>
+    <li><b>결정 기록 73건</b><span>문제, 검토한 대안, 선택, 제약, 재검토 조건</span></li>
     <li><b>핸드오프 프롬프트</b><span>다음 세션의 AI가 읽는 문서. 확인한 것과 못 한 것을 나눠 적습니다</span></li>
   </ul>
-  <p class="poster-note">AI에게 맡기는 일이 늘수록, 맡기기 전의 규칙과 맡긴 뒤의 기록이 품질을 가릅니다. 그래서 규칙은 미리 문서로 정하고, 지적받은 일은 메모리에 이유와 함께 남겨 같은 실수를 다시 하지 않게 합니다.</p>
+  <p class="poster-note">AI에게 맡기는 일이 늘수록, 맡기기 전의 규칙과 맡긴 뒤의 기록이 품질을 가릅니다. 그래서 규칙은 미리 문서로 정하고, 지적받은 일은 메모리에 이유와 함께 남겨 같은 실수를 다시 하지 않게 합니다. 같은 모델도 어떤 맥락과 규칙을 주느냐에 따라 다른 동료가 됩니다. 요즘은 개인의 일하는 방식을 에이전트에 옮기는 개인화 MCP가 이 고민을 여러 사람의 규모로 푸는 일이라 보고 있습니다.</p>
 </section>
 
 <section class="band others" id="others" aria-labelledby="ot-h">
@@ -1019,7 +1158,7 @@ pre code { background: none; padding: 0; font-size: inherit; }
       <div><dt>교육</dt><dd>프로그래머스 데브코스, 생성형 AI 활용 백엔드 개발 (2026.05 ~ 2026.11)</dd></div>
     </dl>
     <div class="about-text">
-      <p>AI 모델마다 잘하는 일이 다르다는 걸 매일 체감합니다. 코딩은 Claude, 이미지는 GPT를 쓰고, 프로젝트에서는 무료 한도와 데이터 정책까지 따져 공급자를 바꿔 가며 돌렸습니다.</p>
+      <p>AI 모델마다 잘하는 일이 다르다는 걸 매일 체감합니다. 코드와 이미지 프롬프트는 Claude, 스크립트는 Gemini 무료 키로 쓰고 이미지 출력은 GPT로 수동 진행하며, 프로젝트에서는 무료 한도와 데이터 정책까지 따져 공급자를 바꿔 가며 돌렸습니다.</p>
       <p>배우를 목표로 연기를 공부했고, 그 과정에서 조연출과 무대조감독으로 공연을 만들었습니다. 작품을 뜯어보던 버릇이 지금은 모델의 응답과 데이터의 흐름을 뜯어보는 쪽으로 옮겨 왔습니다.</p>
       <p>그래서 모델 이름보다 측정을 믿습니다. 어떤 모델이 낫다는 감이 들면 비교표를 먼저 만들고, 자동 검사가 못 막는 부분은 사람이 볼 자리로 따로 떼어 둡니다.</p>
     </div>
@@ -1075,6 +1214,7 @@ pre code { background: none; padding: 0; font-size: inherit; }
       <div><dt>서비스</dt><dd><a class="link" href="https://naelawnambul.today" target="_blank" rel="noopener">naelawnambul.today</a> (개발 중)</dd></div>
       <div><dt>저장소</dt><dd><a class="link" href="https://github.com/prgrms-aibe-devcourse/AIBE7_FinalProject_Team2" target="_blank" rel="noopener">AIBE7_FinalProject_Team2</a></dd></div>
     </dl>
+    <p class="print-only print-web">영상과 직접 판정해 보기 데모는 웹 포트폴리오에서 볼 수 있습니다. <a class="link" href="https://peanutboi710.github.io">peanutboi710.github.io</a></p>
   </div>
 </section>
 <footer class="band foot">
