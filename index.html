@@ -2,668 +2,886 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>김해송 포트폴리오</title>
-<meta name="description" content="공연예술 출신 백엔드 개발자 김해송의 포트폴리오. 판결문을 AI 판결과 체험 대본으로 바꾸는 10단계 파이프라인, 익명에서 회원으로의 소유 전환, 대본 생성 모델 선정.">
-<meta name="theme-color" content="#101D39">
+<meta name="description" content="무대에서 온 백엔드 개발자 김해송의 포트폴리오. 판결문 한 건을 AI 판결과 체험 대본으로 바꿔 공개하기까지의 열 단계를 큐시트로 보여 줍니다.">
+<meta name="theme-color" content="#0A0908">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Gasoek+One&family=Lobster&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* 색은 내Law남불 최종 발표 자료에서 가져왔다: 남색 바탕 · 청동 강조 · 종이 · 모래 */
+/* 큐시트: 암전된 무대, 텅스텐 조명, 젤 필터 한 장, 바닥의 스파이크 테이프 */
 :root{
-  --navy:#101D39; --navy-2:#1F3563; --navy-3:#2B4478;
-  --bronze:#BA854B; --bronze-ink:#86581F;
-  --paper:#FAFAFC; --tint:#EEF1F7; --mist:#C9D1E3;
-  --sand:#F4E8D8; --sand-2:#E9D3B6;
-  --ink:var(--navy); --muted:#3D4F75;
-  --display:"Black Han Sans","Apple SD Gothic Neo",sans-serif;
-  --text:"Noto Sans KR","Apple SD Gothic Neo",sans-serif;
-  --s-sm:.875rem; --s-md:1.0625rem; --s-st:clamp(1.375rem,1.9vw,1.75rem); --s-h2:clamp(2.125rem,4.4vw,3.75rem); --s-xl:clamp(3rem,7.4vw,7.5rem);
-  --m:clamp(20px,4vw,56px); --max:1200px; --gap:clamp(96px,11vw,160px);
-  --ease-out:cubic-bezier(.22,1,.36,1); --ease-io:cubic-bezier(.76,0,.24,1);
-  color-scheme:light;
+  --black:#0A0908; --tung:#FFE2B0; --paper:#ECE5D5; --ink:#15130F; --spike:#FF4A1C; --dim:#8d8577;
+  --display:"Gasoek One","Black Han Sans","Noto Sans CJK KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --text:"IBM Plex Sans KR","Noto Sans CJK KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --m:clamp(16px,3vw,44px);
+  --ease:cubic-bezier(.22,1,.36,1);
 }
 *{box-sizing:border-box;margin:0}
-html{scroll-behavior:smooth;overflow-x:clip}
-body{-webkit-font-smoothing:antialiased;font:400 var(--s-md)/1.65 var(--text);background:var(--paper);color:var(--ink);word-break:keep-all;overflow-x:clip}
-img,video{display:block;max-width:100%;height:auto}
-a{color:inherit;text-underline-offset:.2em;text-decoration-thickness:2px}
-:focus-visible{outline:3px solid var(--bronze);outline-offset:3px}
-::selection{background:var(--bronze);color:var(--navy)}
-h1,h2,h3{font-family:var(--display);font-weight:400;letter-spacing:-.02em;line-height:1.04;text-wrap:balance}
-h2{font-size:var(--s-h2);max-width:12em}
+html{scroll-behavior:smooth}
+body{font:400 14px/1.6 var(--text);background:var(--black);color:var(--tung);word-break:keep-all;overflow-x:clip;-webkit-font-smoothing:antialiased;font-synthesis:none}
+a{color:inherit;text-underline-offset:.22em}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--spike);outline-offset:3px}
+::selection{background:var(--spike);color:var(--black)}
+h1,h2,h3,.d{font-family:var(--display);font-weight:900;letter-spacing:-.02em;line-height:1.06;text-wrap:balance}
 p{text-wrap:pretty}
-.mk{position:relative;white-space:nowrap;isolation:isolate}
-.mk::after{content:"";position:absolute;left:-.04em;right:-.04em;bottom:.04em;height:.3em;background:var(--bronze);z-index:-1;transform-origin:0 50%}
-.js .mk::after{transform:scaleX(0)}
-.js .in .mk::after{transform:scaleX(1);transition:transform .9s var(--ease-out) .45s}
-h3{font-size:var(--s-st);line-height:1.2}
-p{max-width:40em}
-.sm{font-size:var(--s-sm)}
-.mut{color:var(--muted)}
-.navy{background:var(--navy);color:var(--paper)}
-.navy .mut{color:var(--mist)}
-p:not(.result-line):not(.legend) > b:first-child{display:block;margin-bottom:6px}
-.sand{background:var(--sand)}
-.gut{padding-left:max(var(--m),calc((100% - var(--max)) / 2),env(safe-area-inset-left,0px));padding-right:max(var(--m),calc((100% - var(--max)) / 2),env(safe-area-inset-right,0px))}
-.btn{display:inline-flex;align-items:center;min-height:52px;padding:0 28px;background:var(--bronze);color:var(--navy);font:400 var(--s-md)/1 var(--display);text-decoration:none;border:0;cursor:pointer;transition:transform .14s var(--ease-out),background-color .18s ease}
-.btn:hover{background:var(--navy);color:var(--paper)}
+.note{font-size:12.5px;line-height:1.6}
+.bl{mix-blend-mode:difference}
+
+#stage{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block}
+.nogl #stage{display:none}
+
+/* 상단: 공연 경과와 현재 큐 */
+.hud{position:fixed;z-index:10;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:var(--m) var(--m) 0;font-size:12.5px;line-height:1.5;color:#fff;mix-blend-mode:difference;pointer-events:none}
+.hud > *{pointer-events:auto}
+.hud .wm{font:900 16px/1 var(--display);text-decoration:none;display:block;margin-bottom:8px}
+.hud .run{font-variant-numeric:tabular-nums}
+.hud nav{display:flex;gap:18px}
+.hud nav a{text-decoration:none;font-weight:500;padding:4px 0}
+.hud nav a:hover{text-decoration:underline}
+
+.scene{position:relative;z-index:1;padding-inline:var(--m)}
+
+/* Q0 하우스 오픈 */
+.hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:var(--m)}
+.hero-in{display:grid;gap:14px;max-width:440px}
+.hero h1{font-size:clamp(26px,3vw,44px)}
+.hero .links{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;margin-top:6px}
+.btn{display:inline-flex;align-items:center;min-height:46px;padding:0 22px;background:var(--spike);color:var(--black);font:900 15px/1 var(--display);text-decoration:none;border:0;cursor:pointer;transition:transform .14s var(--ease)}
+.btn:hover{background:var(--tung)}
 .btn:active{transform:scale(.97)}
-.navy .btn:hover{background:var(--paper);color:var(--navy)}
+.hero .tip{position:absolute;right:var(--m);bottom:var(--m);text-align:right;max-width:200px}
 
-/* 상단 막대 */
-.bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:24px;min-height:56px;background:var(--navy);color:var(--paper);padding-top:env(safe-area-inset-top,0px)}
-.bar .wm{font:400 var(--s-md)/1 var(--display);text-decoration:none}
-.bar nav{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
-.bar nav a{padding:10px 12px;font-size:var(--s-sm);font-weight:500;text-decoration:none;color:var(--mist);white-space:nowrap;transition:color .16s ease}
-.bar nav a:hover{color:var(--paper)}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--navy);z-index:60}
+/* 무대에서 배운 기준 */
+.rules{padding-block:22vh 26vh}
+.rules h2{font-size:clamp(26px,3vw,44px);max-width:12em;margin-bottom:8vh}
+.pairs{list-style:none;padding:0;display:grid;gap:0;border-top:1px solid currentColor}
+.pairs li{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,5fr) minmax(0,4fr);gap:8px clamp(16px,3vw,48px);align-items:center;padding:22px 0;border-bottom:1px solid currentColor}
+.pairs .a,.pairs .b{font:900 clamp(20px,2.3vw,34px)/1.15 var(--display);letter-spacing:-.02em}
+.pairs .a{opacity:.55}
 
-/* 1. 첫 화면: 멀리서 비추는 조명 아래 이름 */
-.hero{position:relative;overflow:hidden;isolation:isolate;min-height:min(calc(100svh - 56px),820px);display:grid;grid-template-columns:minmax(0,34rem);align-items:center;padding-block:clamp(56px,7vw,96px)}
-.hero-txt{display:grid;gap:28px;align-content:center;position:relative;z-index:1}
-.hero .name{font:400 clamp(3.5rem,8.4vw,6rem)/.92 var(--display);letter-spacing:-.03em}
-.hero h1{font-size:var(--s-h2);line-height:1.08}
-.hero .lead{max-width:30em;color:var(--mist)}
-.hero .links{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
-.hero .links a:not(.btn){font-weight:500}
-.stage{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
-.stage.m{display:none}
-.st-cable{stroke:var(--mist);stroke-opacity:.35;stroke-width:1.5}
-.st-ray{fill:none;stroke:var(--paper);stroke-opacity:.12;stroke-width:1}
-.st-beam{transform-box:view-box;transform-origin:82% 6%}
-.st-beam{animation:st-beam 1.4s var(--ease-out) .35s backwards,st-breathe 7s ease-in-out 2s infinite alternate}
-.st-ray{animation:st-fade 1.2s ease .9s backwards}
-.st-lamp{animation:st-on .7s ease .1s backwards}
-.hero .name,.hero h1,.hero .lead{animation:st-lit 1s ease 1s backwards}
-@keyframes st-beam{from{opacity:0;transform:scale(.25)}to{opacity:1;transform:none}}
-@keyframes st-breathe{from{opacity:.85}to{opacity:1}}
-@keyframes st-fade{from{opacity:0}to{opacity:1}}
-@keyframes st-on{0%{opacity:0}25%{opacity:1}38%{opacity:.35}55%,100%{opacity:1}}
-@keyframes st-lit{from{color:var(--navy-3)}}
+/* 열 개의 큐 */
+.cue-intro{padding-block:10vh 12vh;max-width:520px;display:grid;gap:16px}
+.cue-intro h2{font-size:clamp(30px,4.2vw,64px)}
+.cues{list-style:none;padding:0}
+.cue-h{appearance:none;background:none;border:0;padding:0;text-align:left;cursor:pointer;display:grid;grid-template-columns:3.4em minmax(0,1fr);gap:8px;align-items:baseline;width:100%;min-height:27px;font-size:12.5px}
+.cue-h i{font-style:normal;font-variant-numeric:tabular-nums}
+.cue-h b{font-weight:500}
+.cue-d h3{font-size:clamp(26px,3.1vw,46px);margin-bottom:12px}
+.cue-d .cd{font-size:15px;max-width:30em}
+.cue-d .cs{margin-top:8px;max-width:38em;opacity:.72}
+.cue-d .co{margin-top:14px;padding-top:12px;border-top:1px solid currentColor;font:400 11.5px/1.6 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;max-height:11.5em;overflow:auto}
+.cue-d .co em{display:block;font:500 11.5px/1.5 var(--text);font-style:normal;opacity:.7;margin-bottom:4px}
+.approve{display:grid;gap:14px;justify-items:start;max-width:440px}
+.approve h3{font-size:clamp(26px,3.1vw,46px)}
+.go{width:132px;height:132px;border-radius:50%;border:0;background:var(--spike);color:var(--black);font:900 40px/1 var(--display);cursor:pointer;transition:transform .16s var(--ease),background-color .2s}
+.go:hover{background:var(--tung)}
+.go:active{transform:scale(.94)}
+.go.open{background:var(--tung)}
+.go.open:hover{background:var(--spike)}
+.tally{list-style:none;padding:0;display:grid;grid-template-columns:repeat(3,auto);gap:6px 28px;justify-content:start}
+.tally b{display:block;font:900 clamp(28px,3vw,44px)/1 var(--display);font-variant-numeric:tabular-nums}
 
-/* 소개 · 기술 */
-.about{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(40px,6vw,96px);padding-block:clamp(72px,9vw,140px);background:var(--tint)}
-.intro{display:grid;gap:1.1em;align-content:start}
-.intro .say{font:500 var(--s-st)/1.5 var(--text);max-width:26em;color:var(--ink)}
-.intro p{color:var(--muted)}
-.intro b{color:var(--ink)}
-.stack-list h2{font-size:var(--s-st);margin-bottom:20px}
-.rows{list-style:none;padding:0;display:grid;border-top:2px solid var(--navy)}
-.rows li{display:grid;grid-template-columns:7em minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid var(--sand-2);align-items:baseline}
-.rows .v{font-size:var(--s-sm);color:var(--muted)}
-.rows .k{font-weight:500}
+/* 스크립트가 없으면 큐 열 개를 그냥 차례로 보여 준다 */
+html:not(.js) .cues li{padding:18px 0;border-top:1px solid #3a352d}
+html:not(.js) .approve{padding:32px 0 12vh}
+.js .cue-track{height:calc(12.4 * 52vh + 100vh)}
+.js .cue-stage{position:sticky;top:0;height:100vh;height:100svh;padding:calc(var(--m) + 64px) 0 var(--m);overflow:hidden}
+.js .cues{width:min(340px,42vw)}
+.js .cues li .cue-h{opacity:.42;transition:opacity .2s}
+.js .cues li .cue-h:hover{opacity:.8}
+.js .cues li.on .cue-h{opacity:1}
+.js .cues li.on .cue-h i::before{content:"";display:inline-block;width:7px;height:7px;margin-right:6px;background:var(--spike);vertical-align:.08em;mix-blend-mode:normal}
+.js .cue-d{position:absolute;left:0;bottom:var(--m);width:min(480px,100%);display:none}
+.js .cues li.on .cue-d{display:block}
+.js .approve{position:absolute;left:0;bottom:var(--m);display:none}
+.js .cue-stage.ap .approve{display:grid}
+.js .cue-stage.ap .cues li.on .cue-d{display:none}
+.js .cue-stage .scroll-tip{position:absolute;right:0;bottom:var(--m);text-align:right}
 
-/* 2. 작업 목록: 한 줄에 프로젝트 하나와 그 문제 */
-.work{padding-block:var(--gap)}
-.names{list-style:none;padding:0;border-top:2px solid var(--navy)}
-.names li{border-bottom:1px solid var(--sand-2)}
-.names a{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr) 24px;grid-template-areas:"nm sub ar" "nm q ar";gap:4px clamp(20px,3vw,48px);align-items:center;padding:clamp(22px,2.6vw,32px) 0;text-decoration:none;color:var(--ink)}
-.names b{grid-area:nm;font:400 clamp(2.25rem,4.6vw,3.75rem)/1 var(--display);letter-spacing:-.03em;transition:transform .35s var(--ease-out)}
-.nm-sub{grid-area:sub;font-size:var(--s-sm);color:var(--muted);align-self:end}
-.nm-q{grid-area:q;font-weight:500;align-self:start}
-.names .ar{grid-area:ar;color:var(--bronze);transition:transform .35s var(--ease-out)}
-.names a:hover b,.names a:focus-visible b{transform:translateX(10px)}
-.names a:hover .ar,.names a:focus-visible .ar{transform:translateX(6px)}
-
-/* 액자: 서비스 화면은 16:9로 위쪽 메뉴를 걷어 내고 같은 그림자로 */
-.shot{margin:0;display:grid;gap:12px}
-.shot img,.shot video{width:100%;aspect-ratio:16/9;object-fit:cover;object-position:50% 100%;background:var(--navy-2);outline:1px solid oklch(0 0 0 / .1);outline-offset:-1px;box-shadow:0 1px 2px rgba(16,29,57,.08),0 24px 48px -20px rgba(16,29,57,.45)}
-.navy .shot img{outline-color:oklch(1 0 0 / .1);box-shadow:0 24px 48px -16px rgba(0,0,0,.55)}
-.shot figcaption{font-size:var(--s-sm);color:var(--muted)}
-.navy .shot figcaption{color:var(--mist)}
-
-/* 3. 열 단계: 고정된 화면 조각, 바뀌는 상태 */
-.pipe{padding-block:var(--gap)}
-.pipe-head{margin-bottom:clamp(48px,6vw,96px)}
-/* 열 단계: 한 줄로 내려오는 박스, 번갈아 기울이고 설명은 좌우로 번갈아 박스 밖에 (최종 발표 형태) */
-
-
-
-
-.pl .pbox code{font:600 .975rem/1 ui-monospace,Menlo,Consolas,monospace;color:var(--sand-2)}
-.pl .pbox b{font:400 1.35rem/1.2 var(--display)}
-
-
-
-.pl{--pg:clamp(30px,3.6vw,48px);list-style:none;padding:0;display:flex;flex-direction:column;gap:var(--pg)}
-.pl li{display:grid;grid-template-columns:minmax(0,1fr) minmax(208px,304px) minmax(0,1fr);align-items:center;gap:clamp(16px,2.4vw,36px)}
-.pmid{grid-column:2;position:relative}
-.pl li + li .pmid::before{content:"";position:absolute;left:50%;top:calc(-1 * var(--pg) + 4px);width:12px;height:calc(var(--pg) - 8px);margin-left:-6px;background:linear-gradient(#C9D1E3,#C9D1E3) center top/1.5px calc(100% - 5px) no-repeat,url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 0L6 7L11 0z' fill='%23C9D1E3'/%3E%3C/svg%3E") center bottom/12px 8px no-repeat;opacity:.85}
-.pl li + li .pmid::after{content:"";position:absolute;left:50%;top:calc(-.5 * var(--pg) - 5px);width:9px;height:9px;margin-left:-4.5px;background:var(--bronze);rotate:45deg}
-.pl .pbox{background:var(--navy-2);border-left:5px solid var(--bronze);padding:16px 20px;display:grid;gap:6px;rotate:var(--rot,0deg);box-shadow:0 8px 18px rgba(0,0,0,.3)}
-.pl li.hot .pbox{background:var(--navy-3)}
-.pl li.gate .pbox{background:var(--paper);color:var(--navy);border-left-color:var(--bronze);text-align:center}
-.pdesc{grid-column:1;grid-row:1;justify-self:end;text-align:right;font-size:var(--s-md);max-width:34em;line-height:1.55}
-.pside{grid-column:3;grid-row:1;justify-self:start;max-width:min(100%,30em);margin:0;font-size:var(--s-sm);line-height:1.6;color:var(--mist)}
-button.pbox{appearance:none;font:inherit;color:inherit;text-align:left;border:0;border-left:5px solid var(--bronze);width:100%;cursor:pointer;position:relative;touch-action:manipulation;transition:translate .16s var(--ease-out),box-shadow .16s ease}
-button.pbox:hover{translate:0 -2px;box-shadow:0 12px 22px rgba(0,0,0,.35)}
-button.pbox:focus-visible{outline:2px solid var(--bronze);outline-offset:3px}
-.pt{position:absolute;right:16px;top:50%;width:14px;height:14px;margin-top:-7px;background:linear-gradient(var(--bronze),var(--bronze)) center/100% 2px no-repeat,linear-gradient(var(--bronze),var(--bronze)) center/2px 100% no-repeat}
-.pdlg{margin:auto;border:0;border-left:5px solid var(--bronze);padding:0;background:var(--navy-2);color:var(--paper);width:min(560px,calc(100vw - 32px));max-height:min(80vh,640px);box-shadow:0 24px 48px -12px rgba(0,0,0,.6);animation:pdlg-in .18s ease}
-.pdlg::backdrop{background:rgba(8,14,30,.72)}
-.pdlg-in{padding:20px 24px 24px;display:grid;gap:16px}
-.pdlg-h{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
-.pdlg-h code{display:block;font:600 .975rem/1 ui-monospace,Menlo,Consolas,monospace;color:var(--sand-2);margin-bottom:6px}
-.pdlg-h b{font:400 1.35rem/1.2 var(--display)}
-.pdlg-x{appearance:none;border:0;background:none;color:var(--paper);font-size:1.75rem;line-height:1;width:44px;height:44px;margin:-8px -10px 0 0;cursor:pointer;touch-action:manipulation}
-.pdlg-x:hover{color:var(--bronze)}
-.pdlg-x:focus-visible{outline:2px solid var(--bronze);outline-offset:-2px}
-.pdlg-body{display:grid;gap:3px;font:400 .8125rem/1.5 ui-monospace,Menlo,Consolas,monospace;overflow:auto}
-.pdlg-body em{font:500 .75rem/1.3 var(--text);font-style:normal;color:var(--bronze);margin-bottom:6px}
-.pdlg-body span{white-space:pre-wrap;overflow-wrap:anywhere}
-html.lock{overflow:hidden}
-@keyframes pdlg-in{from{opacity:0}to{opacity:1}}
-.pdesc small{display:block;margin-top:8px;font-size:var(--s-sm);line-height:1.6;color:var(--mist)}
-.pl-note b::before{content:"";display:inline-block;width:8px;height:8px;margin-right:8px;background:var(--bronze);rotate:45deg;vertical-align:.05em}
-.pl-note{margin-top:28px;font-size:var(--s-sm);max-width:70ch}
-.pipe-head{display:grid;gap:20px;max-width:46ch}
-.result-line{margin-top:clamp(48px,6vw,80px);font-size:var(--s-st);line-height:1.45;max-width:34ch}
-.result-line b{color:var(--bronze);font-weight:500}
-
-/* 4. 사례: 정사각 판, 칸 탭 */
-.case{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(32px,5vw,72px);align-items:center;padding-block:var(--gap)}
-.case{position:relative;overflow:hidden;isolation:isolate;grid-template-columns:minmax(0,36rem)}
-.deco{position:absolute;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;-webkit-mask-image:linear-gradient(90deg,transparent 8%,rgba(0,0,0,.3) 38%,#000 72%);mask-image:linear-gradient(90deg,transparent 8%,rgba(0,0,0,.3) 38%,#000 72%)}
-.deco path{vector-effect:non-scaling-stroke}.deco .cv{fill:none;stroke:var(--navy);stroke-opacity:.16;stroke-width:1.5}.deco .cb{fill:none;stroke:var(--bronze);stroke-width:2.2}
-.case .side{display:flex;flex-direction:column;gap:32px;min-width:0}
-.case h2{margin-bottom:28px}
-.case .body{display:grid;gap:20px;max-width:40ch}
-.case .meta{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.case .meta div{min-height:72px;display:flex;flex-direction:column;justify-content:center;padding:10px 18px;background:var(--navy);color:var(--paper)}
-.case .meta div + div{background:var(--navy-2)}
-.case .meta b{font-family:var(--display);font-weight:400;font-size:var(--s-st);line-height:1}
-.case .meta span{font-size:var(--s-sm)}
-
-/* 모델 비교 */
-.models{padding-block:var(--gap)}
-.models-in{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(28px,5vw,80px);align-items:start}
-.models-in > *{min-width:0}.models-in .txt{display:grid;gap:20px}
-.tbl-wrap{overflow-x:auto;min-width:0}
-table{border-collapse:collapse;width:100%;min-width:560px;font-size:var(--s-md)}
-th,td{text-align:left;vertical-align:top;padding:16px 14px;border-bottom:1px solid var(--sand-2)}
-th{font-size:var(--s-sm);font-weight:700;color:var(--paper);background:var(--navy);border-bottom:0}
-td:first-child{font-weight:700;white-space:nowrap}
-tr.pick td{background:var(--navy);color:var(--paper);border-bottom-color:var(--navy)}
-tr.pick td:last-child{color:var(--bronze)}
-.models .note{margin-top:28px;max-width:52ch}
-
-/* 대본 파이프라인: 두 끝 줄 */
-.script{padding-block:var(--gap);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,80px)}
-.script .txt{display:grid;gap:20px;align-content:start;max-width:46ch}
-.script .list{max-width:520px}
-.script h3{font-size:var(--s-md);font-family:var(--text);font-weight:500;color:var(--mist);margin:40px 0 12px}
-.script h3:first-child{margin-top:0}
-.duo{list-style:none;padding:0;display:grid}
-.duo li{display:grid;grid-template-columns:16px minmax(0,1fr) auto;gap:8px 12px;align-items:baseline;min-height:38px;padding:4px 0}
-.duo li::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--navy);align-self:center}
-.duo li.tm::before{background:var(--mist)}
-.duo .v{font-size:var(--s-sm);color:var(--mist);text-align:right}
-.dep{list-style:none;padding:0;display:grid;max-width:520px}
-.dep li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 16px;align-items:center;padding:10px 0;border-top:1px solid rgba(255,255,255,.1)}
-.dep li:last-child{border-bottom:1px solid rgba(255,255,255,.1)}
-.dep .u{display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end}
-.dep .u i{font-style:normal;font-size:var(--s-sm);background:var(--navy-2);padding:2px 8px}
-.dep .blk .k::before{content:"";display:inline-block;width:8px;height:8px;margin-right:8px;background:var(--bronze);rotate:45deg;vertical-align:.05em}
-.script .legend{margin-top:12px;font-size:var(--s-sm);max-width:520px}
-.dep-btn{appearance:none;font:inherit;color:inherit;text-align:left;border:0;border-left:5px solid var(--bronze);background:var(--navy-2);padding:16px 48px 16px 20px;display:grid;gap:6px;width:100%;max-width:520px;cursor:pointer;position:relative;touch-action:manipulation;box-shadow:0 8px 18px rgba(0,0,0,.3);transition:translate .16s var(--ease-out),box-shadow .16s ease}
-.dep-btn:hover{translate:0 -2px;box-shadow:0 12px 22px rgba(0,0,0,.35)}
-.dep-btn:focus-visible{outline:2px solid var(--bronze);outline-offset:3px}
-.dep-btn code{font:600 .975rem/1 ui-monospace,Menlo,Consolas,monospace;color:var(--sand-2)}
-.dep-btn b{font:400 1.2rem/1.3 var(--display)}
-.dep-btn span{font-size:var(--s-sm);color:var(--mist)}
-.pdlg-body .dep{font:400 .9375rem/1.4 var(--text)}
-.pdlg-body .dep .u i{background:var(--navy)}
-.pdlg-body .legend{font:400 var(--s-sm)/1.5 var(--text);margin-top:12px}
-@media(max-width:520px){.dep li{grid-template-columns:1fr}.dep .u{justify-content:flex-start}}
-
-/* 화면 쪽: 서명 */
-.sign{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(32px,5vw,72px);align-items:center;padding-block:var(--gap)}
-.sign .txt{display:grid;gap:20px;align-content:center}
-.sign .txt{order:0}
-.sg-demo{min-width:0;display:grid;gap:12px}
-.sg-demo form{display:grid;gap:12px;max-width:520px}
-.sg-demo label{font-size:var(--s-sm);font-weight:700}
-.sg-demo input{font-family:inherit;font-weight:500;font-size:var(--s-md);line-height:1.4;padding:12px 14px;border:2px solid var(--navy);border-radius:0;background:var(--paper);color:var(--navy);width:100%;box-sizing:border-box}
-.sg-demo input::placeholder{color:#8A93A8;opacity:1}
-.sg-demo input:disabled{background:var(--tint,#EEF1F7)}
-.sg-line{position:relative;height:112px;border-bottom:2px solid var(--navy);display:flex;align-items:flex-end;justify-content:center;transition:border-color .3s var(--ease-out)}
-.sg-line svg{display:block;max-width:100%;overflow:visible;color:var(--navy);margin-bottom:6px}
+/* 1막: 하우스가 끝나고 막이 오른 무대. 조명이 더 켜져 있다 */
+.paper{position:relative;z-index:2;background:transparent;color:var(--tung);padding:clamp(72px,12vh,140px) var(--m)}
+/* 보고서도 무대 위: 바탕은 조명 켜진 무대 벽(캔버스)이고, 종이처럼 밀려 올라오지 않는다 */
+.js .paper{background:transparent}
+.nogl .paper{background:transparent}
+.paper{padding-top:0}
+.paper .top{padding-top:clamp(96px,15vh,160px)}
+/* 암전: 장면이 바뀌는 경계에서 화면 전체가 꺼졌다 켜진다 */
+/* 보고서는 암전 뒤에 맨 위에 맞춰 선 채로 밝아지고, 다 밝아진 다음에야 스크롤된다 */
+.js .paper-wrap{position:relative;z-index:2;margin-top:-100vh;margin-top:-100svh}
+.js .paper-wrap{pointer-events:none}
+.js .paper{position:sticky;top:0;pointer-events:auto;height:100vh;height:100svh;overflow:hidden;display:flex;flex-direction:column;padding:calc(var(--m) + 70px) var(--m) var(--m)}
+.js .paper .top{padding-top:0;margin-bottom:0;align-items:end;justify-content:flex-start;gap:8px 36px;flex-wrap:wrap}
+.js .slides{position:relative;flex:1;min-height:0;margin-top:max(12px,calc(52vh - 150px))}
+/* 제목은 벽에 크게 적혀 조명을 받는다. 화면 읽기용 제목만 남긴다 */
+.js:not(.nogl) .slide h2{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.js .case.slide{grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-content:start;gap:14px clamp(24px,5vw,80px)}
+.js .case.slide dl{font-size:12.5px;grid-template-columns:4.2em minmax(0,1fr);gap:10px 12px;max-width:40em}
+.js .case.slide details{grid-column:1;font-size:12.5px}
+.js .case.slide figure{grid-column:2;grid-row:1 / span 3;margin:0;display:grid;gap:8px;justify-self:end;width:min(100%,calc((48vh - 120px) * 16 / 9))}
+.js .case.slide figure img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;outline:1px solid rgba(255,226,176,.3);outline-offset:-1px}
+.js .case.slide figcaption{font-size:12.5px;line-height:1.5}
+.js .sign.slide{grid-template-columns:minmax(0,520px);align-content:start}
+.js .sign.slide .why{font-size:12.5px;margin-bottom:12px}
+.js .sign.slide .sg-line{height:70px}
+.js .paper .top{border-bottom:0}
+.js .slides{margin-top:max(12px,calc(56vh - 150px))}
+.js .slide{position:absolute;inset:0;overflow-y:auto;align-content:start;opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .3s;margin:0;padding:18px 0 0;border:0}
+.js .slide.on{opacity:1;visibility:visible;transition:opacity .45s .12s}
+.js .paper.pre .slide{visibility:hidden}
+.rtabs{display:none}
+.js .rtabs{display:flex;gap:4px 16px;flex-wrap:wrap}
+.rtabs button{all:unset;cursor:pointer;opacity:.45;font-weight:600;padding:2px 0}
+.rtabs button:hover{opacity:.8}
+.rtabs button.on{opacity:1;box-shadow:0 2px 0 var(--spike)}
+.rtabs button:focus-visible{outline:2px solid var(--spike);outline-offset:3px}
+.js .paper.pre{pointer-events:none}
+.js .paper.pre > *{visibility:hidden}
+.js .cue-stage.gone{visibility:hidden}
+.js .pin-room{height:485vh}
+.js .cred-wrap{position:relative;z-index:3;margin-top:-100vh;margin-top:-100svh;pointer-events:none}
+.js .credits{position:sticky;top:0;pointer-events:auto;padding-block:calc(var(--m) + 96px) 12vh;min-height:100vh;min-height:100svh}
+.js .credits.pre{pointer-events:none;visibility:hidden}
+.js .pin-room2{height:210vh}
+.js .credits{height:100vh;height:100svh;overflow-y:auto}
+/* 화면은 그대로 두고 글자만 꺼졌다 켜지는 전환: 하우스 오픈 → 기준, 크레딧 → 커튼콜 */
+.js .hero-wrap{height:190vh}
+.js .hero{position:sticky;top:0;height:100vh;height:100svh;min-height:0}
+.js .rules-wrap{position:relative;margin-top:-190vh;pointer-events:none}
+.js .rules{position:sticky;top:0;height:100vh;height:100svh;padding-block:0;overflow:hidden}
+/* 기준은 한 번에 한 줄: 스크롤하면 지금 줄이 왼쪽으로 나가고 다음 줄이 오른쪽에서 들어온다 */
+.js .rules-foot{position:absolute;left:var(--m);bottom:var(--m);max-width:min(30em,calc(100% - 2 * var(--m)));display:grid;gap:10px}
+.js .rules h2{margin:0;max-width:13em}
+.js .pipe-intro{position:absolute;left:var(--m);right:var(--m);top:calc(var(--m) + 96px);bottom:var(--m);padding:0;max-width:none;display:flex;flex-direction:column;justify-content:center;gap:18px;will-change:transform}
+/* 내Law남불 장은 아래 제목이 빠진 만큼 한 줄 위로 */
+.js .pairs + .pipe-intro{padding-bottom:calc(clamp(34px,6.4vw,104px) * 2.1)}
+.js .pipe-intro h2{font-size:clamp(34px,6.4vw,104px);max-width:11em;margin:0}
+.js .pipe-intro p:not(.note){max-width:36em;font-size:15px}
+.js .pairs{position:absolute;left:var(--m);right:var(--m);top:calc(var(--m) + 96px);bottom:calc(var(--m) + 120px);border:0;display:block}
+.js .pairs li{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:6px;border:0;padding:0;will-change:transform}
+.js .pairs .a,.js .pairs .b{font-size:clamp(30px,5.6vw,88px);line-height:1.08}
+.js .pairs .note{margin-top:18px;max-width:36em;font-size:14px}
+.js .rules-room{height:450vh}
+.js .contact-room{height:90vh}
+.js .contact-wrap{position:relative;z-index:4;margin-top:-190vh;pointer-events:none}
+.js .contact{position:sticky;top:0}
+.js .contact-wrap .anchor{top:95vh}
+.js .anchor{position:absolute;top:70vh}
+/* 조명기와 파이프는 글자 위, 암전과 상단 메뉴 아래 */
+#lamp,#pipe{position:fixed;z-index:7;pointer-events:none;display:none}
+#lamp{pointer-events:auto;cursor:grab;touch-action:none}
+#lamp.drag{cursor:grabbing}
+.js:not(.nogl) #lamp,.js:not(.nogl) #pipe{display:block}
+#pipe{left:0;right:0;background:linear-gradient(180deg,#26262a 0,#17171a 45%,#08080a 100%)}
+#dark{position:fixed;inset:0;z-index:8;background:#000;opacity:0;pointer-events:none}
+.paper .top{display:flex;justify-content:space-between;gap:16px;border-bottom:2px solid var(--tung);padding-bottom:10px;margin-bottom:clamp(40px,8vh,96px)}
+.shots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2vw,28px);margin-bottom:clamp(56px,10vh,120px)}
+.shots figure{margin:0;display:grid;gap:8px;align-content:start}
+.shots img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;outline:1px solid rgba(21,19,15,.25);outline-offset:-1px}
+.shots figcaption{font-size:12.5px;line-height:1.5}
+.case{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:20px clamp(24px,5vw,80px);padding-bottom:clamp(48px,9vh,110px);margin-bottom:clamp(48px,9vh,110px);border-bottom:1px solid rgba(255,226,176,.28)}
+.case h2{font-size:clamp(34px,5.6vw,92px);line-height:1}
+.case dl{display:grid;grid-template-columns:3.2em minmax(0,1fr);gap:14px 14px;align-content:start;font-size:15px;max-width:36em}
+.case dt{font-size:12.5px;font-weight:600;padding-top:.2em}
+.case dd{margin:0}
+.case details{grid-column:2;font-size:13px;max-width:42em}
+.case summary{cursor:pointer;font-weight:600;padding:6px 0;width:fit-content}
+.case details > *:not(summary){margin-top:10px}
+.case table{border-collapse:collapse;width:100%}
+.case th,.case td{text-align:left;vertical-align:top;padding:7px 10px 7px 0;border-bottom:1px solid rgba(255,226,176,.28)}
+.case th{font-size:12px}
+.case tr.pick td{font-weight:600}
+.case tr.pick td:last-child{color:var(--spike)}
+.dep{list-style:none;padding:0;display:grid}
+.dep li{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px solid rgba(255,226,176,.28)}
+.dep .blk span:first-child::before,.sq{content:"";display:inline-block;width:8px;height:8px;margin-right:7px;background:var(--spike);vertical-align:.02em}
+p .sq{margin-left:4px}
+.sign{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:20px clamp(24px,5vw,80px);align-items:center}
+.sign h2{font-size:clamp(34px,5.6vw,92px);line-height:1}
+.sign .why{font-size:15px;max-width:520px;margin-bottom:22px}
+.sg-demo form{display:grid;gap:10px;max-width:520px}
+.sg-demo label{font-size:12.5px;font-weight:600}
+.sg-demo input{font:500 16px/1.4 var(--text);padding:11px 12px;border:2px solid var(--tung);border-radius:0;background:transparent;color:var(--tung);width:100%}
+.sg-demo input::placeholder{color:var(--dim);opacity:1}
+.sg-line{position:relative;height:108px;border-bottom:2px solid var(--tung);display:flex;align-items:flex-end;justify-content:center;transition:border-color .3s}
+.sg-line svg{display:block;max-width:100%;overflow:visible;color:var(--tung);margin-bottom:6px}
 .sg-line path{fill:none;stroke:currentColor;stroke-width:2.6px;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.sg-line svg.pre path{opacity:.4}.sg-line svg.ph path{opacity:.28;stroke:#8A93A8}
-.sg-x{position:absolute;left:0;bottom:8px;font-size:var(--s-sm);color:var(--muted)}
-.sg-row{display:flex;gap:12px;flex-wrap:wrap}
-.sg-demo button{min-height:48px;padding:0 22px;border:0;font:400 1.125rem/1 var(--display);cursor:pointer;touch-action:manipulation;transition:transform .16s var(--ease-out),background-color .16s ease}
+.sg-line svg.pre path{opacity:.4}.sg-line svg.ph path{opacity:.25}
+.sg-x{position:absolute;left:0;bottom:8px;font-size:12.5px;color:var(--dim)}
+.sg-row{display:flex;gap:10px;flex-wrap:wrap}
+.sg-demo button{min-height:46px;padding:0 20px;border:0;font:900 15px/1 var(--display);cursor:pointer;transition:transform .16s var(--ease)}
 .sg-demo button:active{transform:scale(.97)}
-.sg-demo button:disabled{opacity:.5;cursor:default}
-.sg-go{background:var(--navy);color:var(--paper)}.sg-go:hover:not(:disabled){background:var(--navy-3)}
-.sg-back{background:var(--paper);color:var(--navy)}
-.sg-msg{margin:0;min-height:1.6em;font-size:var(--s-md);color:var(--muted)}
-.sg-demo.done .sg-line{border-color:var(--bronze)}
-.sg-demo.done .sg-msg{color:#86581F;font-weight:700}
-.loop{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:var(--s-sm)}
-.loop span{background:var(--navy-2);border-left:3px solid var(--bronze);padding:6px 12px}
-.loop i{font-style:normal;color:var(--bronze)}
-.stats{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:clamp(40px,5vw,72px)}
-.stats li{display:grid;gap:8px;background:var(--navy-2);padding:24px 20px}
-.stats b{font:400 clamp(2.25rem,3.6vw,3.25rem)/1 var(--display);color:var(--bronze);font-variant-numeric:tabular-nums}
-.stats span{font-size:var(--s-sm);color:var(--mist)}
-.stagebase{padding-block:var(--gap);display:grid;gap:clamp(28px,4vw,56px)}
-.stagebase h2{font-size:var(--s-h2)}
-.sb-lead{max-width:46ch;margin-top:-12px}
-.pairs{list-style:none;padding:0;display:grid;gap:18px;margin-top:12px}
-.stagebase .pairs{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(20px,3vw,48px);margin-top:0}
-.stagebase .pairs li{border-top:2px solid var(--bronze);padding-top:16px;gap:8px;align-content:start}
-.pairs li{display:grid;gap:4px}.pairs h3{color:var(--bronze-ink)}
+.sg-demo button:disabled{opacity:.45;cursor:default}
+.sg-go{background:var(--tung);color:var(--black)}
+.sg-back{background:transparent;color:var(--tung);box-shadow:inset 0 0 0 2px var(--tung)}
+.sg-msg{min-height:1.6em;font-size:13px;color:var(--dim)}
 
-/* 그 밖의 프로젝트 */
-.others{padding-block:var(--gap);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,6vw,96px)}
-.others > h2{grid-column:1/-1;font-size:var(--s-st)}
-.proj{display:grid;gap:16px;align-content:start}
-.proj .ttl{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px}
-.proj .ttl h3{font-size:var(--s-h2);line-height:1}
-.proj .ttl p{font-size:var(--s-sm);color:var(--muted)}
-.prs{list-style:none;padding:0;display:grid;gap:22px}
-.prs li{display:grid;gap:4px}
-.prs li > b{font-size:var(--s-md)}
+/* 크레딧 */
+.credits{padding-block:24vh}
+.credits h2{font-size:clamp(26px,3vw,44px);margin-bottom:6vh}
+.roll{list-style:none;padding:0;display:grid;border-top:1px solid currentColor;max-width:980px}
+.roll li{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,9fr);gap:6px clamp(16px,3vw,48px);padding:18px 0;border-bottom:1px solid currentColor;align-items:center}
+.kinds{display:grid;grid-template-columns:6.5em minmax(0,1fr);gap:6px 14px;margin:0}
+.kinds dt{font-size:12.5px;opacity:.72;padding-top:.1em}
+.kinds dd{margin:0}
+.roll .k{font:900 clamp(20px,2.3vw,34px)/1.1 var(--display)}
+.roll .k small{display:block;font:400 12.5px/1.5 var(--text);margin-top:6px;opacity:.72}
 
-/* 회고 편지 */
-.letter-ground{padding-block:var(--gap)}
-.letter{max-width:640px;margin-inline:auto;background:var(--paper);color:var(--navy);padding:clamp(28px,5vw,60px);display:grid;gap:1.2em}
-.letter .mk{background:var(--sand-2);padding:0 .2em}
-.letter .sign-off{font-family:var(--display);font-size:var(--s-st);margin-top:.6em}
-.edu{list-style:none;padding:0;display:grid;gap:10px;margin-top:1em}
-.edu li{display:grid;grid-template-columns:4.5em minmax(0,1fr);gap:12px}
-.edu li span:first-child{color:var(--muted);font-size:var(--s-sm);padding-top:.15em}
-
-/* 연락 */
-.contact{padding-block:200px 160px}
-.contact-in{max-width:560px}
-.contact .prompt{font-family:var(--text);letter-spacing:0;font-size:var(--s-st);font-weight:500;line-height:1.35;margin-bottom:28px}
-.contact .prompt span{display:block;color:var(--muted)}
+/* 커튼콜 */
+.contact{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding-block:30vh var(--m)}
+.contact-in{max-width:520px;display:grid;gap:16px}
+.contact h2{font-size:clamp(26px,3vw,44px)}
 .field{position:relative}
-.field textarea{width:100%;min-height:64px;height:64px;resize:none;border:0;background:var(--tint);font:inherit;padding:19px 64px 19px 20px;color:var(--ink)}
-.field textarea:focus{outline:2px solid var(--bronze);outline-offset:-2px}
-.field button{position:absolute;right:10px;top:10px;width:44px;height:44px;border-radius:50%;border:0;background:var(--navy);color:var(--paper);cursor:pointer;display:grid;place-items:center;transition:transform .14s var(--ease-out),background-color .18s ease}
-.field button:hover{background:var(--bronze);color:var(--navy)}
-.field button:active{transform:scale(.92)}
-.contact .after{font-size:var(--s-sm);color:var(--muted);margin-top:16px}
-.kv{list-style:none;padding:0;display:grid;gap:12px;margin-top:72px}
-.kv li{display:grid;grid-template-columns:6em minmax(0,1fr);gap:12px}
-.kv li span:first-child{color:var(--muted);font-size:var(--s-sm);padding-top:.15em}
-.copy{all:unset;cursor:pointer;font-size:var(--s-sm);font-weight:500;margin-left:10px;text-decoration:underline;text-underline-offset:.2em}
-.copy:focus-visible{outline:3px solid var(--bronze)}
+.field textarea{width:100%;height:58px;resize:none;border:0;background:var(--tung);color:var(--black);font:500 15px/1.4 var(--text);padding:18px 62px 18px 16px}
+.field textarea::placeholder{color:#6a5f4a;opacity:1}
+.field button{position:absolute;right:8px;top:8px;width:42px;height:42px;border-radius:50%;border:0;background:var(--black);color:var(--tung);cursor:pointer;display:grid;place-items:center}
+.field button:hover{background:var(--spike);color:var(--black)}
+.kv{list-style:none;padding:0;display:grid;gap:8px;margin-top:10px}
+.kv li{display:grid;grid-template-columns:5em minmax(0,1fr);gap:10px}
+.kv li span:first-child{opacity:.7;font-size:12.5px;padding-top:.1em}
+.copy{all:unset;cursor:pointer;font-size:12.5px;font-weight:600;margin-left:10px;text-decoration:underline;text-underline-offset:.2em}
+.copy:focus-visible{outline:2px solid var(--spike)}
+.legal{margin-top:8vh;opacity:.6}
 
-/* 맺음 */
-.foot{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:40px 64px;padding-block:96px 40px}
-.foot .wm{grid-column:1/-1;font-family:var(--display);font-size:var(--s-md)}
-.foot-nav{list-style:none;padding:0;display:grid;gap:14px}
-.foot-nav a{font:400 var(--s-h2)/1 var(--display);text-decoration:none;display:inline-block;transition:transform .2s var(--ease-out),color .2s ease}
-.foot-nav:hover a{color:var(--mist)}
-.foot-nav a:hover,.foot-nav a:focus-visible{color:var(--paper);transform:translateX(10px)}
-.foot .cols{display:grid;gap:24px;align-content:end}
-.foot .legal{grid-column:1/-1;font-size:var(--s-sm);color:var(--mist);border-top:1px solid var(--navy-3);padding-top:20px}
-
-/* 들어오는 움직임: 스크립트가 있을 때만 숨긴다 */
-.js [data-rv]{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out);transition-delay:calc(var(--i,0) * 75ms)}
-.js [data-rv].in{opacity:1;transform:none}
-.js [data-rv="mask"]{transform:none;clip-path:inset(0 0 100% 0);transition:clip-path .9s var(--ease-out),opacity .4s ease}
-.js [data-rv="mask"].in{clip-path:inset(0 0 0 0)}
-.js [data-rv="scale"]{transform:scale(1.04)}
-
-@media (max-width:900px){
-  .hero,.about,.case,.sign,.script,.others,.models-in,.foot{grid-template-columns:1fr}
-  .hero{min-height:0;padding-block:48px 72px}
-  .hero{grid-template-columns:minmax(0,1fr)}
-  .stage.d{display:none}.stage.m{display:block}
-  .names a{grid-template-columns:minmax(0,1fr) 24px;grid-template-areas:"nm ar" "sub ar" "q ar"}
-  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .case{grid-template-columns:1fr}
-  .deco{top:90px;height:360px;-webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.35),#000 70%);mask-image:linear-gradient(90deg,rgba(0,0,0,.35),#000 70%)}
-  .stagebase .pairs{grid-template-columns:1fr}
-  .pl{--pg:48px}
-  .pl li{grid-template-columns:1fr;gap:12px}
-  .pmid,.pdesc,.pside{grid-column:1;grid-row:auto;justify-self:start;text-align:left}
-  .pmid{order:1;width:min(100%,304px)}.pdesc{order:2}.pside{order:3}
-  .pdlg{width:100%;max-width:100%;margin:auto 0 0;border-left:0;border-top:5px solid var(--bronze);max-height:85vh}
-    .bar nav a.opt{display:none}
-  table{min-width:0}thead{position:absolute;left:-999px}
-  tr{display:grid;grid-template-columns:1fr auto;padding:14px 12px;border-bottom:1px solid var(--sand-2)}
-  td{border:0;padding:2px 0}td:nth-child(2){grid-column:1/-1;grid-row:2}
-  tr.pick{background:var(--navy);color:var(--paper)}
-  .case .meta{grid-template-columns:1fr}
-  .contact{padding-block:120px 96px}
-  .kv li{grid-template-columns:1fr;gap:2px}
-  .foot-nav a{font-size:var(--s-st)}
+@media (max-width:760px){
+  .hud nav a.opt{display:none}
+  .hero .tip{display:none}
+  .pairs li{grid-template-columns:1fr;gap:4px}
+  .case,.sign,.shots,.js .case.slide{grid-template-columns:1fr}
+  .js .case.slide figure{grid-column:1;grid-row:auto;justify-self:start;width:100%}
+  .js .slides{margin-top:max(12px,calc(40vh - 150px))}
+  .case details{grid-column:1}
+  .roll li{grid-template-columns:1fr}
+  .js .cues{width:100%;display:flex;gap:2px}
+  .js .cues li{flex:1}
+  .js .cue-h{grid-template-columns:1fr;justify-items:center;min-height:36px}
+  .js .cue-h b{display:none}
+  .js .cues li.on .cue-h i::before{display:none}
+  .js .cues li.on .cue-h i{background:var(--spike);color:var(--black);padding:2px 5px;mix-blend-mode:normal}
+  .js .cue-d .co{max-height:7.8em}
+  .js .cue-stage .scroll-tip{display:none}
+  .go{width:104px;height:104px;font-size:32px}
 }
-@media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  .js [data-rv]{opacity:1;transform:none;clip-path:none;transition:none}
-  .js .mk::after{transform:none}
-  .stage *,.hero .name,.hero h1,.hero .lead{animation:none!important}
-  .pdlg{animation:none}
-  *{transition-duration:.01ms!important}
-}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} *{transition-duration:.01ms!important} }
 </style>
 </head>
 <body>
 <script>document.documentElement.classList.add('js')</script>
+<canvas id="stage" aria-hidden="true"></canvas>
+<div id="dark" aria-hidden="true"></div>
+<div id="pipe" aria-hidden="true"></div>
+<canvas id="lamp" aria-hidden="true"></canvas>
 
-<header class="bar gut">
-  <a class="wm" href="#top">김해송</a>
+<header class="hud">
+  <div>
+    <a class="wm" href="#top">김해송</a>
+    <span class="run">공연 경과 <span id="clock">00:00</span></span><br>
+    <span id="nowcue">Q0 하우스 오픈</span>
+  </div>
   <nav aria-label="주요 메뉴">
-    <a href="#work">작업</a>
-    <a class="opt" href="#pipeline">열 단계</a>
-    <a href="#cases">문제 해결</a>
-    <a class="opt" href="#others">그 밖의 프로젝트</a>
+    <a href="#cues">열 단계</a>
+    <a class="opt" href="#report">문제 해결</a>
+    <a class="opt" href="#credits">그 밖의 작업</a>
     <a href="#contact">연락</a>
   </nav>
 </header>
 
 <main id="top">
 
-<!-- 첫 화면 -->
-<section class="hero navy gut" aria-labelledby="hero-h">
-  <svg class="stage d" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="bg-d" gradientUnits="userSpaceOnUse" x1="1180" y1="48" x2="100" y2="520"><stop offset="0" stop-color="#FAFAFC" stop-opacity=".30"/><stop offset=".55" stop-color="#C9D1E3" stop-opacity=".11"/><stop offset="1" stop-color="#C9D1E3" stop-opacity=".04"/></linearGradient>
-      <radialGradient id="gl-d" gradientUnits="userSpaceOnUse" cx="1180" cy="48" r="110"><stop offset="0" stop-color="#FAFAFC" stop-opacity=".7"/><stop offset="1" stop-color="#FAFAFC" stop-opacity="0"/></radialGradient>
-    </defs>
-    <line class="st-cable" x1="1180" y1="0" x2="1180" y2="36"/>
-    <polygon class="st-beam" fill="url(#bg-d)" points="1180,48 -40,215 -40,800 560,820"/>
-    <path class="st-ray" d="M1180 48 L-40 400 M1180 48 L200 810 M1180 48 L-40 600"/>
-    <circle class="st-lamp" cx="1180" cy="48" r="110" fill="url(#gl-d)"/>
-    <circle class="st-lamp" cx="1180" cy="48" r="13" fill="#FAFAFC"/>
-    <circle cx="1180" cy="48" r="19" fill="none" stroke="#C9D1E3" stroke-width="1.5"/>
-  </svg>
-  <svg class="stage m" viewBox="0 0 390 760" preserveAspectRatio="xMidYMin slice" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="bg-m" gradientUnits="userSpaceOnUse" x1="318" y1="34" x2="40" y2="420"><stop offset="0" stop-color="#FAFAFC" stop-opacity=".30"/><stop offset=".55" stop-color="#C9D1E3" stop-opacity=".11"/><stop offset="1" stop-color="#C9D1E3" stop-opacity=".04"/></linearGradient>
-      <radialGradient id="gl-m" gradientUnits="userSpaceOnUse" cx="318" cy="34" r="110"><stop offset="0" stop-color="#FAFAFC" stop-opacity=".7"/><stop offset="1" stop-color="#FAFAFC" stop-opacity="0"/></radialGradient>
-    </defs>
-    <line class="st-cable" x1="318" y1="0" x2="318" y2="22"/>
-    <polygon class="st-beam" fill="url(#bg-m)" points="318,34 -20,150 -20,760 190,760"/>
-    <path class="st-ray" d="M318 34 L-20 420 M318 34 L90 760"/>
-    <circle class="st-lamp" cx="318" cy="34" r="110" fill="url(#gl-m)"/>
-    <circle class="st-lamp" cx="318" cy="34" r="13" fill="#FAFAFC"/>
-    <circle cx="318" cy="34" r="19" fill="none" stroke="#C9D1E3" stroke-width="1.5"/>
-  </svg>
-  <div class="hero-txt">
-    <p class="name" data-rv>김해송</p>
-    <h1 id="hero-h" data-rv style="--i:1">무대에서 온<br><span class="mk">백엔드 개발자</span></h1>
-    <p class="lead" data-rv style="--i:2">공연예술 출신 개발자입니다. 공연 프로덕션을 운영한 감각으로, 쓰이는 방식까지 책임지는 프로덕트 엔지니어를 지향합니다.</p>
-    <div class="links" data-rv style="--i:3">
-      <a class="btn" href="#work">작업 보기</a>
-      <a href="https://github.com/peanutboi710">GitHub</a>
-      <a href="#contact">연락</a>
+<div class="hero-wrap">
+<section class="scene hero" data-scene="hero" data-cue="Q0 하우스 오픈" aria-labelledby="hero-h">
+  <div class="hero-in">
+    <h1 id="hero-h" class="bl">무대에서 온 백엔드 개발자</h1>
+    <p class="bl">조연출과 무대조감독으로 공연을 만들었습니다. 지금은 AI가 만든 결과를 검증하고, 사람이 최종 판단하는 서비스를 만듭니다.</p>
+    <div class="links">
+      <a class="btn" href="#cues">작업 보기</a>
+      <a class="bl" href="https://github.com/peanutboi710">GitHub</a>
+      <a class="bl" href="#contact">연락</a>
     </div>
   </div>
+  <p class="tip note bl">커서를 움직이면 조명이 따라갑니다. 내리면 다음 큐로 넘어갑니다.</p>
 </section>
+</div>
 
-<!-- 소개 · 기술 -->
-<section class="about gut" aria-label="하는 일과 쓰는 기술">
-  <div class="intro">
-    <p class="say" data-rv>판결문 한 건을 AI 판결과 체험 대본으로 바꿔 공개하기까지, 열 단계를 한 명령으로 잇는 구조를 설계했습니다.</p>
-    <p data-rv style="--i:1">단계마다 스스로 검증하고, 중단한 곳부터 이어 갑니다. 공개는 사람이 정합니다.</p>
-    <p data-rv style="--i:2"><b>푼 문제</b> 손으로 넘기던 열 단계 자동화 · 익명 기록의 회원 소유 전환 · 규칙으로 고른 대본 모델 · 한 번에 통과하지 못하게 한 대본 검증. <a href="#cases">사례 보기</a></p>
-  </div>
-  <div class="stack-list">
-    <h2 data-rv>쓰는 기술</h2>
-    <ul class="rows">
-      <li data-rv><span class="v">언어</span><span class="k">Java 17 · Python · JavaScript · SQL</span></li>
-      <li data-rv style="--i:1"><span class="v">프레임워크</span><span class="k">Spring Boot · JPA · Security · Spring AI · WebSocket(STOMP)</span></li>
-      <li data-rv style="--i:2"><span class="v">데이터베이스</span><span class="k">PostgreSQL · MySQL · pgvector · Flyway</span></li>
-      <li data-rv style="--i:3"><span class="v">협업</span><span class="k">Git · GitHub PR 리뷰 · Jira · Swagger</span></li>
-    </ul>
-  </div>
-</section>
-
-<!-- 작업 목록 -->
-<section class="work gut" id="work" aria-labelledby="work-h">
-  <h2 id="work-h" data-rv>작업 목록</h2>
-  <ul class="names">
-    <li data-rv><a href="#pipeline"><b>내Law남불</b><span class="nm-sub">판결 체험 서비스 · 9월 ~ 11월 (6주) · 4인</span><span class="nm-q">판결문 한 건을 공개 가능한 체험 사건으로 바꾸는 열 단계 파이프라인</span><svg class="ar" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M5 11h12M12 5l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg></a></li>
-    <li data-rv style="--i:1"><a href="#matcheat"><b>MatchEAT</b><span class="nm-sub">B2B 케이터링 매칭 · 8월 ~ 9월 (2주) · 팀 리딩</span><span class="nm-q">대화 로그에서 합의된 값만 견적에 반영하기</span><svg class="ar" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M5 11h12M12 5l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg></a></li>
-    <li data-rv style="--i:2"><a href="#stocksim"><b>StockSim</b><span class="nm-sub">주식 시뮬레이터 백엔드 · 6월 ~ 7월 (4주)</span><span class="nm-q">로그아웃해도 살아 있는 토큰 문제를 재발급 구조로 풀기</span><svg class="ar" width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M5 11h12M12 5l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg></a></li>
+<div class="rules-wrap">
+<section class="scene rules" data-scene="rules" data-cue="프리셋 무대에서 배운 기준" aria-labelledby="ru-h">
+  <div class="rules-foot"><h2 id="ru-h" class="bl">무대 위에서 가져온 기준 4가지</h2>
+  <p class="note bl">공연예술을 하면서 익힌 습관이 개발에서는 이렇게 작용했습니다.</p></div>
+  <ul class="pairs bl">
+    <li><span class="a">리허설 없이 올리지 않는다</span><span class="b">확인한 뒤에만 공개한다</span><span class="note">품질은 우연히 만들어지는 것이 아니라, 반복적인 검증과 개선을 통해 완성됩니다.</span></li>
+    <li><span class="a">관객의 시선</span><span class="b">사용자의 경험</span><span class="note">기능을 구현하는 데 그치지 않고, 사용자가 이해하고 느끼는 전체 경험까지 설계합니다.</span></li>
+    <li><span class="a">공연 프로덕션</span><span class="b">소프트웨어 프로덕트</span><span class="note">공연이 배우와 무대, 음향, 조명이 하나의 경험을 만들듯, 소프트웨어도 사람과 기술이 하나의 프로덕트로 어우러집니다.</span></li>
+    <li><span class="a">큐시트와 돌발상황</span><span class="b">시스템이 맡을 일, 사람이 맡을 일</span><span class="note">예측할 수 있는 일은 시스템이 일관되게 처리하고, 맥락에 따른 판단은 사람의 역할로 남깁니다.</span></li>
   </ul>
-</section>
-
-<!-- 열 단계 -->
-<section class="pipe navy gut" id="pipeline" aria-labelledby="pl-h">
-  <div class="pipe-head">
-    <h2 id="pl-h" data-rv>판결문 한 건이<br><span class="mk">공개되기까지</span></h2>
-    <p class="mut" data-rv style="--i:1">손으로 넘기던 열 단계를 한 명령으로 잇는 구조를 설계했습니다. 단계마다 검증 사이클을 두고, 단계 사이에 체크포인트를 남겨 중단한 곳부터 이어 갑니다.</p>
+  <div class="cue-intro pipe-intro">
+    <p class="note bl">판결 체험 서비스 · 9월 ~ 11월 (6주) · 4인</p>
+    <h2 class="bl">내Law남불</h2>
+    <p class="bl">실제 판결문 한 건을 AI 판결과 체험 대본으로 바꿔, 사용자가 직접 판결해 보게 하는 서비스입니다.</p>
+    <p class="bl">맡은 부분은 판결문 가공부터 AI 판결 생성까지의 파이프라인, 백엔드 API 일부, 프론트엔드 전반을 담당했습니다.</p>
   </div>
-    <ol class="pl" aria-label="파이프라인 열 단계">
-    <li class="gate" style="--rot:0deg" data-rv><span class="pdesc">비공개 저장소의 판결문(PDF · txt)을 넣습니다.</span><div class="pmid"><div class="pbox"><b>판결문 입력</b></div></div></li>
-    <li style="--rot:-2.2deg" data-rv><span class="pdesc">판결문을 가리고 사건 · 판단 요소를 뽑습니다.</span><div class="pmid"><button type="button" class="pbox" aria-haspopup="dialog" data-ex="ex-1"><code>1 extract</code><b>비식별화 · 구조화</b><i class="pt" aria-hidden="true"></i></button></div><template id="ex-1"><em>실제 결과 · 21건 중 1건</em><span>title: 결혼을 전제로 교제하던 관계에서 발생한 반복적 차용금 사기</span><span>crimeType: FRAUD · 사기</span><span>factors: (12개 중)</span><span>  1 결혼을 전제로 교제하던 피해자에게 재산을 보유한 것처럼 행세하고 돈을 받았다.</span><span>  3 피고인은 별다른 수입원이나 재산이 없어 변제할 의사나 능력이 없었다.</span><span>  4 피해 회복이 충분히 이루어지지 않았다.</span></template></li>
-    <li style="--rot:1.6deg" data-rv><span class="pdesc">실제 판결을 비공개로 따로 정리합니다.</span><div class="pmid"><button type="button" class="pbox" aria-haspopup="dialog" data-ex="ex-2"><code>2 court</code><b>재판부 판결</b><i class="pt" aria-hidden="true"></i></button></div><template id="ex-2"><em>실제 결과 · 21건 중 1건</em><span>penaltyType: PRISON</span><span>prisonMonths: 8</span><span>summary: 인적 신뢰 관계를 악용한 사기와 피해 미회복, 전력 및 잠적을 무겁게 고려한 판결</span><span># 판결 생성에는 넣지 않는다</span></template></li>
-    <li style="--rot:-1.2deg" data-rv><span class="pdesc">AI가 이 사건을 이미 아는지 여러 번 물어 판정합니다.</span><div class="pmid"><button type="button" class="pbox" aria-haspopup="dialog" data-ex="ex-3"><code>3 contamination</code><b>사전 학습 점검</b><i class="pt" aria-hidden="true"></i></button></div><p class="pside">질문을 10번 하고 응답을 KNOWS · EXACT · CLOSE · FAR로 분류해 비율로 판정합니다. KNOWS가 1건이라도 있거나 EXACT가 50% 이상이면 오염으로 봅니다.</p><template id="ex-3"><em>형식 예시</em><span>응답 분류:</span><span>  KNOWS · EXACT · CLOSE · SAME_TYPE · FAR · INVALID</span><span>묶음 판정:</span><span>  CLEAN · SUSPECT · INSUFFICIENT · CONTAMINATED</span></template></li>
-    <li style="--rot:2.4deg" data-rv><span class="pdesc">pgvector로 유사 판례를 찾고, 같은 사건은 뺍니다.</span><div class="pmid"><button type="button" class="pbox" aria-haspopup="dialog" data-ex="ex-4"><code>4 rag</code><b>참고 자료</b><i class="pt" aria-hidden="true"></i></button></div><template id="ex-4"><em>형식 예시</em><span>보고에 남기는 것:</span><span>  양형기준 버전 이름 · 기준 종류 · 판례 id · 점수</span><span>남기지 않는 것:</span><span>  사건번호 · 기준일 · 판례 본문</span></template></li>
-    <li style="--rot:-1.8deg" data-rv><span class="pdesc">같은 프롬프트로 여러 회차를 쓰고 형식을 검증합니다.</span><div class="pmid"><button type="button" class="pbox" aria-haspopup="dialog" data-ex="ex-5"><code>5 generate</code><b>AI 판결 생성</b><i class="pt" aria-hidden="true"></i></button></div><p class="pside">회차를 3번 만들고 형식을 검증합니다. 오류가 있으면 검증 뒤 다시 만듭니다.</p><template id="ex-5"><em>실제 결과 · 21건 중 1건</em><span>model: openai:gpt-5.6-luna</span><span>runs: 3 (유효 3, 재시도 0)</span><span>penaltyType: PRISON</span><span>prisonMonths: 18</span><span>factors:</span><span>  1 UP 결혼을 전제로 교제하던 피해자와의 인적 신뢰 관계를 이용해 재산을 보유한 것처럼 행세하며 돈을 받았다.</span><span>summary: 신뢰 이용과 반복 편취 및 미흡한 피해 회복을 무겁게 본 판단</span></template></li>
-    <li style="--rot:1.1deg" data-rv><span class="pdesc">구조 점수와 유사도로 대표 회차를 고릅니다.</span><div class="pmid"><button type="button" class="pbox" aria-haspopup="dialog" data-ex="ex-6"><code>6 select</code><b>대표 회차</b><i class="pt" aria-hidden="true"></i></button></div><p class="pside">요소 방향 일치와 판결 이유 유사도로, 다른 회차와 가장 가까운 회차를 고릅니다.</p><template id="ex-6"><em>실제 결과 · 21건 중 1건</em><span>strategy: consensus</span><span>reason: 판단 요소 다수 의견 일치 12/12 (후보 3개 중 최고, 동점이면 경고 적은 · 앞선 회차)</span><span>score: 12</span><span>warnings: 0</span></template></li>
-    <li style="--rot:-2.5deg" data-rv><span class="pdesc">가치관 축을 투표로 정하고, 과반이 아니면 사람이 확인합니다.</span><div class="pmid"><button type="button" class="pbox" aria-haspopup="dialog" data-ex="ex-7"><code>7 axis</code><b>가치관 축</b><i class="pt" aria-hidden="true"></i></button></div><p class="pside">같은 요소를 5번 투표해 최다표를 씁니다. 과반이 아니면 표시해서 사람이 확인합니다.</p><template id="ex-7"><em>추출기 값(실제) · 투표 형식(코드 문서)</em><span>factor 1:</span><span>  summaryTag: 연인 관계 신뢰 이용</span><span>  valueAxis: PRINCIPLE_RELATION</span><span>투표 기록 형식:</span><span>  {"runs": 5,</span><span>   "counts": {"FAULT_STANDARD": 3, "NONE": 2},</span><span>   "needsReview": false,</span><span>   "requestedRuns": 5}</span></template></li>
-    <li class="hot" style="--rot:1.9deg" data-rv><span class="pdesc">분위기 · 쟁점 · 민감 여부를 분류합니다.</span><div class="pmid"><button type="button" class="pbox" aria-haspopup="dialog" data-ex="ex-8"><code>8 classify</code><b>사건 분류</b><i class="pt" aria-hidden="true"></i></button></div><template id="ex-8"><em>실제 결과 · 21건 중 1건</em><span>mood: betrayal</span><span>issue: admitted</span><span>victim: unknown</span><span>thirdParty: false</span><span>sensitiveFlags: []</span><span>needsReview: []</span></template></li>
-    <li class="hot" style="--rot:-1.4deg" data-rv><span class="pdesc">분류에 맞는 블록을 조립하고, 어긋난 블록만 다시 만듭니다.</span><div class="pmid"><button type="button" class="pbox" aria-haspopup="dialog" data-ex="ex-9"><code>9 script</code><b>대본</b><i class="pt" aria-hidden="true"></i></button></div><p class="pside">검사에서 나온 오류는 그 줄만 고쳐 쓰고, 그래도 남으면 해당 단위(U1 · U4)를 한 번 다시 만듭니다. 경고는 고치지 않고 사람이 확인하며, 끝내 남으면 공개를 막고 관리자가 검수합니다.</p><template id="ex-9"><em>실제 결과 · 21건 중 1건</em><span>model: openai:gpt-5.6-luna</span><span>count: 9</span><span>failed: 0</span><span>publishable: true</span><span>reviewErrors: 0</span><span>reviewWarnings: 1</span><span>evidence 1 (검사 측):</span><span>  결혼을 전제로 교제하던 피해자에게 재산을 보유한 것처럼 행세하고 돈을 받았습니다.</span></template></li>
-    <li style="--rot:2.1deg" data-rv><span class="pdesc">비공개로 적재하고, 관리자가 승인해야 공개합니다.</span><div class="pmid"><button type="button" class="pbox" aria-haspopup="dialog" data-ex="ex-10"><code>10 load</code><b>비공개 적재</b><i class="pt" aria-hidden="true"></i></button></div><template id="ex-10"><em>형식 예시 · 로컬 DB 적재 결과</em><span>legal_case 상태:</span><span>  DRAFT  (사용자에게 보이지 않음)</span><span>  → 관리자 검수 뒤 PUBLISHED</span><span>로컬 DB 적재(11/02):</span><span>  사건 21 · 대본 21 · 블록 105 · 기사 21 · 판결 42</span></template></li>
-    <li class="gate" style="--rot:0deg" data-rv><div class="pmid"><div class="pbox"><b>관리자 승인</b></div></div></li>
-  </ol>
-  <p class="pl-note mut" data-rv><b>체크포인트</b> 단계마다 결과가 남아 중단한 곳부터 이어 하기 · 건너뛰기가 됩니다. 앞 단계를 다시 돌리면 뒤 단계 결과는 지워, 오래된 결과가 섞이지 않게 했습니다.</p>
-    <p class="result-line" data-rv>관리자 승인 없이는 어떤 사건도 공개되지 않습니다. 로컬 도구로 <b>21건을 시험 생성</b>해 검수와 테스트를 통과했습니다.</p>
-  <ul class="stats" data-rv>
-    <li><b>10</b><span>자동화한 단계</span></li>
-    <li><b>21</b><span>시험 생성, 모두 공개 가능</span></li>
-    <li><b>1,131</b><span>통과한 백엔드 테스트</span></li>
-    <li><b>4</b><span>나눠 병합한 소유 전환 단계</span></li>
-  </ul>
-<dialog class="pdlg" id="pdlg" aria-labelledby="pdlg-t"><div class="pdlg-in"><div class="pdlg-h"><div><code class="pdlg-c"></code><b class="pdlg-t" id="pdlg-t"></b></div><button type="button" class="pdlg-x" aria-label="닫기">&times;</button></div><div class="pdlg-body"></div></div></dialog>
+  <div class="cue-intro pipe-intro">
+    <h2 id="cu-h" class="bl">판결문 한 건이 공개되기까지, 파이프라인 10단계</h2>
+    <p class="bl">손으로 넘기던 열 단계를 한 명령으로 잇는 구조를 설계했습니다. 단계마다 스스로 검증하고, 체크포인트를 남겨 중단한 곳부터 이어 갑니다.</p>
+  </div>
 </section>
+<div class="rules-room" aria-hidden="true"></div>
+</div>
 
-<!-- 문제 해결: 모델 선정 -->
-<section class="models gut" aria-labelledby="md-h">
-  <div class="models-in">
-    <div class="txt">
-      <h2 id="md-h" data-rv>대본 모델은<br><span class="mk">규칙으로 골랐다</span></h2>
-      <p data-rv style="--i:1">대본은 숫자를 지키고, 없는 감정을 만들지 않고, 줄 수를 맞춰야 합니다. 모델마다 지키는 정도가 달랐습니다.</p>
-      <p data-rv style="--i:2">실제 사건 한 건에 같은 규칙을 주고 모델마다 네 번씩 생성해 비교했습니다. 사건 한 건 기준이라 다른 사건에서도 같은지는 더 확인해야 합니다.</p>
-    </div>
-    <div>
-      <div class="tbl-wrap" data-rv>
-        <table>
-          <thead><tr><th scope="col">모델</th><th scope="col">같은 규칙으로 네 번 생성한 결과</th><th scope="col">판단</th></tr></thead>
-          <tbody>
-            <tr><td>gemini-3.8-flash</td><td>숫자를 풀어 쓰고, 없는 감정을 만들었습니다</td><td>제외</td></tr>
-            <tr><td>gemini-3.5-flash-lite</td><td>예시 문장을 대사로 베꼈습니다</td><td>제외</td></tr>
-            <tr><td>gpt-5.6-terra</td><td>규칙과 줄 수를 지켰습니다</td><td>후보</td></tr>
-            <tr class="pick"><td>gpt-5.6-luna</td><td>품질이 비슷하고 단가가 훨씬 낮습니다</td><td>선택</td></tr>
-          </tbody>
-        </table>
+<section class="scene cuesec" id="cues" data-scene="cues" aria-label="파이프라인 10단계">
+  <div class="cue-track">
+    <div class="cue-stage" id="cueStage">
+      <ol class="cues bl" aria-label="파이프라인 10단계">
+        <li><button type="button" class="cue-h"><i>Q1</i><b>비식별화 · 구조화</b></button><div class="cue-d"><h3>비식별화 · 구조화</h3><p class="cd">판결문을 가리고 사건과 판단 요소를 뽑습니다.</p><pre class="co"><em>1 extract · 실제 결과, 21건 중 1건</em>title: 결혼을 전제로 교제하던 관계에서 발생한 반복적 차용금 사기
+crimeType: FRAUD · 사기
+factors: (12개 중)
+  1 결혼을 전제로 교제하던 피해자에게 재산을 보유한 것처럼 행세하고 돈을 받았다.
+  3 피고인은 별다른 수입원이나 재산이 없어 변제할 의사나 능력이 없었다.</pre></div></li>
+        <li><button type="button" class="cue-h"><i>Q2</i><b>재판부 판결</b></button><div class="cue-d"><h3>재판부 판결</h3><p class="cd">실제 판결을 비공개로 따로 정리합니다. 판결 생성에는 넣지 않습니다.</p><pre class="co"><em>2 court · 실제 결과, 21건 중 1건</em>penaltyType: PRISON
+prisonMonths: 8
+summary: 인적 신뢰 관계를 악용한 사기와 피해 미회복, 전력 및 잠적을 무겁게 고려한 판결</pre></div></li>
+        <li><button type="button" class="cue-h"><i>Q3</i><b>사전 학습 점검</b></button><div class="cue-d"><h3>사전 학습 점검</h3><p class="cd">AI가 이 사건을 이미 아는지 열 번 물어 판정합니다.</p><p class="cs note">응답을 분류해 비율로 봅니다. KNOWS가 1건이라도 있거나 EXACT가 50% 이상이면 오염으로 봅니다.</p><pre class="co"><em>3 contamination · 형식 예시</em>응답 분류: KNOWS · EXACT · CLOSE · SAME_TYPE · FAR · INVALID
+묶음 판정: CLEAN · SUSPECT · INSUFFICIENT · CONTAMINATED</pre></div></li>
+        <li><button type="button" class="cue-h"><i>Q4</i><b>참고 자료</b></button><div class="cue-d"><h3>참고 자료</h3><p class="cd">pgvector로 유사 판례를 찾고, 같은 사건은 뺍니다.</p><pre class="co"><em>4 rag · 형식 예시</em>보고에 남기는 것: 양형기준 버전 이름 · 기준 종류 · 판례 id · 점수
+남기지 않는 것: 사건번호 · 기준일 · 판례 본문</pre></div></li>
+        <li><button type="button" class="cue-h"><i>Q5</i><b>AI 판결 생성</b></button><div class="cue-d"><h3>AI 판결 생성</h3><p class="cd">같은 프롬프트로 세 회차를 쓰고 형식을 검증합니다. 오류가 있으면 다시 만듭니다.</p><pre class="co"><em>5 generate · 실제 결과, 21건 중 1건</em>model: openai:gpt-5.6-luna
+runs: 3 (유효 3, 재시도 0)
+penaltyType: PRISON
+prisonMonths: 18
+summary: 신뢰 이용과 반복 편취 및 미흡한 피해 회복을 무겁게 본 판단</pre></div></li>
+        <li><button type="button" class="cue-h"><i>Q6</i><b>대표 회차</b></button><div class="cue-d"><h3>대표 회차</h3><p class="cd">요소 방향 일치와 판결 이유 유사도로, 다른 회차와 가장 가까운 회차를 고릅니다.</p><pre class="co"><em>6 select · 실제 결과, 21건 중 1건</em>strategy: consensus
+reason: 판단 요소 다수 의견 일치 12/12 (후보 3개 중 최고)
+score: 12
+warnings: 0</pre></div></li>
+        <li><button type="button" class="cue-h"><i>Q7</i><b>가치관 축</b></button><div class="cue-d"><h3>가치관 축</h3><p class="cd">같은 요소를 다섯 번 투표해 최다표를 씁니다. 과반이 아니면 사람이 확인합니다.</p><pre class="co"><em>7 axis · 추출기 값(실제)과 투표 형식(코드 문서)</em>summaryTag: 연인 관계 신뢰 이용
+valueAxis: PRINCIPLE_RELATION
+{"runs": 5, "counts": {"FAULT_STANDARD": 3, "NONE": 2}, "needsReview": false}</pre></div></li>
+        <li><button type="button" class="cue-h"><i>Q8</i><b>사건 분류</b></button><div class="cue-d"><h3>사건 분류</h3><p class="cd">분위기, 쟁점, 민감 여부를 분류합니다.</p><pre class="co"><em>8 classify · 실제 결과, 21건 중 1건</em>mood: betrayal
+issue: admitted
+victim: unknown
+sensitiveFlags: []
+needsReview: []</pre></div></li>
+        <li><button type="button" class="cue-h"><i>Q9</i><b>대본</b></button><div class="cue-d"><h3>대본</h3><p class="cd">분류에 맞는 블록을 조립하고, 어긋난 블록만 다시 만듭니다.</p><p class="cs note">오류는 그 줄만 고쳐 쓰고, 그래도 남으면 해당 단위를 한 번 다시 만듭니다. 끝내 남으면 공개를 막고 관리자가 검수합니다.</p><pre class="co"><em>9 script · 실제 결과, 21건 중 1건</em>model: openai:gpt-5.6-luna
+count: 9 · failed: 0
+publishable: true
+reviewErrors: 0 · reviewWarnings: 1</pre></div></li>
+        <li><button type="button" class="cue-h"><i>Q10</i><b>비공개 적재</b></button><div class="cue-d"><h3>비공개 적재</h3><p class="cd">비공개로 적재합니다. 아직 사용자에게 보이지 않습니다.</p><pre class="co"><em>10 load · 형식 예시, 로컬 DB 적재 결과</em>legal_case 상태: DRAFT → 관리자 검수 뒤 PUBLISHED
+로컬 DB 적재(11/02): 사건 21 · 대본 21 · 블록 105 · 기사 21 · 판결 42</pre></div></li>
+      </ol>
+      <div class="approve" id="approve">
+        <p class="note bl" id="apState">대기 · 관리자 승인</p>
+        <h3 class="bl" id="apHead">최종 승인은 사람이 합니다</h3>
+        <button type="button" class="go" id="goBtn" aria-label="승인하고 공개">GO</button>
+        <p class="bl" id="apNote">관리자 승인 없이는 어떤 사건도 공개되지 않습니다.</p>
+        <ul class="tally bl" id="tally" hidden>
+          <li><b>21</b><span class="note">시험 생성, 모두 공개 가능</span></li>
+          <li><b>1,131</b><span class="note">통과한 백엔드 테스트</span></li>
+          <li><b>10</b><span class="note">자동화한 단계</span></li>
+        </ul>
       </div>
-      <p class="note" data-rv>프롬프트로 안 막히는 줄 수 같은 항목은 검증과 재생성으로 보완했습니다. 시험 생성 21건이 모두 공개 가능해졌습니다.</p>
+      <p class="scroll-tip note bl">스크롤이 GO입니다</p>
     </div>
   </div>
 </section>
 
-<!-- 문제 해결: 대본 파이프라인 -->
-<section class="script navy gut" aria-labelledby="sc-h">
-  <div class="txt">
-    <h2 id="sc-h" data-rv>대본이 한 번에<br><span class="mk">통과하지 못하게</span></h2>
-    <p data-rv style="--i:1"><b>문제</b> AI가 한 번에 쓴 대본은 형식이 어긋나고 사실관계가 흔들렸고, 전체를 다시 쓰면 고친 곳까지 바뀌었습니다. 고친 뒤에는 옛 값으로 만든 블록이 남았습니다.</p>
-    <p data-rv style="--i:2"><b>해결</b> 대본을 블록으로 쪼개 분류 결과로 고르고 조립합니다. 블록마다 검증하고 승인하며, 어긋난 블록만 다시 만듭니다.</p>
-    <p class="loop" data-rv style="--i:3" aria-label="자가검증 사이클"><span>조립</span><i>→</i><span>검증</span><i>→</i><span>자동 수리</span><i>→</i><span>어긋난 블록만 재생성</span></p>
-    <p data-rv style="--i:3"><b>고친 뒤</b> 블록마다 만들 때 본 값을 저장해 달라지면 낡음으로 표시합니다. 관리자는 &ldquo;확인했음&rdquo;으로 두거나 그 블록만 다시 만듭니다.</p>
-    <p data-rv style="--i:4"><b>택하지 않은 방식</b> 사건 조합별 템플릿은 수가 폭발해 분류 축별 블록을 택했습니다. 낡음은 표시가 기본이고 사건 내용 · 기사 · 민감 플래그가 바뀐 블록만 승인을 막습니다. 공개 뒤 수정은 점검 상태로 닫습니다.</p>
-    <p data-rv style="--i:5"><b>비용</b> U0~U4 연쇄 재생성은 호출 3회 · 약 1.3만 토큰 · 17초로 전체 생성의 3분의 1 정도입니다(표본 1건).</p>
-    <p class="mut" data-rv style="--i:6">한계: 선형 구조이고 최종 판단은 사람의 검수입니다. DAG로 확장할 여지가 있습니다.</p>
-  </div>
-  <div class="list">
-    <button type="button" class="dep-btn" aria-haspopup="dialog" data-ex="ex-dep" data-rv><code>U0 ~ U4</code><b>바꾼 값이 낡게 만드는 블록</b><span>값을 고치면 어느 블록이 낡아지는지 표로 봅니다.</span><i class="pt" aria-hidden="true"></i></button>
-    <template id="ex-dep">
+<div class="paper-wrap">
+<span id="report" class="anchor"></span>
+<section class="paper pre" id="reportSec" data-scene="paper" data-cue="1막 내Law남불" aria-label="문제 해결">
+  <p class="top note"><span>1막 · 내Law남불</span><span class="rtabs" id="rtabs"><button type="button">내Law남불</button><button type="button">모델 선정</button><button type="button">대본 검증</button><button type="button">소유 전환</button><button type="button">서명</button></span></p>
+
+  <div class="slides" id="slides">
+  <article class="case slide">
+    <h2>내Law남불</h2>
+    <dl>
+      <dt>무엇</dt><dd>실제 판결문 한 건을 AI 판결과 체험 대본으로 바꿔, 사용자가 직접 판결해 보게 하는 판결 체험 서비스입니다.</dd>
+      <dt>언제</dt><dd>9월 ~ 11월 (6주), 4인</dd>
+      <dt>맡은 일</dt><dd>판결문이 공개되기까지의 파이프라인 설계와 자동 실행</dd>
+    </dl>
+    <figure><img src="assets/shot-main.jpg" alt="내Law남불 첫 화면. 책상 위에 신문, 노트북, 엽서, 서류철이 놓여 있다" width="1600" height="900" loading="lazy"><figcaption>첫 화면. 책상 위의 신문이 오늘의 사건입니다.</figcaption></figure>
+  </article>
+
+  <article class="case slide">
+    <h2>대본 모델은 규칙으로 골랐다</h2>
+    <dl>
+      <dt>문제</dt><dd>대본은 숫자를 지키고, 없는 감정을 만들지 않고, 줄 수를 맞춰야 합니다. 모델마다 지키는 정도가 달랐습니다.</dd>
+      <dt>결정</dt><dd>실제 사건 한 건에 같은 규칙을 주고 모델마다 네 번씩 생성해 비교했습니다.</dd>
+      <dt>결과</dt><dd>품질이 비슷하고 단가가 훨씬 낮은 gpt-5.6-luna를 골랐습니다. 프롬프트로 안 막히는 줄 수는 검증과 재생성으로 보완했고, 시험 생성 21건이 모두 공개 가능해졌습니다.</dd>
+    </dl>
+    <figure><img src="assets/shot-article.jpg" alt="사건 기사 화면. 연출 이미지와 기사 본문 아래에 해설 캐릭터의 대사가 나온다" width="800" height="450" loading="lazy"><figcaption>사건 기사. 고른 모델이 쓴 해설 대본이 여기에 나옵니다.</figcaption></figure>
+    <details>
+      <summary>비교 결과와 한계</summary>
+      <table>
+        <thead><tr><th scope="col">모델</th><th scope="col">같은 규칙으로 네 번 생성한 결과</th><th scope="col">판단</th></tr></thead>
+        <tbody>
+          <tr><td>gemini-3.8-flash</td><td>숫자를 풀어 쓰고, 없는 감정을 만들었습니다</td><td>제외</td></tr>
+          <tr><td>gemini-3.5-flash-lite</td><td>예시 문장을 대사로 베꼈습니다</td><td>제외</td></tr>
+          <tr><td>gpt-5.6-terra</td><td>규칙과 줄 수를 지켰습니다</td><td>후보</td></tr>
+          <tr class="pick"><td>gpt-5.6-luna</td><td>품질이 비슷하고 단가가 훨씬 낮습니다</td><td>선택</td></tr>
+        </tbody>
+      </table>
+      <p>사건 한 건 기준이라 다른 사건에서도 같은지는 더 확인해야 합니다.</p>
+    </details>
+  </article>
+
+  <article class="case slide">
+    <h2>대본이 한 번에 통과하지 못하게</h2>
+    <dl>
+      <dt>문제</dt><dd>AI가 한 번에 쓴 대본은 형식이 어긋나고 사실관계가 흔들렸고, 전체를 다시 쓰면 고친 곳까지 바뀌었습니다.</dd>
+      <dt>결정</dt><dd>대본을 블록으로 쪼개 분류 결과로 고르고 조립합니다. 조립, 검증, 자동 수리를 거친 뒤 어긋난 블록만 다시 만듭니다.</dd>
+      <dt>결과</dt><dd>블록마다 만들 때 본 값을 저장해, 값이 달라지면 낡음으로 표시합니다. 연쇄 재생성은 호출 3회, 약 1.3만 토큰, 17초로 전체 생성의 3분의 1 정도입니다(표본 1건).</dd>
+    </dl>
+    <figure><img src="assets/shot-cases.jpg" alt="사건 목록 화면. 판결 체험 신문 1면에 머리기사와 죄명별 면이 있다" width="1600" height="900" loading="lazy"><figcaption>사건 목록. 검수를 통과해 승인된 사건만 지면에 실립니다.</figcaption></figure>
+    <details>
+      <summary>낡음 표, 택하지 않은 방식, 맡은 일</summary>
       <ul class="dep">
-      <li class="blk"><span class="k">사건 내용</span><span class="u"><i>U0</i><i>U2</i><i>U3</i><i>U4</i></span></li>
-      <li class="blk"><span class="k">기사</span><span class="u"><i>U1</i></span></li>
-      <li class="blk"><span class="k">민감 플래그</span><span class="u"><i>U0</i><i>U1</i><i>U2</i><i>U3</i><i>U4</i></span></li>
-      <li><span class="k">배역</span><span class="u"><i>U2</i><i>U3</i><i>U4</i></span></li>
-      <li><span class="k">분위기</span><span class="u"><i>U0</i><i>U1</i><i>U2</i><i>U4</i></span></li>
-      <li><span class="k">쟁점 유형</span><span class="u"><i>U0</i><i>U2</i><i>U4</i></span></li>
-      <li><span class="k">피해자 측</span><span class="u"><i>U0</i><i>U3</i><i>U4</i></span></li>
-      <li><span class="k">U0를 고침</span><span class="u"><i>U2</i><i>U4</i></span></li>
-      <li><span class="k">U2를 고침</span><span class="u"><i>U4</i></span></li>
-    </ul>
-      <p class="mut legend">U0 설계도 · U1 1막 해설 · U2 재판 도입부 · U3 증거조사 · U4 3막. <b>◆</b> 표시는 승인을 막는 낡음입니다.</p>
-    </template>
-    <h3>직접 맡은 일</h3>
-    <ul class="duo">
-      <li data-rv><span>판결문 비식별화 · 적재 자동 실행, 사건 자동 분류</span><span class="v">초기 설계</span></li>
-      <li data-rv style="--i:1"><span>분류별 지시 블록과 대본 조립기, 블록 단위 승인 · 점검 상태 결정</span><span class="v">대본 설계</span></li>
-      <li data-rv style="--i:2"><span>블록 연동 표, 낡음은 표시가 기본이라는 방식, 재생성 소요 측정</span><span class="v">설계 · 측정</span></li>
-    </ul>
-    <h3>팀원과 나눈 일</h3>
-    <ul class="duo">
-      <li class="tm" data-rv><span>검증 · 자동 수리 · 블록 재생성, 낡음 계산 · 승인 차단, 관리자 블록 검수 화면</span><span class="v">팀원 구현</span></li>
-    </ul>
-  </div>
-</section>
-
-<!-- 문제 해결: 소유 전환 -->
-<section class="case gut" id="cases" aria-labelledby="own-h">
-  <svg class="deco" data-rv viewBox="0 0 640 520" preserveAspectRatio="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
-    <path class="cv" d="M0 210 C150 80 260 270 380 170 S560 60 640 140"/><path class="cv" d="M0 232 C150 102 260 292 380 192 S560 82 640 162"/><path class="cv" d="M0 254 C150 124 260 314 380 214 S560 104 640 184"/><path class="cv" d="M0 276 C150 146 260 336 380 236 S560 126 640 206"/><path class="cv" d="M0 298 C150 168 260 358 380 258 S560 148 640 228"/><path class="cv" d="M0 320 C150 190 260 380 380 280 S560 170 640 250"/><path class="cb" d="M0 342 C150 212 260 402 380 302 S560 192 640 272"/><path class="cv" d="M0 364 C150 234 260 424 380 324 S560 214 640 294"/><path class="cv" d="M0 386 C150 256 260 446 380 346 S560 236 640 316"/><path class="cv" d="M0 408 C150 278 260 468 380 368 S560 258 640 338"/><path class="cv" d="M0 430 C150 300 260 490 380 390 S560 280 640 360"/>
-  </svg>  <div class="side">
-    <h2 id="own-h" data-rv>익명 기록을<br><span class="mk">회원 것으로</span></h2>
-    <div class="body">
-      <p data-rv><b>문제 1</b> 기록이 익명 쿠키 ID 기준으로 쌓여 있었습니다. 회원 로그인을 붙이며, 이미 쌓인 기록을 누구 것으로 볼지 정해야 했습니다.</p>
-      <p data-rv style="--i:1"><b>문제 2</b> 앞으로 쌓일 기록의 주인도 익명 ID가 아니라 회원으로 바꿔야 했습니다.</p>
-      <p data-rv style="--i:2"><b>제약</b> 마이그레이션은 추가만 가능했고, 공용 PC에서는 한 브라우저로 여러 사람이 로그인합니다.</p>
-      <p data-rv style="--i:3"><b>검토한 대안</b> 전체 키를 바꾸는 통합 owner 테이블 대신, 두 테이블에만 이중 칸을 두었습니다. 기록은 복사하면 공용 PC에서 복제되므로 이동으로 옮깁니다.</p>
-      <p data-rv style="--i:4"><b>해결 1</b> 기존 기록은 첫 로그인 때 가져오기와 초기화를 사용자가 고르게 했고, 체험만 옮기고 나머지는 초기화합니다.</p>
-      <p data-rv style="--i:5"><b>해결 2</b> 앞으로의 기록은 처음부터 회원 이름으로 쌓습니다. 로그인한 회원은 익명 ID를 받지 않고, 체험과 성향은 익명 ID와 회원 ID 중 하나를 주인으로 저장하며, 출석 · 꾸미기 · 수집 · 경험치 등 7개 도메인은 회원 키 새 테이블에 저장합니다. 깨지는 테스트가 32개 파일이라 변경을 네 단계로 나눠 병합했습니다.</p>
-      <p data-rv style="--i:6"><b>결과</b> 앱이 멈추지 않은 채 소유가 전환됐습니다. 가져오기 중 충돌은 전부 되돌리고 409로 막습니다.</p>
-    </div>
-    <div class="meta">
-      <div><b>1,131</b><span>통과한 백엔드 테스트</span></div>
-      <div><b>32</b><span>영향받은 테스트 파일</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- 화면 쪽: 서명 -->
-<section class="sign sand gut" aria-labelledby="sg-h">
-  <div class="txt">
-    <h2 id="sg-h" data-rv>되돌릴 수 없는<br><span class="mk">순간을 보이게</span></h2>
-    <p data-rv style="--i:1">제출하면 고칠 수 없는 판결입니다. 확인 상자 대신 서명 획이 0.9초 동안 그려진 뒤 판결을 보내게 했습니다. 확정할 수 없는 사유는 서명할 때가 아니라 장을 넘길 때 미리 보여 줍니다.</p>
-  </div>
-  <div class="sg-demo" id="sgDemo" data-rv style="--i:1">
-    <form id="sgForm" novalidate>
-      <label for="sgName">이름</label>
-      <input id="sgName" name="name" maxlength="12" autocomplete="off" spellcheck="false" placeholder="HelloWorld">
-      <div class="sg-line"><span class="sg-x" aria-hidden="true">서명</span><svg id="sgSvg" width="0" height="0" aria-hidden="true" focusable="false"><path></path></svg></div>
-      <div class="sg-row"><button type="submit" class="sg-go" id="sgGo">서명하고 제출 확정</button><button type="button" class="sg-back" id="sgReset" hidden>다시 해 보기</button></div>
-      <p class="sg-msg" id="sgMsg" role="status" aria-live="polite"></p>
-    </form>
-  </div>
-</section>
-
-<!-- 무대에서 온 개발자 -->
-<section class="stagebase gut" aria-labelledby="sb-h">
-  <h2 id="sb-h" data-rv>무대에서 온<br><span class="mk">개발자의 기준</span></h2>
-  <p class="mut sb-lead" data-rv>공연 프로덕션을 운영하던 경험에서, 만드는 데서 끝나지 않고 쓰이는 방식까지 책임지는 프로덕트 엔지니어를 지향합니다.</p>
-  <ul class="pairs">
-      <li data-rv style="--i:3"><h3>리허설 없이 올리지 않는다 → 확인한 뒤에만 공개한다</h3><p>모델은 감이 아니라 같은 규칙으로 비교해 고르고, 모델의 출력은 검증을 거치게 했습니다. 사건은 관리자가 검수한 뒤에만 공개합니다.</p></li>
-      <li data-rv style="--i:4"><h3>관객의 시선 → 사용자 화면</h3><p>가장 중요한 것을 먼저 보이게 하고, 되돌릴 수 없는 순간은 서명 한 번으로 분명하게 보이게 했습니다.</p></li>
-      <li data-rv style="--i:5"><h3>공연 프로덕션 → 소프트웨어 프로덕트</h3><p>공연은 막이 내리면 끝나지만, 프로덕트는 공개한 뒤부터 쓰입니다. 만드는 데서 끝내지 않고, 관리자가 고친 값이 어디에 영향을 주는지 낡음 표시로 보이게 하고 그 부분만 다시 만들게 했습니다.</p></li>
-      <li data-rv style="--i:6"><h3>음향 큐시트 → 시스템이 맡을 일과 사람이 맡을 일</h3><p>큐시트는 바뀌지 않지만 무대 위 상황은 매일 달랐습니다. 예측할 수 있는 일은 시스템이 맡고, 뜻의 왜곡처럼 판단이 필요한 일은 관리자에게 남겼습니다.</p></li>
-    </ul>
-</section>
-
-<!-- 그 밖의 프로젝트 -->
-<section class="others gut" id="others" aria-labelledby="ot-h">
-  <h2 id="ot-h" data-rv>그 밖의 프로젝트</h2>
-  <article class="proj" id="matcheat" aria-labelledby="me-h">
-    <div class="ttl" data-rv><h3 id="me-h">MatchEAT</h3><p>B2B 케이터링 매칭 · 8월 ~ 9월 (2주) · 4인 · 팀 리딩</p></div>
-    <p data-rv style="--i:1">대량 주문과 판매자를 매칭하고, 실시간 협상으로 견적을 확정합니다. 웹소켓 기반 실시간 채팅을 만들었고, chat · quote · payment 도메인과 통합 병합을 맡았습니다.</p>
-    <ul class="prs">
-      <li data-rv style="--i:2"><b>웹소켓(STOMP) 실시간 채팅</b>채팅방과 견적서를 양방향으로 이어, 협상하는 대화 안에서 견적을 다루게 했습니다. 채팅에서 파일도 주고받을 수 있습니다.</li>
-      <li data-rv style="--i:3"><b>AI 견적 요약</b>대화 로그를 신뢰하지 않고 합의된 값만 반영하며, 모르면 null을 반환합니다. 서버에서 다시 검증합니다.</li>
-      <li data-rv style="--i:4"><b>트러블슈팅 · 병합 뒤 참여자 검증 오류</b>판매자 ID가 사용자 ID와 프로필 ID로 뒤섞였습니다. 승인된 판매자 프로필 ID 기준으로 통일했습니다.</li>
-    </ul>
+        <li class="blk"><span>사건 내용</span><span>U0 U2 U3 U4</span></li>
+        <li class="blk"><span>기사</span><span>U1</span></li>
+        <li class="blk"><span>민감 플래그</span><span>U0 U1 U2 U3 U4</span></li>
+        <li><span>배역</span><span>U2 U3 U4</span></li>
+        <li><span>분위기</span><span>U0 U1 U2 U4</span></li>
+        <li><span>쟁점 유형</span><span>U0 U2 U4</span></li>
+        <li><span>피해자 측</span><span>U0 U3 U4</span></li>
+        <li><span>U0를 고침</span><span>U2 U4</span></li>
+        <li><span>U2를 고침</span><span>U4</span></li>
+      </ul>
+      <p>U0 설계도, U1 1막 해설, U2 재판 도입부, U3 증거조사, U4 3막. <span class="sq" role="img" aria-label="주황 사각형"></span>표시는 승인을 막는 낡음입니다.</p>
+      <p><b>택하지 않은 방식.</b> 사건 조합별 템플릿은 수가 폭발해 분류 축별 블록을 택했습니다. 낡음은 표시가 기본이고 사건 내용, 기사, 민감 플래그가 바뀐 블록만 승인을 막습니다.</p>
+      <p><b>직접 맡은 일.</b> 판결문 비식별화와 적재 자동 실행, 사건 자동 분류, 분류별 지시 블록과 대본 조립기, 블록 단위 승인과 점검 상태 결정, 블록 연동 표, 재생성 소요 측정.</p>
+      <p><b>팀원이 구현한 일.</b> 검증, 자동 수리, 블록 재생성, 낡음 계산과 승인 차단, 관리자 블록 검수 화면.</p>
+      <p>한계: 선형 구조이고 최종 판단은 사람의 검수입니다. DAG로 확장할 여지가 있습니다.</p>
+    </details>
   </article>
-  <article class="proj" id="stocksim" aria-labelledby="ss-h">
-    <div class="ttl" data-rv><h3 id="ss-h">StockSim</h3><p>주식 시뮬레이터 백엔드 · 6월 ~ 7월 (4주) · 4인</p></div>
-    <p data-rv style="--i:1">Spring Boot, JPA, MySQL 기반 학습형 시뮬레이터입니다. JWT 로그인과 인증을 맡았습니다.</p>
-    <ul class="prs">
-      <li data-rv style="--i:2"><b>트러블슈팅 · 토큰 탈취와 로그아웃</b>토큰 하나만 쓰면 로그아웃해도 토큰이 살아 있습니다. 액세스 30분 · 리프레시 14일로 나누고 리프레시를 DB에 저장해 재발급과 로그아웃을 만들었습니다.</li>
-    </ul>
-  </article>
-</section>
 
-<!-- 회고 -->
-<section class="letter-ground navy gut" aria-label="돌아보며">
-  <div class="letter" data-rv>
-    <p>배우를 목표로 연기를 공부했고, 조연출과 무대조감독으로 공연을 만들었습니다. 큐시트는 바뀌지 않지만 무대 위의 상황은 매일 달랐습니다.</p>
-    <p>그래서 <span class="mk">모델의 출력은 검증할 대상으로 보고, 검증을 구조에 넣습니다.</span> 프롬프트로 막히지 않는 것은 코드로 검증합니다.</p>
-    <p>기능을 쓰는 순간보다 쓰고 난 뒤에 남는 것을 기준으로 설계하려 합니다.</p>
-    <p class="sign-off">김해송</p>
-    <ul class="edu">
-      <li><span>학력</span><span>서경대학교 모델연기전공 졸업 (2025)<br>광주과학고등학교 졸업 (2017)</span></li>
-      <li><span>교육</span><span>프로그래머스 데브코스 생성형 AI 활용 백엔드 개발 (2026.05.13 ~ 11.09, 수료 예정)</span></li>
-    </ul>
+  <article class="case slide">
+    <h2>익명 기록을 회원 것으로</h2>
+    <dl>
+      <dt>문제</dt><dd>기록이 익명 쿠키 ID 기준으로 쌓여 있었습니다. 회원 로그인을 붙이며, 이미 쌓인 기록과 앞으로 쌓일 기록의 주인을 정해야 했습니다.</dd>
+      <dt>결정</dt><dd>기존 기록은 첫 로그인 때 가져오기와 초기화를 사용자가 고르게 했고, 앞으로의 기록은 처음부터 회원 이름으로 쌓습니다. 기록은 복사가 아니라 이동으로 옮깁니다.</dd>
+      <dt>결과</dt><dd>앱이 멈추지 않은 채 소유가 전환됐습니다. 깨지는 테스트가 32개 파일이라 변경을 네 단계로 나눠 병합했고, 백엔드 테스트 1,131개가 통과합니다.</dd>
+    </dl>
+    <details>
+      <summary>제약과 검토한 대안</summary>
+      <p><b>제약.</b> 마이그레이션은 추가만 가능했고, 공용 PC에서는 한 브라우저로 여러 사람이 로그인합니다. 복사하면 공용 PC에서 기록이 복제됩니다.</p>
+      <p><b>대안.</b> 전체 키를 바꾸는 통합 owner 테이블 대신, 두 테이블에만 이중 칸을 두었습니다. 체험과 성향은 익명 ID와 회원 ID 중 하나를 주인으로 저장하고, 출석, 꾸미기, 수집, 경험치 등 7개 도메인은 회원 키 새 테이블에 저장합니다.</p>
+      <p>가져오기 중 충돌은 전부 되돌리고 409로 막습니다.</p>
+    </details>
+  </article>
+
+  <div class="sign slide">
+    <div>
+      <h2>되돌릴 수 없는 순간을 보이게</h2>
+    </div>
+    <div class="sg-demo" id="sgDemo">
+      <p class="why">최종 판결 제출의 수정 불가 제약을 ‘닉네임 서명’이라는 무게감 있는 인터랙션으로 은유하여, 유저가 제출의 비가역성을 자연스럽게 납득하도록 유도했습니다.</p>
+      <form id="sgForm" novalidate>
+        <label for="sgName">이름</label>
+        <input id="sgName" name="name" maxlength="12" autocomplete="off" spellcheck="false" placeholder="HelloWorld">
+        <div class="sg-line"><span class="sg-x" aria-hidden="true">서명</span><svg id="sgSvg" width="0" height="0" aria-hidden="true" focusable="false"><path></path></svg></div>
+        <div class="sg-row"><button type="submit" class="sg-go" id="sgGo">서명하고 제출 확정</button><button type="button" class="sg-back" id="sgReset" hidden>다시 해 보기</button></div>
+        <p class="sg-msg" id="sgMsg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
   </div>
 </section>
+<div class="pin-room" aria-hidden="true"></div>
+</div>
 
-<!-- 연락 -->
-<section class="contact gut" id="contact" aria-labelledby="ct-h">
+<div class="cred-wrap">
+<span id="credits" class="anchor"></span>
+<section class="scene credits pre" id="creditsSec" data-scene="credits" data-cue="크레딧 그 밖의 작업" aria-labelledby="cr-h">
+  <h2 id="cr-h" class="bl">그 밖의 작업과 이력</h2>
+  <ul class="roll bl">
+    <li><span class="k">MatchEAT<small>B2B 케이터링 매칭 · 8월 ~ 9월 (2주) · 4인 · 팀 리딩</small></span><span>웹소켓(STOMP) 실시간 채팅으로 협상하는 대화 안에서 견적을 다루게 했습니다. AI 견적 요약은 대화 로그를 신뢰하지 않고 합의된 값만 반영하며, 모르면 null을 반환하고 서버에서 다시 검증합니다. chat, quote, payment 도메인과 통합 병합을 맡았습니다.</span></li>
+    <li><span class="k">StockSim<small>주식 시뮬레이터 백엔드 · 6월 ~ 7월 (4주) · 4인</small></span><span>JWT 로그인과 인증을 맡았습니다. 토큰 하나만 쓰면 로그아웃해도 토큰이 살아 있어서, 액세스 30분과 리프레시 14일로 나누고 리프레시를 DB에 저장해 재발급과 로그아웃을 만들었습니다.</span></li>
+    <li><span class="k">쓰는 기술</span><dl class="kinds"><dt>언어</dt><dd>Java 17 · Python · JavaScript · SQL</dd><dt>프레임워크</dt><dd>Spring Boot · JPA · Security · Spring AI · WebSocket(STOMP)</dd><dt>데이터베이스</dt><dd>PostgreSQL · MySQL · pgvector · Flyway</dd><dt>협업</dt><dd>Git · GitHub PR 리뷰 · Jira · Swagger</dd></dl></li>
+    <li><span class="k">배운 곳</span><span>프로그래머스 데브코스 생성형 AI 활용 백엔드 개발 (2026.05.13 ~ 11.09)<br>서경대학교 모델연기전공 졸업 (2025)<br>광주과학고등학교 졸업 (2017)</span></li>
+  </ul>
+</section>
+<div class="pin-room2" aria-hidden="true"></div>
+</div>
+
+<div class="contact-wrap">
+<span id="contact" class="anchor"></span>
+<section class="scene contact" id="contactSec" data-scene="contact" data-cue="커튼콜 연락" aria-labelledby="ct-h">
   <div class="contact-in">
-    <h2 class="prompt" id="ct-h" data-rv><span>이야기 나눠 보고 싶다면</span>한 줄 남겨 주세요</h2>
-    <form class="field" data-mail data-rv style="--i:1">
-      <label for="msg" class="sm" style="position:absolute;left:-999px">메일로 보낼 내용</label>
-      <textarea id="msg" name="msg" rows="1" placeholder="예: 백엔드 인턴 포지션으로 이야기하고 싶습니다"></textarea>
-      <button type="submit" aria-label="메일 앱으로 보내기"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M10 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2"/></svg></button>
-    </form>
-    <p class="after" data-rv style="--i:2">누르면 메일 앱이 열리고, 적은 내용이 본문에 들어갑니다.</p>
-    <ul class="kv">
-      <li data-rv><span>메일</span><span>figaro0928@gmail.com<button class="copy" type="button" data-copy="figaro0928@gmail.com">복사</button></span></li>
-      <li data-rv style="--i:1"><span>GitHub</span><span><a href="https://github.com/peanutboi710">github.com/peanutboi710</a></span></li>
-      <li data-rv style="--i:2"><span>저장소</span><span><a href="https://github.com/prgrms-aibe-devcourse/AIBE7_FinalProject_Team2">AIBE7_FinalProject_Team2</a></span></li>
-      <li data-rv style="--i:3"><span>사는 곳</span><span>서울시 관악구</span></li>
+    <p class="bl">기능을 쓰는 순간보다 쓰고 난 뒤에 남는 것을 기준으로 설계하려 합니다.</p>
+    <h2 id="ct-h" class="bl">끝까지 읽어주셔서 감사합니다</h2>
+    <ul class="kv bl">
+      <li><span>메일</span><span>figaro0928@gmail.com<button class="copy" type="button" data-copy="figaro0928@gmail.com">복사</button></span></li>
+      <li><span>GitHub</span><span><a href="https://github.com/peanutboi710">github.com/peanutboi710</a></span></li>
+      <li><span>저장소</span><span><a href="https://github.com/prgrms-aibe-devcourse/AIBE7_FinalProject_Team2">AIBE7_FinalProject_Team2</a></span></li>
+      <li><span>사는 곳</span><span>서울시 관악구</span></li>
     </ul>
+    <p class="legal note bl">© 2026 김해송</p>
   </div>
 </section>
+<div class="contact-room" aria-hidden="true"></div>
+</div>
 </main>
 
-<footer class="foot navy gut">
-  <p class="wm">김해송</p>
-  <ul class="foot-nav">
-    <li><a href="#work">작업 목록</a></li>
-    <li><a href="#pipeline">열 단계 파이프라인</a></li>
-    <li><a href="#cases">문제 해결</a></li>
-    <li><a href="#others">그 밖의 프로젝트</a></li>
-    <li><a href="#contact">연락</a></li>
-  </ul>
-  <div class="cols">
-    <p>figaro0928@gmail.com<br>서울시 관악구</p>
-    <p><a href="https://github.com/peanutboi710">GitHub</a><br><a href="https://github.com/prgrms-aibe-devcourse/AIBE7_FinalProject_Team2">내Law남불 저장소</a></p>
-  </div>
-  <p class="legal">화면은 모두 내Law남불 실제 서비스와 관리자 화면입니다. © 2026 김해송</p>
-</footer>
-
 <script>
+/* ===== 무대: 조명기 한 대와 벽에 적힌 글자 ===== */
 (function(){
-  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // 등장
-  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});
-  document.querySelectorAll('[data-rv]').forEach(function(el){io.observe(el)});
+  'use strict';
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var clamp = function(x,a,b){return Math.min(b,Math.max(a,x))};
+  var mix = function(a,b,t){return a+(b-a)*t};
+  var ss = function(a,b,x){var t=clamp((x-a)/(b-a),0,1);return t*t*(3-2*t)};
+  var W=innerWidth,H=innerHeight;
+  var cv=document.getElementById('stage');
+  var WORDS=['김해송','','1','2','3','4','5','6','7','8','9','10','승인','','END',['내Law남불'],['대본 모델은','규칙으로 골랐다'],['대본이 한 번에','통과하지 못하게'],['익명 기록을','회원 것으로'],['되돌릴 수 없는','순간을 보이게']];   // 빈 칸은 글자 없는 벽
+  var L_NAME=0,L_RULES=1,L_NUM=2,L_OK=12,L_CRED=13,L_CONTACT=14,L_ACT=15;
+  var GEL={tung:[1,.886,.69],congo:[.40,.34,1],steel:[.66,.83,1],red:[1,.30,.14],pink:[1,.47,.72]};
+  var CUE_GEL=['steel','congo','red','steel','tung','tung','congo','pink','tung','congo'];
+  var CUE_R=[.50,.42,.36,.50,.56,.30,.44,.50,.60,.30];
+  var gasoek=false;
 
-  // 사례 탭
+  var FRAG=`#version 300 es
+precision highp float; precision highp sampler2DArray;
+uniform vec2 uRes,uFix,uAim; uniform float uTime,uR,uInt,uWash,uAmb,uMix,uLA,uLB,uPaper,uLamp,uInk; uniform vec3 uCol; uniform sampler2DArray uTex;
+out vec4 o;
+float asp; vec3 U_,V_,W_;
+float mk(vec2 p){
+  vec2 uv=vec2(p.x/asp,-p.y)*.5+.5;
+  if(uv.x<0.||uv.x>1.||uv.y<0.||uv.y>1.) return 0.;
+  float a=textureLod(uTex,vec3(uv,uLA),0.).r,b=textureLod(uTex,vec3(uv,uLB),0.).r;
+  return smoothstep(.38,.62,mix(a,b,uMix))*uInk;
+}
+float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);}
+float sdBox(vec3 p,vec3 b){vec3 q=abs(p)-b;return length(max(q,0.))+min(max(q.x,max(q.y,q.z)),0.);}
+float sdCyl(vec3 p,float r,float h){vec2 d=vec2(length(p.xy)-r,abs(p.z)-h);return min(max(d.x,d.y),0.)+length(max(d,0.));}
+float lamp(vec3 q){
+  vec3 pl=vec3(dot(q,U_),dot(q,V_),dot(q,W_));
+  float d=sdCyl(pl-vec3(0.,0.,-.005),.070,.115)-.008;
+  d=min(d,sdCyl(pl-vec3(0.,0.,.125),.084,.016)-.004);
+  d=min(d,length(pl-vec3(0.,0.,-.115))-.066);
+  vec3 Fh=cross(U_,vec3(0.,1.,0.));
+  vec3 y=vec3(dot(q,U_),q.y,dot(q,Fh));
+  d=min(d,sdBox(vec3(abs(y.x)-.098,y.y-.07,y.z),vec3(.007,.078,.02)));
+  d=min(d,sdBox(y-vec3(0.,.148,0.),vec3(.105,.008,.02)));
+  d=min(d,sdBox(y-vec3(0.,.215,0.),vec3(.011,.062,.011)));
+  d=min(d,sdBox(y-vec3(0.,.30,0.),vec3(.03,.036,.034)));
+  return d;
+}
+void main(){
+  asp=uRes.x/uRes.y;
+  vec2 p=(gl_FragCoord.xy*2.-uRes)/uRes.y;
+  W_=normalize(vec3(uAim-uFix,-.9)); U_=normalize(cross(vec3(0.,1.,0.),W_)); V_=cross(W_,U_);
+  vec2 lens=uFix+W_.xy*.13;
+  // wall and the letters painted on it
+  float m=mk(p);
+  vec2 tl=normalize(lens-p+1e-5);
+  float sh=0.; for(int i=1;i<=5;i++) sh+=mk(p+tl*(.011*float(i))); sh/=5.;
+  vec2 a=uAim-lens; float Ld=length(a)+1e-5; vec2 ad=a/Ld;
+  vec2 q=p-uAim; vec2 qq=vec2(dot(q,ad)/(1.+.28*Ld),dot(q,vec2(-ad.y,ad.x)));
+  float l=length(qq)/uR;
+  float I=smoothstep(1.,.70,l)*(.82+.18*smoothstep(.9,0.,l));
+  float alb=mix(.085*(1.-.8*sh*(1.-m)),1.,m);
+  float bounce=.13*exp(-l*l*.22);                       // 벽에서 되튄 빛
+  vec3 col=alb*(uCol*(uAmb+uInt*(I+bounce))+vec3(1.,.90,.74)*uWash*.85);
+  col*=mix(.92+.16*noise(p*38.),1.,max(m,uPaper));                  // 벽에만 얼룩, 글자는 깨끗하게
+  // 1막: 남색 벽. 봉에서 조명 두 대가 더 내려와 벽 전체가 밝혀져 있다
+  if(uPaper>.001){
+    float py2=uFix.y+.30;
+    vec2 s1=vec2(-.62*asp,py2),a1=vec2(-.30*asp,-.15),s2=vec2(-.02*asp,py2),a2=vec2(.12*asp,-.35);
+    float f1=exp(-dot(p-a1,p-a1)/1.1),f2=exp(-dot(p-a2,p-a2)/1.4);
+    vec3 wc=mix(vec3(.085,.118,.285),vec3(1.,.95,.86),m);
+    float Lg=.36+.50*f1+.42*f2+uInt*(I*.85+bounce);
+    vec3 cp=wc*Lg*(1.-.6*sh*(1.-m))*mix(vec3(1.),uCol,.22*I);
+    col=mix(col,cp,uPaper);
+    vec2 d1=a1-s1,d2=a2-s2; float L1=length(d1),L2=length(d2);
+    float t1=dot(p-s1,d1)/(L1*L1),w1=abs(dot(p-s1,vec2(-d1.y,d1.x)/L1)),t2=dot(p-s2,d2)/(L2*L2),w2=abs(dot(p-s2,vec2(-d2.y,d2.x)/L2));
+    float r1=mix(.03,.55,clamp(t1,0.,1.)),r2=mix(.03,.62,clamp(t2,0.,1.));
+    col+=uPaper*.04*(vec3(1.,.86,.62)*smoothstep(r1,r1*.4,w1)*smoothstep(0.,.08,t1)*(1.-smoothstep(.7,1.1,t1))+vec3(.66,.78,1.)*smoothstep(r2,r2*.4,w2)*smoothstep(0.,.08,t2)*(1.-smoothstep(.7,1.1,t2)));
+  }
+  // beam through the haze
+  float t=dot(p-lens,ad)/Ld, s=abs(dot(p-lens,vec2(-ad.y,ad.x)));
+  float r=mix(.03,uR*.92,clamp(t,0.,1.));
+  float beam=smoothstep(r,r*.55,s)*smoothstep(-.02,.05,t)*(1.-smoothstep(.85,1.05,t))*(1.-.55*t);
+  beam*=.6+.4*noise(p*5.+vec2(uTime*.05,-uTime*.03));
+  col+=uCol*beam*uInt*.20*(1.-uWash*.7);
+  // the pipe it hangs from
+  float py=(p.y-(uFix.y+.30))/.022;
+  if(uLamp>.5&&abs(py)<1.) col=mix(col,vec3(.035,.035,.04)+.10*sqrt(1.-py*py)*(.6-.4*py),smoothstep(1.,.85,abs(py)));
+  // the fixture
+  vec2 lq=p-uFix;
+  if(uLamp>.5&&abs(lq.x)<.2&&lq.y>-.2&&lq.y<.36){
+    float z=.6,dm=1e9,zm=z; bool hit=false;
+    for(int i=0;i<40;i++){float d=lamp(vec3(lq,z)); if(d<dm){dm=d;zm=z;} if(d<.0008){hit=true;break;} z-=d; if(z<-.6)break;}
+    float cov=hit?1.:1.-smoothstep(0.,3./uRes.y,dm);
+    if(cov>.01){
+      vec3 P=vec3(lq,hit?z:zm); vec2 e=vec2(.0012,0.);
+      vec3 n=normalize(vec3(lamp(P+e.xyy)-lamp(P-e.xyy),lamp(P+e.yxy)-lamp(P-e.yxy),lamp(P+e.yyx)-lamp(P-e.yyx)));
+      vec3 kl=normalize(vec3(-.5,.6,.6));
+      vec3 c=vec3(.05,.05,.056)+.17*max(dot(n,kl),0.)+.3*pow(max(dot(reflect(vec3(0.,0.,-1.),n),kl),0.),28.);
+      c+=pow(1.-clamp(n.z,0.,1.),3.)*.38*uCol*uInt;
+      c+=vec3(1.,.90,.74)*uWash*.12*max(n.z,0.);
+      vec3 pl=vec3(dot(P,U_),dot(P,V_),dot(P,W_));
+      if(pl.z>.138&&length(pl.xy)<.08) c=uCol*uInt*1.6;
+      col=mix(col,c,cov);
+    }
+  }
+  col*=1.-.35*smoothstep(.9,1.9,length(p*vec2(.75,1.)));
+  col+=(hash(gl_FragCoord.xy+fract(uTime)*71.)-.5)*.034*(1.-m);   // 필름 그레인, 전 구간
+  o=vec4(col,1.);
+}`;
+  var VERT='#version 300 es\nvoid main(){vec2 p=vec2(float((gl_VertexID<<1)&2),float(gl_VertexID&2));gl_Position=vec4(p*2.-1.,0.,1.);}';
 
-  // 메일
-  var f=document.querySelector('[data-mail]');
-  f.addEventListener('submit',function(e){e.preventDefault();var v=f.msg.value.trim();location.href='mailto:figaro0928@gmail.com?subject='+encodeURIComponent('포트폴리오를 보고 연락드립니다')+'&body='+encodeURIComponent(v)});
+  var gl=null,U={},tex=null;
+  try{
+    gl=cv.getContext('webgl2',{antialias:false,alpha:false});
+    if(gl){
+      var sh=function(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(o));return o};
+      var pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VERT));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FRAG));gl.linkProgram(pr);
+      if(!gl.getProgramParameter(pr,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(pr));
+      gl.useProgram(pr);
+      ['uRes','uFix','uAim','uTime','uR','uInt','uWash','uAmb','uMix','uLA','uLB','uPaper','uLamp','uInk','uCol','uTex'].forEach(function(n){U[n]=gl.getUniformLocation(pr,n)});
+    }
+  }catch(e){console.error(e);gl=null}
+  if(!gl) document.documentElement.classList.add('nogl');
+
+  var lobster=false;
+  function script(px){return lobster?'400 '+px+'px "Lobster"':'italic 900 '+px+'px "Snell Roundhand","Brush Script MT","Segoe Script",cursive'}
+  function face(px){return gasoek?'400 '+px+'px "Gasoek One"':'900 '+px+'px "Black Han Sans","Noto Sans CJK KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif'}
+  function paint(){
+    if(!gl)return;
+    var dpr=Math.min(devicePixelRatio||1,2),tw=Math.min(1280,Math.round(W*dpr)),th=Math.round(tw*H/W);
+    if(th>1600){tw=Math.round(tw*1600/th);th=1600}
+    var c=document.createElement('canvas');c.width=tw;c.height=th;var x=c.getContext('2d',{willReadFrequently:true});
+    if(tex)gl.deleteTexture(tex);
+    tex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D_ARRAY,tex);gl.pixelStorei(gl.UNPACK_ALIGNMENT,1);
+    gl.texStorage3D(gl.TEXTURE_2D_ARRAY,1,gl.R8,tw,th,WORDS.length);
+    var tall=W/H<0.8,buf=new Uint8Array(tw*th);
+    WORDS.forEach(function(w,i){
+      x.fillStyle='#000';x.fillRect(0,0,tw,th);x.fillStyle='#fff';x.textBaseline='alphabetic';x.textAlign='left';
+      var buf0=function(){var d=x.getImageData(0,0,tw,th).data;for(var k=0;k<buf.length;k++)buf[k]=d[k*4];gl.texSubImage3D(gl.TEXTURE_2D_ARRAY,0,0,0,i,tw,th,1,gl.RED,gl.UNSIGNED_BYTE,buf)};
+      if(!w){buf0();return}
+      var num=i>=L_NUM&&i<L_NUM+10, side=num||i===L_OK||i===L_CONTACT;      // side: 글자를 오른쪽(세로 화면은 위쪽)에 둔다
+      var act=i>=L_ACT;
+      var lines=act?w:(!side&&tall&&w.length>1)?Array.from(w):[w];
+      var ten=w==='10';
+      var cx=side?(tall?.5:(ten?.63:num?.68:.71))*tw:tw/2, cy=act?(tall?.27:.36)*th:side?(tall?.29:.5)*th:(tall?.37:.44)*th;
+      var fw=side?(tall?(ten?.9:.78):(ten?.7:num?.5:.52))*tw:tw*.92, fh=act?(tall?.22:.36)*th:side?(tall?.32:.72)*th:th*(tall?.60:.62);
+      var ff=i===L_CONTACT?script:face;
+      x.font=ff(100);
+      var ms=lines.map(function(l){return x.measureText(l)});
+      var wOf=function(m){return m.actualBoundingBoxLeft+m.actualBoundingBoxRight};
+      var asc=Math.max.apply(null,ms.map(function(m){return m.actualBoundingBoxAscent})),desc=Math.max.apply(null,ms.map(function(m){return m.actualBoundingBoxDescent}));
+      var lh=asc+desc,gap=lh*.1,total=lines.length*lh+(lines.length-1)*gap;
+      var s=Math.min(fw/Math.max.apply(null,ms.map(wOf)),fh/total)*.86;
+      x.font=ff(100*s);
+      var y=cy-total*s/2;
+      lines.forEach(function(l,j){x.fillText(l,cx-wOf(ms[j])*s/2+ms[j].actualBoundingBoxLeft*s,y+asc*s);y+=(lh+gap)*s});
+      buf0();
+    });
+    gl.texParameteri(gl.TEXTURE_2D_ARRAY,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D_ARRAY,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D_ARRAY,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D_ARRAY,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+  }
+  paint();
+  if(document.fonts&&document.fonts.load){
+    document.fonts.load('400 100px "Gasoek One"',WORDS.map(function(w){return [].concat(w).join('')}).join('')).then(function(r){if(r&&r.length){gasoek=true;paint()}}).catch(function(){});
+    document.fonts.load('400 100px "Lobster"','END').then(function(r){if(r&&r.length){lobster=true;paint()}}).catch(function(){});
+  }
+
+
+  /* --- 조명기만 따로 한 겹 더: 글자보다 위에 그린다 --- */
+  var navEl=document.querySelector('.hud nav');
+  // 조명기는 봉을 따라 끌어 옮길 수 있다. 지금 자리가 오른쪽 끝(1), 좌우 대칭인 자리가 왼쪽 끝(-1)
+  var lampK=1,lampDrag=null;
+  (function(){var el=document.getElementById('lamp');
+    el.addEventListener('pointerdown',function(e){lampDrag={x:e.clientX,k:lampK};el.setPointerCapture(e.pointerId);el.classList.add('drag');e.preventDefault()});
+    el.addEventListener('pointermove',function(e){if(!lampDrag)return;var asp=W/H,fx0=(asp<0.8?.42:.60)*asp,half=fx0/asp*.5*W;lampK=clamp(lampDrag.k+(e.clientX-lampDrag.x)/half,-1,1)});
+    var end=function(){lampDrag=null;el.classList.remove('drag')};el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);
+  })();
+  var lampCv=document.getElementById('lamp'),pipeEl=document.getElementById('pipe'),lg=null,LU={};
+  var LFRAG=`#version 300 es
+precision highp float;
+uniform vec2 uRes; uniform vec3 uDir,uCol; uniform float uInt,uWash;
+out vec4 o; vec3 U_,V_,W_;
+float sdBox(vec3 p,vec3 b){vec3 q=abs(p)-b;return length(max(q,0.))+min(max(q.x,max(q.y,q.z)),0.);}
+float sdCyl(vec3 p,float r,float h){vec2 d=vec2(length(p.xy)-r,abs(p.z)-h);return min(max(d.x,d.y),0.)+length(max(d,0.));}
+float lamp(vec3 q){
+  vec3 pl=vec3(dot(q,U_),dot(q,V_),dot(q,W_));
+  float d=sdCyl(pl-vec3(0.,0.,-.005),.070,.115)-.008;
+  d=min(d,sdCyl(pl-vec3(0.,0.,.125),.084,.016)-.004);
+  d=min(d,length(pl-vec3(0.,0.,-.115))-.066);
+  vec3 Fh=cross(U_,vec3(0.,1.,0.));
+  vec3 y=vec3(dot(q,U_),q.y,dot(q,Fh));
+  d=min(d,sdBox(vec3(abs(y.x)-.098,y.y-.07,y.z),vec3(.007,.078,.02)));
+  d=min(d,sdBox(y-vec3(0.,.148,0.),vec3(.105,.008,.02)));
+  d=min(d,sdBox(y-vec3(0.,.215,0.),vec3(.011,.062,.011)));
+  d=min(d,sdBox(y-vec3(0.,.30,0.),vec3(.03,.036,.034)));
+  return d;
+}
+void main(){
+  W_=normalize(uDir); U_=normalize(cross(vec3(0.,1.,0.),W_)); V_=cross(W_,U_);
+  vec2 lq=vec2((gl_FragCoord.x/uRes.x-.5)*.4,gl_FragCoord.y/uRes.y*.56-.2);
+  float z=.6,dm=1e9,zm=z; bool hit=false;
+  for(int i=0;i<40;i++){float d=lamp(vec3(lq,z)); if(d<dm){dm=d;zm=z;} if(d<.0008){hit=true;break;} z-=d; if(z<-.6)break;}
+  float cov=hit?1.:1.-smoothstep(0.,.56*1.5/uRes.y,dm);
+  if(cov<.01){o=vec4(0.);return;}
+  vec3 P=vec3(lq,hit?z:zm); vec2 e=vec2(.0012,0.);
+  vec3 n=normalize(vec3(lamp(P+e.xyy)-lamp(P-e.xyy),lamp(P+e.yxy)-lamp(P-e.yxy),lamp(P+e.yyx)-lamp(P-e.yyx)));
+  vec3 kl=normalize(vec3(-.5,.6,.6));
+  vec3 c=vec3(.05,.05,.056)+.17*max(dot(n,kl),0.)+.3*pow(max(dot(reflect(vec3(0.,0.,-1.),n),kl),0.),28.);
+  c+=pow(1.-clamp(n.z,0.,1.),3.)*.38*uCol*uInt;
+  c+=vec3(1.,.90,.74)*uWash*.12*max(n.z,0.);
+  vec3 pl=vec3(dot(P,U_),dot(P,V_),dot(P,W_));
+  if(pl.z>.138&&length(pl.xy)<.08) c=uCol*uInt*1.6;
+  o=vec4(c*cov,cov);
+}`;
+  if(gl){try{
+    lg=lampCv.getContext('webgl2',{alpha:true,premultipliedAlpha:true,antialias:false});
+    var lsh=function(t,src){var o=lg.createShader(t);lg.shaderSource(o,src);lg.compileShader(o);if(!lg.getShaderParameter(o,lg.COMPILE_STATUS))throw new Error(lg.getShaderInfoLog(o));return o};
+    var lp=lg.createProgram();lg.attachShader(lp,lsh(lg.VERTEX_SHADER,VERT));lg.attachShader(lp,lsh(lg.FRAGMENT_SHADER,LFRAG));lg.linkProgram(lp);
+    if(!lg.getProgramParameter(lp,lg.LINK_STATUS))throw new Error(lg.getProgramInfoLog(lp));
+    lg.useProgram(lp);['uRes','uDir','uCol','uInt','uWash'].forEach(function(n){LU[n]=lg.getUniformLocation(lp,n)});lg.clearColor(0,0,0,0);
+  }catch(e){console.error(e);lg=null;lampCv.style.display='none';pipeEl.style.display='none'}}
+
+  /* --- scenes and cues --- */
+  var scenes=[].slice.call(document.querySelectorAll('[data-scene]'));
+  var track=document.querySelector('.cue-track'),stageEl=document.getElementById('cueStage');
+  var items=[].slice.call(document.querySelectorAll('.cues li'));
+  var goBtn=document.getElementById('goBtn'),nowcue=document.getElementById('nowcue'),clock=document.getElementById('clock');
+  var approved=false,curCue=-2,curLabel='';
+  var dark=reduce?null:document.getElementById('dark'),paperEl=document.getElementById('reportSec'),paperWrap=document.querySelector('.paper-wrap'),credEl=document.getElementById('creditsSec'),heroEl=document.querySelector('.hero'),rulesEl=document.querySelector('.rules'),contactEl=document.getElementById('contactSec'),darkOp=-1,auto=0;
+  var slideEls=[].slice.call(document.querySelectorAll('#slides .slide')),rtabs=[].slice.call(document.querySelectorAll('#rtabs button')),curSlide=-1;
+  rtabs.forEach(function(b,i){b.addEventListener('click',function(){window.scrollTo({top:trackEnd()+H*.62+H*.7*(i+.35),behavior:reduce?'auto':'smooth'})})});
+  var rowEls=[].slice.call(document.querySelectorAll('.pairs li, .pipe-intro')),footEl=document.querySelector('.rules-foot'),rowP=-1;
+  function fade(el,o){if(el._o===o)return;el._o=o;el.style.opacity=o.toFixed(3);el.style.pointerEvents=o<.5?'none':'auto';el.style.visibility=o<=0?'hidden':''}
+  var UNITS=12.4;      // 큐 10 + 승인 1.5 + 암전 0.9
+  function trackEnd(){var r=track.getBoundingClientRect();return r.bottom+scrollY-H}   // 암전이 끝나고 보고서가 서는 자리
+  function cueProgress(){var r=track.getBoundingClientRect(),span=r.height-H;return span>0?clamp(-r.top/span,0,1)*UNITS:0}
+  items.forEach(function(li,i){li.querySelector('.cue-h').addEventListener('click',function(){
+    var r=track.getBoundingClientRect(),span=r.height-H;window.scrollTo({top:scrollY+r.top+span*(i+.5)/UNITS,behavior:reduce?'auto':'smooth'})})});
+  goBtn.addEventListener('click',function(){
+    if(!approved){
+      approved=true;goBtn.textContent='공개';goBtn.classList.add('open');goBtn.setAttribute('aria-label','공개하고 보고서로 넘어가기');
+      document.getElementById('apState').textContent='GO · 관리자 승인';
+      document.getElementById('apHead').textContent='승인됨. 막이 오릅니다';
+      document.getElementById('apNote').textContent='로컬 도구로 21건을 시험 생성해 검수와 테스트를 통과했습니다. 앞 단계를 다시 돌리면 뒤 단계 결과는 지워, 오래된 결과가 섞이지 않게 했습니다.';
+      document.getElementById('tally').hidden=false;
+      return;
+    }
+    // 공개: 암전을 지나 보고서가 다 밝아지는 자리까지 스스로 내려간다
+    var from=scrollY,to=trackEnd()+H*.7,t0=performance.now(),dur=reduce?1:2600;
+    cancelAnimationFrame(auto);
+    (function step(now){var k=clamp((now-t0)/dur,0,1),e=k*k*(3-2*k);window.scrollTo({top:from+(to-from)*e,behavior:'instant'});if(k<1)auto=requestAnimationFrame(step)})(t0);
+  });
+  addEventListener('wheel',function(){cancelAnimationFrame(auto)},{passive:true});addEventListener('touchstart',function(){cancelAnimationFrame(auto)},{passive:true});
+
+  /* --- light state --- */
+  var S={ax:0,ay:0,R:.4,int:0,wash:0,paper:0,ink:1,amb:.085,col:GEL.tung.slice(),la:L_NAME,lb:L_NAME,mixT:1,want:L_NAME};
+  var ptr={x:0,y:0,t:-1e9};
+  addEventListener('pointermove',function(e){ptr.x=e.clientX/W*2-1;ptr.y=-(e.clientY/H*2-1);ptr.t=performance.now()},{passive:true});
+  function setWall(i){ if(i===S.want)return; S.want=i; if(reduce){S.la=S.lb=i;S.mixT=1;return} S.la=S.mixT>.5?S.lb:S.la; S.lb=i; S.mixT=0; }
+  var t0=performance.now(),last=t0,lastClock=0,prevName='';
+  function fit(){var pr=Math.min(devicePixelRatio||1,1.5),w=Math.round(W*pr),h=Math.round(H*pr);if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h}}
+
+  function frame(now){
+    requestAnimationFrame(frame);
+    var dt=Math.min(.05,(now-last)/1000);last=now;
+    if(document.hidden)return;
+    var T=(now-t0)/1000,asp=W/H,tall=asp<0.8;
+    if(now-lastClock>500){lastClock=now;var s=Math.floor(T);clock.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
+
+    // which scene holds the middle of the screen
+    var sc=null;for(var i=0;i<scenes.length;i++){var r=scenes[i].getBoundingClientRect();if(r.top<=H/2&&r.bottom>=H/2){sc=scenes[i];break}}
+    var E=trackEnd(),E2=paperWrap.getBoundingClientRect().bottom+scrollY-H,inCred=scrollY>=E2-1,inPaper=scrollY>=E-1&&!inCred;
+    if(inPaper)sc=paperEl;
+    if(inCred)sc=scrollY<E2+H*1.62?credEl:contactEl;
+    if(scrollY<H*.9)sc=scrollY<H*.42?heroEl:rulesEl;
+    else if(sc===heroEl)sc=rulesEl;
+    var rr=clamp((scrollY-H*.9)/(H*.6),0,5.999),rp=Math.min(5,Math.floor(rr)+ss(.5,1,rr-Math.floor(rr)));
+    if(rp!==rowP){rowP=rp;rowEls.forEach(function(li,i){var d=i-rp;li.style.transform='translateX('+(d*W*1.05).toFixed(1)+'px)';li.style.visibility=Math.abs(d)>=1?'hidden':''});footEl.style.opacity=(1-ss(3.05,3.6,rp)).toFixed(3)}
+    fade(heroEl,1-ss(H*.05,H*.38,scrollY));fade(rulesEl,ss(H*.46,H*.84,scrollY));
+    fade(credEl,1-ss(E2+H*1.25,E2+H*1.6,scrollY));fade(contactEl,ss(E2+H*1.65,E2+H*2.05,scrollY));
+    if(credEl.classList.contains('pre')===inCred)credEl.classList.toggle('pre',!inCred);
+    var si=clamp(Math.floor((scrollY-E-H*.62)/(H*.7)),0,slideEls.length-1);
+    if(si!==curSlide){curSlide=si;slideEls.forEach(function(el,i){el.classList.toggle('on',i===si)});rtabs.forEach(function(b,i){b.classList.toggle('on',i===si)})}
+    if(paperEl.classList.contains('pre')===inPaper){paperEl.classList.toggle('pre',!inPaper);stageEl.classList.toggle('gone',inPaper||inCred)}
+    var name=sc?sc.dataset.scene:'hero',label=sc&&sc.dataset.cue||'';
+
+    // targets
+    var tg={px:tall?0:-.25*asp,py:tall?.3:.05,R:.42,int:1.05,wash:0,paper:0,gel:GEL.tung,follow:1,wall:L_NAME};
+    var cue=-1,ap=false;
+    if(name==='rules'){tg.px=.25*asp;tg.py=0;tg.R=.5;tg.gel=GEL.steel;tg.wall=L_RULES}
+    else if(name==='cues'){
+      var u=cueProgress(),tr=track.getBoundingClientRect();
+      cue=tr.top>H*.5?0:Math.min(9,Math.floor(u));ap=u>=10;
+      tg.px=tall?0:.36*asp;tg.py=tall?.40:.02;tg.follow=1;
+      tg.R=CUE_R[cue];tg.gel=GEL[CUE_GEL[cue]];tg.wall=tr.top>1?L_RULES:L_NUM+cue;
+      if(ap){
+        if(approved){tg.wash=1;tg.int=.25;tg.R=.6;tg.gel=GEL.tung;tg.wall=L_OK;tg.follow=.1}
+        else{var b=goBtn.getBoundingClientRect();tg.px=((b.left+b.width/2)/W*2-1)*asp;tg.py=-((b.top+b.height/2)/H*2-1);tg.R=.2;tg.gel=GEL.red;tg.follow=0;tg.wall=L_NUM+9;tg.int=.9}
+      }
+      label=ap?(approved?'GO 관리자 승인':'대기 관리자 승인'):'Q'+(cue+1)+' '+items[cue].querySelector('b').textContent;
+    }
+    else if(name==='credits'){tg.px=.2*asp;tg.py=.1;tg.R=.46;tg.gel=GEL.congo;tg.wall=L_CRED}
+    else if(name==='contact'){tg.px=tall?0:.36*asp;tg.py=tall?.42:.02;tg.R=.5;tg.follow=1;tg.wall=L_CONTACT}
+    else if(name==='paper'){tg.paper=1;tg.R=.5;tg.px=tall?0:-.2*asp;tg.py=.36;tg.wall=L_ACT+Math.max(0,curSlide)}
+
+    if(name==='cues'){
+      var key=ap?10:cue;
+      if(key!==curCue){curCue=key;items.forEach(function(li,i){li.classList.toggle('on',i===cue&&!ap)});stageEl.classList.toggle('ap',ap)}
+    }
+    if(label!==curLabel){curLabel=label;nowcue.textContent=label}
+    // 암전: 승인 뒤 스크롤하면 꺼지고, 더 내리면 맨 위에 선 보고서가 밝아진다. 보고서 끝에서도 한 번 꺼졌다 켜진다
+    if(dark){
+      var op=inCred?1-ss(0,H*.62,scrollY-E2):inPaper?Math.max(1-ss(0,H*.62,scrollY-E),ss(E2-H*.6,E2-H*.06,scrollY)):ss(11.5,12.3,cueProgress());
+      if(op!==darkOp){darkOp=op;dark.style.opacity=op.toFixed(3)}}
+    if(!gl)return;
+
+    var snap=dark&&(darkOp>.97||(name!==prevName&&(name==='paper'||prevName==='paper')));prevName=name;
+    if(snap){S.la=S.lb=S.want=tg.wall;S.mixT=1;S.paper=tg.paper;S.wash=tg.wash;S.R=tg.R;S.int=tg.int;S.col=tg.gel.slice();S.ink=1}
+    if(name==='paper'&&!snap&&!reduce){
+      if(tg.wall!==S.lb||S.mixT<1){S.ink=Math.max(0,S.ink-dt/.3);if(S.ink<=0){S.la=S.lb=S.want=tg.wall;S.mixT=1}}
+      else S.ink=Math.min(1,S.ink+dt/.45);
+    }else{S.ink=Math.min(1,S.ink+dt/.3);setWall(tg.wall)}
+    // aim: preset, pulled toward the pointer; wanders when nobody is steering
+    var idle=now-ptr.t>4000;
+    var cx=idle?tg.px+(reduce?0:Math.sin(T*.4)*.3*asp):ptr.x*asp, cy=idle?tg.py+(reduce?0:Math.cos(T*.31)*.16):ptr.y;
+    var ax=mix(tg.px,cx,tg.follow),ay=mix(tg.py,cy,tg.follow);
+    var e=Math.min(1,dt*(idle?2:7)),e2=Math.min(1,dt*3.2);
+    S.ax+=(ax-S.ax)*e;S.ay+=(ay-S.ay)*e;
+    S.R+=(tg.R-S.R)*e2;S.int+=(tg.int-S.int)*e2;S.wash+=(tg.wash-S.wash)*Math.min(1,dt*2);S.paper+=(tg.paper-S.paper)*Math.min(1,dt*9);
+    for(var k=0;k<3;k++)S.col[k]+=(tg.gel[k]-S.col[k])*e2;
+    if(S.mixT<1)S.mixT=Math.min(1,S.mixT+dt/.5);
+    var dip=reduce?1:1-.9*Math.sin(Math.PI*S.mixT);
+    var on=reduce?1:(T<.15?0:T<.3?1:T<.45?.3:ss(.45,.9,T));
+
+    var nr=navEl.getBoundingClientRect(),navCy=nr.top+nr.height/2;
+    var fx0=tall?.42*asp:.60*asp,fx=fx0*lampK,fy=.70-2*navCy/H;      // 파이프 중심이 메뉴 글자 높이에 오도록
+    fit();gl.viewport(0,0,cv.width,cv.height);
+    gl.uniform2f(U.uRes,cv.width,cv.height);gl.uniform2f(U.uFix,fx,fy);gl.uniform2f(U.uAim,S.ax,S.ay);
+    gl.uniform1f(U.uTime,reduce?0:T);gl.uniform1f(U.uR,S.R*1.3);gl.uniform1f(U.uInt,S.int*dip*on);gl.uniform1f(U.uWash,S.wash);gl.uniform1f(U.uAmb,S.amb);gl.uniform1f(U.uPaper,S.paper);gl.uniform1f(U.uLamp,lg?0:1);gl.uniform1f(U.uInk,S.ink);
+    gl.uniform1f(U.uMix,ss(.35,.65,S.mixT));gl.uniform1f(U.uLA,S.la);gl.uniform1f(U.uLB,S.lb);
+    gl.uniform3f(U.uCol,S.col[0],S.col[1],S.col[2]);
+    gl.drawArrays(gl.TRIANGLES,0,3);
+    if(lg){
+      var bw=.2*H,bh=.28*H,lx=(fx/asp*.5+.5)*W-bw/2,ly=(1-((fy+.36)*.5+.5))*H,key=W+'x'+H+'x'+Math.round(navCy)+'x'+lampK.toFixed(4);
+      if(lampCv._k!==key){lampCv._k=key;lampCv.style.cssText+=';left:'+lx+'px;top:'+ly+'px;width:'+bw+'px;height:'+bh+'px';
+        var lpr=Math.min(devicePixelRatio||1,2);lampCv.width=Math.round(bw*lpr);lampCv.height=Math.round(bh*lpr);
+        var ph=Math.max(.022*H,26);pipeEl.style.top=(navCy-ph/2)+'px';pipeEl.style.height=ph+'px'}
+      lg.viewport(0,0,lampCv.width,lampCv.height);lg.clear(lg.COLOR_BUFFER_BIT);
+      lg.uniform2f(LU.uRes,lampCv.width,lampCv.height);lg.uniform3f(LU.uDir,S.ax-fx,S.ay-fy,-.9);
+      lg.uniform3f(LU.uCol,S.col[0],S.col[1],S.col[2]);lg.uniform1f(LU.uInt,S.int*dip*on);lg.uniform1f(LU.uWash,S.wash);
+      lg.drawArrays(lg.TRIANGLES,0,3);
+    }
+  }
+  requestAnimationFrame(frame);
+  var rz=0;addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(function(){var nw=innerWidth,nh=innerHeight;if(nw===W&&(nh===H||matchMedia('(pointer: coarse)').matches))return;W=nw;H=nh;paint()},160)});
+})();
+
+/* ===== 메일과 복사 ===== */
+(function(){
   document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',function(){var t=b.dataset.copy;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){b.textContent='복사됨';setTimeout(function(){b.textContent='복사'},1600)},function(){var r=document.createRange();r.selectNodeContents(b.previousSibling||b.parentNode);var s=getSelection();s.removeAllRanges();s.addRange(r)})})});
 })();
 
-/* 서명: 내Law남불 최종 발표의 서명 함수(frontend utils/signature.js를 옮긴 것)를 그대로 가져왔다. 같은 이름은 늘 같은 서명이다 */
+/* ===== 서명: 내Law남불 frontend utils/signature.js를 옮긴 것. 같은 이름은 늘 같은 서명이다 ===== */
 (function(){
   var TAU=Math.PI*2,BASE=50,MIN_MS=800,MAX_MS=1200,SHORT_LEN=160,LONG_LEN=680;
   function hash(text){var h=2166136261;for(var ch of text){h^=ch.codePointAt(0);h=Math.imul(h,16777619)>>>0}return h>>>0}
@@ -742,22 +960,6 @@ tr.pick td:last-child{color:var(--bronze)}
   });
   again.addEventListener('click',function(){token++;clear();svg.setAttribute('aria-hidden','true');svg.removeAttribute('role');svg.removeAttribute('aria-label');
     box.classList.remove('done');input.disabled=false;go.disabled=false;again.hidden=true;msg.textContent='';input.focus();preview()});
-})();
-/* 열 단계 박스와 낡음 표 버튼을 누르면 팝업으로 띄운다 */
-(function(){
-  var d=document.getElementById('pdlg');if(!d||!d.showModal)return;
-  var c=d.querySelector('.pdlg-c'),t=d.querySelector('.pdlg-t'),b=d.querySelector('.pdlg-body');
-  [].slice.call(document.querySelectorAll('.pl .pbox[data-ex], .dep-btn[data-ex]')).forEach(function(x){
-    x.addEventListener('click',function(){
-      var tpl=document.getElementById(x.getAttribute('data-ex'));if(!tpl)return;
-      c.textContent=x.querySelector('code').textContent;t.textContent=x.querySelector('b').textContent;
-      b.replaceChildren(tpl.content.cloneNode(true));
-      document.documentElement.classList.add('lock');d.showModal();
-    });
-  });
-  d.addEventListener('click',function(e){if(e.target===d)d.close()});
-  d.querySelector('.pdlg-x').addEventListener('click',function(){d.close()});
-  d.addEventListener('close',function(){document.documentElement.classList.remove('lock')});
 })();
 </script>
 </body>
