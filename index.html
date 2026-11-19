@@ -2,10 +2,13 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"}}</script>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>김해송 포트폴리오</title>
 <meta name="description" content="무대에서 온 백엔드 개발자 김해송의 포트폴리오. 판결문 한 건을 AI 판결과 체험 대본으로 바꿔 공개하기까지의 열 단계를 큐시트로 보여 줍니다.">
 <meta name="theme-color" content="#0A0908">
+<link rel="alternate" type="text/markdown" href="portfolio.md" title="김해송 포트폴리오 텍스트 판">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"김해송","jobTitle":"백엔드 개발자","description":"조연출과 무대조감독으로 공연을 만들었고, 지금은 AI가 만든 결과를 검증하고 사람이 최종 판단하는 서비스를 만드는 백엔드 개발자","email":"mailto:figaro0928@gmail.com","address":{"@type":"PostalAddress","addressLocality":"서울시 관악구","addressCountry":"KR"},"sameAs":["https://github.com/peanutboi710"],"knowsAbout":["Java","Spring Boot","Spring AI","PostgreSQL","pgvector","WebSocket(STOMP)","LLM 파이프라인 검증"],"alumniOf":[{"@type":"EducationalOrganization","name":"서경대학교"},{"@type":"EducationalOrganization","name":"광주과학고등학교"}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gasoek+One&family=Lobster&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
@@ -34,10 +37,15 @@ p{text-wrap:pretty}
 .nogl #stage{display:none}
 
 /* 상단: 공연 경과와 현재 큐 */
-.hud{position:fixed;z-index:10;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:var(--m) var(--m) 0;font-size:12.5px;line-height:1.5;color:#fff;mix-blend-mode:difference;pointer-events:none}
+.hud{position:fixed;z-index:10;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:var(--m) var(--m) 0;font-size:12.5px;line-height:1.5;color:#fff;mix-blend-mode:difference;pointer-events:none}
 .hud > *{pointer-events:auto}
-.hud .wm{font:900 16px/1 var(--display);text-decoration:none;display:block;margin-bottom:8px}
-.hud .run{font-variant-numeric:tabular-nums}
+.hud .wm{font:900 16px/1 var(--display);text-decoration:none;display:block}
+/* 이름과 메뉴는 늘 어두운 봉 위에 있으니 섞지 않고 밝은 글자 + 옅은 그림자로 또렷하게. 봉이 없을 때(nogl)만 예전처럼 반전 */
+.js:not(.nogl):not(.nopipe) .hud{mix-blend-mode:normal;color:#f6f1e7}
+.js:not(.nogl):not(.nopipe) .hud .wm,.js:not(.nogl):not(.nopipe) .hud nav a{text-shadow:0 0 3px rgba(0,0,0,.9),0 1px 1px rgba(0,0,0,.95)}
+/* 공연 경과 · 현재 큐는 봉 아래 무대 위에 있으니 배경에 맞춰 반전되도록 따로 띄운다 */
+.hud-meta{position:fixed;z-index:10;top:calc(var(--m) + 32px);left:var(--m);font-size:12.5px;line-height:1.5;color:#fff;mix-blend-mode:difference;pointer-events:none}
+.hud-meta .run{font-variant-numeric:tabular-nums}
 .hud nav{display:flex;gap:18px}
 .hud nav a{text-decoration:none;font-weight:500;padding:4px 0}
 .hud nav a:hover{text-decoration:underline}
@@ -87,7 +95,7 @@ p{text-wrap:pretty}
 /* 스크립트가 없으면 큐 열 개를 그냥 차례로 보여 준다 */
 html:not(.js) .cues li{padding:18px 0;border-top:1px solid #3a352d}
 html:not(.js) .approve{padding:32px 0 12vh}
-.js .cue-track{height:calc(12.4 * 52vh + 100vh)}
+.js .cue-track{height:calc(12.4 * 62vh + 100vh)}   /* 큐 하나에 화면 0.62장: 기준 4가지 한 줄(0.6장)과 같은 호흡 */
 .js .cue-stage{position:sticky;top:0;height:100vh;height:100svh;padding:calc(var(--m) + 64px) 0 var(--m);overflow:hidden}
 .js .cues{width:min(340px,42vw)}
 .js .cues li .cue-h{opacity:.42;transition:opacity .2s}
@@ -147,9 +155,9 @@ html:not(.js) .approve{padding:32px 0 12vh}
 .js .pin-room2{height:210vh}
 .js .credits{height:100vh;height:100svh;overflow-y:auto}
 /* 화면은 그대로 두고 글자만 꺼졌다 켜지는 전환: 하우스 오픈 → 기준, 크레딧 → 커튼콜 */
-.js .hero-wrap{height:190vh}
+.js .hero-wrap{height:240vh}
 .js .hero{position:sticky;top:0;height:100vh;height:100svh;min-height:0}
-.js .rules-wrap{position:relative;margin-top:-190vh;pointer-events:none}
+.js .rules-wrap{position:relative;margin-top:-240vh;pointer-events:none}
 .js .rules{position:sticky;top:0;height:100vh;height:100svh;padding-block:0;overflow:hidden}
 /* 기준은 한 번에 한 줄: 스크롤하면 지금 줄이 왼쪽으로 나가고 다음 줄이 오른쪽에서 들어온다 */
 .js .rules-foot{position:absolute;left:var(--m);bottom:var(--m);max-width:min(30em,calc(100% - 2 * var(--m)));display:grid;gap:10px}
@@ -163,7 +171,7 @@ html:not(.js) .approve{padding:32px 0 12vh}
 .js .pairs li{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:6px;border:0;padding:0;will-change:transform}
 .js .pairs .a,.js .pairs .b{font-size:clamp(30px,5.6vw,88px);line-height:1.08}
 .js .pairs .note{margin-top:18px;max-width:36em;font-size:14px}
-.js .rules-room{height:450vh}
+.js .rules-room{height:500vh}
 .js .contact-room{height:90vh}
 .js .contact-wrap{position:relative;z-index:4;margin-top:-190vh;pointer-events:none}
 .js .contact{position:sticky;top:0}
@@ -175,6 +183,40 @@ html:not(.js) .approve{padding:32px 0 12vh}
 #lamp.drag{cursor:grabbing}
 .js:not(.nogl) #lamp,.js:not(.nogl) #pipe{display:block}
 #pipe{left:0;right:0;background:linear-gradient(180deg,#26262a 0,#17171a 45%,#08080a 100%)}
+/* 3D 조명기일 때 파이프: 한 번 칠하고 끝나는 고정 그림. 은은한 원통 음영과 뒤 벽의 옅은 그림자만 */
+#pipe.tube{box-shadow:0 5px 9px -5px rgba(0,0,0,.6);background:linear-gradient(180deg,#09090b 0,#1d1d21 18%,#2e2e33 34%,#26262a 50%,#151518 76%,#060607 100%)}
+/* 집게가 파이프에 닿는 자리의 그림자: 조명기 겹에 붙어 다녀서 파이프를 다시 칠하지 않는다 */
+/* 생성 에셋 봉: 가로로 이어 붙이는 띠 한 장. 있으면 위 그라데이션 대신 쓴다 */
+#pipe.img,#pipe.tube.img{background:url(assets/stage-pipe.webp) repeat-x 0 50%/auto 100%}
+#lampImg .cshadow{position:absolute;z-index:3;pointer-events:none;display:none;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.55),rgba(0,0,0,.2) 60%,rgba(0,0,0,0))}
+#lampImg.three .cshadow{display:block}
+/* 생성 에셋: 조명기 사진 두 부품, 장면 사진 */
+#lampImg{position:fixed;z-index:7;display:none;cursor:grab;touch-action:none}
+#lampImg.drag{cursor:grabbing}
+.js:not(.nogl) #lampImg.on{display:block}
+#lampImg img{display:block;width:100%;height:auto;pointer-events:none;-webkit-user-select:none;user-select:none;-webkit-user-drag:none}
+#lampImg .yk{position:absolute;left:0;top:0;z-index:2;filter:brightness(var(--lb,1))}
+#lampImg .bd{position:absolute;z-index:1;transform-origin:61.3% 52%;filter:brightness(var(--lb,1))}
+#lampImg .lens{position:absolute;left:-6%;top:52%;width:34%;aspect-ratio:1;transform:translate(-30%,-50%);border-radius:50%;background:radial-gradient(closest-side,rgb(var(--lc,255 220 170)) 0,rgb(var(--lc,255 220 170)/.35) 45%,transparent 100%);mix-blend-mode:screen;opacity:var(--li,0);pointer-events:none}
+
+
+
+/* 조명기 몸체: 회전 영상에서 뽑은 25장(5×5). 빛이 향하는 좌우에 맞는 장을 고른다 */
+#lampImg .bd.turn{background:0 0/500% 500% no-repeat;transform-origin:52.7% 0}
+#lampImg.turnmode .yk{visibility:hidden}
+#lampImg .clamp{position:absolute;z-index:3;filter:brightness(var(--lb,1))}
+#lampImg .l3{position:absolute;z-index:4;pointer-events:none}
+#lampImg.three .yk,#lampImg.three .bd,#lampImg.three .clamp{visibility:hidden}
+#lampImg .bd.turn{overflow:hidden}#lampImg .bd.turn img{visibility:hidden}#lampImg .bd.turn .lens{transform:translate(-50%,-50%);width:16%}
+/* 조명 예열(로딩): 암전 속에서 조명기 렌즈의 필라멘트만 실제 로딩 진행에 따라 달아오르고, 다 달아오르면 막이 걷히듯 하우스가 열린다 */
+#preset{display:none;position:fixed;inset:0;z-index:30;background:#000;transition:opacity .9s var(--ease)}
+.js #preset{display:block}
+#preset.out{opacity:0;pointer-events:none}
+#preset.gone{display:none}
+#preset .fil{position:absolute;left:0;top:0;width:var(--s,6px);height:var(--s,6px);transform:translate(calc(var(--x,80vw) - 50%),calc(var(--y,12vh) - 50%));border-radius:50%;opacity:var(--o,.2);
+  background:radial-gradient(closest-side,rgb(var(--c,90 14 0)) 0,rgb(var(--c,90 14 0) / .5) 22%,rgb(var(--c,90 14 0) / .12) 55%,rgb(var(--c,90 14 0) / 0) 100%)}
+#preset .fil::after{content:"";position:absolute;left:50%;top:50%;width:var(--k,2px);height:var(--k,2px);transform:translate(-50%,-50%);border-radius:50%;background:rgb(var(--h,140 30 0))}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 #dark{position:fixed;inset:0;z-index:8;background:#000;opacity:0;pointer-events:none}
 .paper .top{display:flex;justify-content:space-between;gap:16px;border-bottom:2px solid var(--tung);padding-bottom:10px;margin-bottom:clamp(40px,8vh,96px)}
 .shots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2vw,28px);margin-bottom:clamp(56px,10vh,120px)}
@@ -217,6 +259,16 @@ p .sq{margin-left:4px}
 .sg-go{background:var(--tung);color:var(--black)}
 .sg-back{background:transparent;color:var(--tung);box-shadow:inset 0 0 0 2px var(--tung)}
 .sg-msg{min-height:1.6em;font-size:13px;color:var(--dim)}
+.sg-demo form{background:#e9e1d1 url(assets/stage-paper.webp) 50% 46%/172% auto;padding:24px 26px 18px;color:#2a241c;box-shadow:0 22px 48px rgba(0,0,0,.5)}
+.sg-demo form label{color:#2a241c}
+.sg-demo form input{border-color:#2a241c;color:#1c1813}
+.sg-demo form input::placeholder{color:#8a7f6f}
+.sg-demo form .sg-line{border-bottom-color:#2a241c}
+.sg-demo form .sg-line svg{color:#1c1813}
+.sg-demo form .sg-x{color:#6d6457}
+.sg-demo form .sg-go{background:#1c1813;color:#f3ead9}
+.sg-demo form .sg-back{color:#1c1813;box-shadow:inset 0 0 0 2px #1c1813}
+.sg-demo form .sg-msg{color:#5a5145}
 
 /* 크레딧 */
 .credits{padding-block:24vh}
@@ -244,6 +296,61 @@ p .sq{margin-left:4px}
 .copy{all:unset;cursor:pointer;font-size:12.5px;font-weight:600;margin-left:10px;text-decoration:underline;text-underline-offset:.2em}
 .copy:focus-visible{outline:2px solid var(--spike)}
 .legal{margin-top:8vh;opacity:.6}
+.alt{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:12.5px;margin-top:6px}
+.alt button{all:unset;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.alt button:focus-visible{outline:2px solid var(--spike);outline-offset:3px}
+
+/* 인쇄: 연출을 걷어 내고 한 장짜리 큐시트 문서로. 스크립트 없는 배치를 쓰고(인쇄 직전 js 표시를 잠시 뗀다), 흰 종이에 검은 글자 */
+@media print{
+  @page{size:A4;margin:16mm 15mm 18mm}
+  html,body{background:#fff!important;color:#141210!important}
+  *,*::before,*::after{color:#141210!important;background:transparent!important;box-shadow:none!important;text-shadow:none!important;mix-blend-mode:normal!important;filter:none!important;animation:none!important;transition:none!important}
+  #stage,#lamp,#lampImg,#pipe,#dark,#preset,.hud nav,.hud-meta,.hero .tip,.hero .links .btn,.scroll-tip,.go,.rtabs,.sg-demo form,.copy,.alt,.vh{display:none!important}
+  .hud{position:static;display:block;padding:0 0 4mm;border-bottom:2px solid #141210;margin-bottom:8mm}
+  .hud .wm{font-size:22pt}
+  .scene,.paper{padding:0!important;min-height:0!important;height:auto!important;position:static!important;opacity:1!important;visibility:visible!important}
+  .hero{display:block;margin-bottom:10mm}
+  .hero h1{font-size:18pt}
+  section{margin-bottom:9mm}
+  h2{font-size:16pt!important;line-height:1.25!important;margin:0 0 4mm!important;break-after:avoid}
+  h3{font-size:12.5pt!important;break-after:avoid}
+  body{font-size:10pt;line-height:1.55}
+  .pairs li,.cues li,.case,.roll li,.kv li,figure,tr{break-inside:avoid}
+  .pairs li,.pipe-intro,.rules-foot{transform:none!important;visibility:visible!important;opacity:1!important;position:static!important}
+  .pairs li{display:grid!important;grid-template-columns:5fr 5fr 4fr!important;padding:3mm 0!important;border-bottom:1px solid #bbb!important}
+  .pairs{position:static!important;border-top:1px solid #141210!important}
+  .pipe-intro,.cue-intro{padding:6mm 0 0!important;max-width:none!important;display:grid!important;gap:3mm}
+  .case figure img,.shots img{width:100%!important;height:auto!important;aspect-ratio:auto!important;object-fit:contain!important}
+  .pairs .a,.pairs .b{font-size:12pt!important}
+  .pairs .a{opacity:.6}
+  .cue-intro{padding:0 0 4mm;max-width:none}
+  .cue-intro h2{font-size:16pt!important}
+  .cues li{padding:3mm 0!important;border-top:1px solid #bbb!important}
+  .cue-h{font-size:10pt;min-height:0}
+  .cue-d{display:block!important;position:static!important;width:auto!important}
+  .cue-d h3{display:none}
+  .cue-d .co{max-height:none!important;overflow:visible!important;font-size:8.5pt}
+  .approve{display:grid!important;position:static!important;padding:4mm 0 0!important}
+  .approve h3{font-size:13pt!important}
+  .tally b{font-size:16pt!important}
+  .paper .top{border-bottom:1px solid #141210!important;margin-bottom:6mm!important;padding-top:0!important}
+  .case{grid-template-columns:1fr!important;border-bottom:1px solid #bbb!important;padding-bottom:6mm!important;margin-bottom:6mm!important}
+  .case h2,.sign h2{font-size:15pt!important}
+  .case details{grid-column:1}
+  .case details > *:not(summary){display:block}
+  .case th,.case td,.dep li{border-bottom:1px solid #ccc!important}
+  .shots{grid-template-columns:repeat(3,1fr);gap:4mm}
+  .shots img,.case figure img{outline:1px solid #ccc!important}
+  .case figure{max-width:110mm}
+  .sign{display:block!important}
+  .credits{padding:0!important;height:auto!important;overflow:visible!important}
+  .credits h2{margin-bottom:4mm!important}
+  .contact{break-before:avoid}
+  .legal{margin-top:4mm}
+  a{text-decoration:underline}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:8.5pt;word-break:break-all}
+  .dep .blk span:first-child::before,.sq{background:#141210!important}
+}
 
 @media (max-width:760px){
   .hud nav a.opt{display:none}
@@ -269,16 +376,44 @@ p .sq{margin-left:4px}
 </head>
 <body>
 <script>document.documentElement.classList.add('js')</script>
+<div id="preset" role="status"><span class="vh">무대 준비 중</span><i class="fil" aria-hidden="true"></i></div>
+<script>
+/* 조명 예열: 무거운 파일(조명기 3D · 사진 · 글꼴)을 등록받아 다 받아지면(실패 포함) 하우스를 연다. 8초가 넘으면 기다리지 않는다. 같은 방문 안에서 다시 오면 건너뛴다 */
+window.PRESET=(function(){
+  var el=document.getElementById('preset'),fil=el.querySelector('.fil'),n=0,d=0,over=false,shown=0,t0=performance.now(),lens=null,endAt=0;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,skip=false;
+  try{skip=sessionStorage.getItem('preset-done')==='1'}catch(e){}
+  var api={over:false,add:function(p){if(over)return;n++;Promise.resolve(p).then(done,done)},img:function(src){return new Promise(function(r){var i=new Image();i.onload=i.onerror=r;i.src=src})},lens:function(x,y){lens=[x,y]}};
+  function done(){d++}
+  // 필라멘트 색: 어두운 불씨 → 주황 → 텅스텐 흰빛(--tung)
+  var ST=[[0,[70,10,0]],[.35,[190,48,6]],[.7,[255,138,44]],[1,[255,226,176]]];
+  function col(p){for(var i=1;i<ST.length;i++)if(p<=ST[i][0]){var a=ST[i-1],b=ST[i],k=(p-a[0])/(b[0]-a[0]);return a[1].map(function(v,j){return Math.round(v+(b[1][j]-v)*k)})}return ST[3][1]}
+  function finish(){if(over)return;over=api.over=true;el.classList.add('out');try{sessionStorage.setItem('preset-done','1')}catch(e){}setTimeout(function(){el.classList.add('gone')},1000)}
+  if(skip){over=api.over=true;el.classList.add('gone');return api}
+  (function loop(now){
+    if(over)return;requestAnimationFrame(loop);
+    var el2=(now-t0)/1000,target=n?d/n:0;
+    if(document.readyState!=='complete')target=Math.min(target,.9);
+    if(el2>8)target=1;
+    var cap=reduce?1:Math.min(1,el2/1.4);                       // 너무 빨리 끝나도 예열은 1.4초는 보인다
+    var goal=Math.min(target,cap);shown=reduce?goal:Math.min(goal,shown+Math.max((goal-shown)*.08,.01));
+    var p=shown,c=col(p),hot=col(Math.min(1,p+.25));
+    var x=lens?lens[0]+'px':'80vw',y=lens?lens[1]+'px':'12vh';
+    fil.style.cssText='--x:'+x+';--y:'+y+';--s:'+(6+70*Math.pow(p,1.6)).toFixed(1)+'px;--k:'+(2+3*p).toFixed(1)+'px;--o:'+(.25+.75*p).toFixed(3)+';--c:'+c.join(' ')+';--h:'+hot.join(' ');
+    if(p>.995&&target>=1){if(!endAt)endAt=now+(reduce?0:280);else if(now>=endAt)finish()}   // 다 달아오르면 잠깐 머물고 연다
+  })(t0);
+  return api;
+})();
+</script>
 <canvas id="stage" aria-hidden="true"></canvas>
 <div id="dark" aria-hidden="true"></div>
 <div id="pipe" aria-hidden="true"></div>
 <canvas id="lamp" aria-hidden="true"></canvas>
+<div id="lampImg" aria-hidden="true"><img class="yk" src="assets/stage-lamp-yoke.webp" alt="" width="720" height="805"><div class="bd"><img src="assets/stage-lamp-body.webp" alt="" width="720" height="396"><i class="lens"></i></div></div>
 
 <header class="hud">
   <div>
     <a class="wm" href="#top">김해송</a>
-    <span class="run">공연 경과 <span id="clock">00:00</span></span><br>
-    <span id="nowcue">Q0 하우스 오픈</span>
   </div>
   <nav aria-label="주요 메뉴">
     <a href="#cues">열 단계</a>
@@ -287,8 +422,10 @@ p .sq{margin-left:4px}
     <a href="#contact">연락</a>
   </nav>
 </header>
+<div class="hud-meta"><span class="run">공연 경과 <span id="clock">00:00</span></span><br><span id="nowcue">Q0 하우스 오픈</span></div>
 
 <main id="top">
+<p class="vh">조명과 스크롤 연출 없이 같은 내용을 글로 읽으려면 <a href="portfolio.md">텍스트 판(마크다운)</a>을 여세요.</p>
 
 <div class="hero-wrap">
 <section class="scene hero" data-scene="hero" data-cue="Q0 하우스 오픈" aria-labelledby="hero-h">
@@ -514,6 +651,7 @@ reviewErrors: 0 · reviewWarnings: 1</pre></div></li>
       <li><span>저장소</span><span><a href="https://github.com/prgrms-aibe-devcourse/AIBE7_FinalProject_Team2">AIBE7_FinalProject_Team2</a></span></li>
       <li><span>사는 곳</span><span>서울시 관악구</span></li>
     </ul>
+    <p class="alt bl"><a href="portfolio.md">텍스트 판으로 읽기</a><a href="%EA%B9%80%ED%95%B4%EC%86%A1-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4-%ED%81%90%EC%8B%9C%ED%8A%B8.pdf">PDF로 보기</a></p>
     <p class="legal note bl">© 2026 김해송</p>
   </div>
 </section>
@@ -540,7 +678,7 @@ reviewErrors: 0 · reviewWarnings: 1</pre></div></li>
 
   var FRAG=`#version 300 es
 precision highp float; precision highp sampler2DArray;
-uniform vec2 uRes,uFix,uAim; uniform float uTime,uR,uInt,uWash,uAmb,uMix,uLA,uLB,uPaper,uLamp,uInk; uniform vec3 uCol; uniform sampler2DArray uTex;
+uniform vec2 uRes,uFix,uAim; uniform float uTime,uR,uInt,uWash,uAmb,uMix,uLA,uLB,uPaper,uLamp,uInk,uLensOn; uniform vec2 uLensP; uniform vec3 uCol; uniform sampler2DArray uTex;
 out vec4 o;
 float asp; vec3 U_,V_,W_;
 float mk(vec2 p){
@@ -570,7 +708,7 @@ void main(){
   asp=uRes.x/uRes.y;
   vec2 p=(gl_FragCoord.xy*2.-uRes)/uRes.y;
   W_=normalize(vec3(uAim-uFix,-.9)); U_=normalize(cross(vec3(0.,1.,0.),W_)); V_=cross(W_,U_);
-  vec2 lens=uFix+W_.xy*.13;
+  vec2 lens=uLensOn>.5?uLensP:uFix+W_.xy*.13;
   // wall and the letters painted on it
   float m=mk(p);
   vec2 tl=normalize(lens-p+1e-5);
@@ -638,7 +776,7 @@ void main(){
       var pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VERT));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FRAG));gl.linkProgram(pr);
       if(!gl.getProgramParameter(pr,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(pr));
       gl.useProgram(pr);
-      ['uRes','uFix','uAim','uTime','uR','uInt','uWash','uAmb','uMix','uLA','uLB','uPaper','uLamp','uInk','uCol','uTex'].forEach(function(n){U[n]=gl.getUniformLocation(pr,n)});
+      ['uRes','uFix','uAim','uTime','uR','uInt','uWash','uAmb','uMix','uLA','uLB','uPaper','uLamp','uInk','uCol','uTex','uLensOn','uLensP'].forEach(function(n){U[n]=gl.getUniformLocation(pr,n)});
     }
   }catch(e){console.error(e);gl=null}
   if(!gl) document.documentElement.classList.add('nogl');
@@ -691,12 +829,86 @@ void main(){
   var navEl=document.querySelector('.hud nav');
   // 조명기는 봉을 따라 끌어 옮길 수 있다. 지금 자리가 오른쪽 끝(1), 좌우 대칭인 자리가 왼쪽 끝(-1)
   var lampK=1,lampDrag=null;
-  (function(){var el=document.getElementById('lamp');
+  ['lamp','lampImg'].forEach(function(id){var el=document.getElementById(id);
     el.addEventListener('pointerdown',function(e){lampDrag={x:e.clientX,k:lampK};el.setPointerCapture(e.pointerId);el.classList.add('drag');e.preventDefault()});
     el.addEventListener('pointermove',function(e){if(!lampDrag)return;var asp=W/H,fx0=(asp<0.8?.42:.60)*asp,half=fx0/asp*.5*W;lampK=clamp(lampDrag.k+(e.clientX-lampDrag.x)/half,-1,1)});
     var end=function(){lampDrag=null;el.classList.remove('drag')};el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);
-  })();
+  });
   var lampCv=document.getElementById('lamp'),pipeEl=document.getElementById('pipe'),lg=null,LU={};
+  // 사진 조명기: 요크(고정)와 몸체(회전) 두 장. 둘 다 불러오면 코드로 그린 조명기를 대신한다
+  var limg=document.getElementById('lampImg'),lbd=limg.querySelector('.bd'),lens=limg.querySelector('.lens'),imgOn=false,lampF=1,lampLx=0,lampLy=0,turnOn=false,turnI=-1;
+  var TURN_SRC='assets/stage-lamp-turn-yoke-body.webp';   // 회전 영상 25장(5×5)에서 요크 · 몸체만. 클램프는 파이프에 고정된 한 장(CLAMP_SRC)
+  // 칸 비율, 집게 꼭대기 가로 위치(칸 폭 대비), 파이프를 무는 높이, 장마다 렌즈 위치(칸 대비)
+  var CLAMP_SRC='assets/stage-lamp-clamp.webp',CLAMP_H=112/345;
+  var TURN={asp:345/300,px:.527,jaw:.06,lens:[[0.12,0.72],[0.133,0.717],[0.147,0.713],[0.16,0.71],[0.173,0.707],[0.187,0.703],[0.2,0.7],[0.25,0.722],[0.3,0.743],[0.35,0.765],[0.4,0.787],[0.45,0.808],[0.5,0.83],[0.508,0.833],[0.517,0.837],[0.525,0.84],[0.533,0.843],[0.542,0.847],[0.55,0.85],[0.585,0.848],[0.62,0.847],[0.655,0.845],[0.69,0.843],[0.725,0.842],[0.76,0.84]]};
+  var lclamp=null,l3=null,lcs=null;
+  (function(){var t=new Image();t.onload=function(){pipeEl.classList.add('img')};t.src='assets/stage-pipe.webp';PRESET.add(PRESET.img('assets/stage-pipe.webp'))})();
+  if(document.fonts&&document.fonts.ready)PRESET.add(document.fonts.ready);
+  limg.querySelectorAll('img').forEach(function(im){PRESET.add(PRESET.img(im.currentSrc||im.src))});
+  if(TURN_SRC){PRESET.add(PRESET.img(TURN_SRC));PRESET.add(PRESET.img(CLAMP_SRC))}   // 봉 에셋이 없으면 코드로 칠한 봉 그대로
+  // 매 프레임 같은 값을 다시 쓰면 파이프(필터 · 그림자 · 여러 겹 배경)를 통째로 다시 칠하므로 바뀔 때만 쓴다
+  function sv(el,k,v){var c=el._sv||(el._sv={});if(c[k]!==v){c[k]=v;if(k.charAt(0)==='-')el.style.setProperty(k,v);else el.style[k]=v}}
+  // 실시간 3D 조명기: 클램프는 파이프에 고정, 요크는 좌우(팬), 몸체는 요크 팔 축에서 위아래(틸트).
+  // three.js를 CDN에서 못 불러오거나 WebGL이 없으면 2D 회전 조명기를 그대로 쓴다.
+  function makeLamp3D(T,Room,yokeScene,bodyScene){
+    var cv=document.createElement('canvas');cv.className='l3';
+    var r=new T.WebGLRenderer({canvas:cv,alpha:true,antialias:true});
+    r.outputColorSpace=T.SRGBColorSpace;r.toneMapping=T.ACESFilmicToneMapping;r.toneMappingExposure=1.45;r.localClippingEnabled=true;
+    var sc=new T.Scene(),pm=new T.PMREMGenerator(r);sc.environment=pm.fromScene(new Room(),.04).texture;sc.environmentIntensity=.8;
+    sc.add(new T.HemisphereLight(0xfff4e6,0x30303a,2.6));
+    var key=new T.DirectionalLight(0xfff0dc,4.5);key.position.set(-2,4,4);sc.add(key);
+    var rim=new T.DirectionalLight(0xcfe0ff,2.2);rim.position.set(3,2,-3);sc.add(rim);
+    // 모델 단위: 요크(집게 포함) 높이 1. 집게와 요크를 가르는 높이, 몸체 배율, 집게 입 안쪽 중심(=파이프 중심) 높이, 요크 팔 축 높이
+    var CUT=.17,S=1.39,JAW=.39,ARM=-.222;
+    // 집게와 요크를 가르는 면. 클리핑 면은 월드 좌표라 집게 배율이 바뀌면 높이를 다시 맞춘다(draw)
+    var cutUp=new T.Plane(new T.Vector3(0,1,0),0),cutDn=new T.Plane(new T.Vector3(0,-1,0),0);
+    function part(src,up){var o=src.clone(true),pl=up?cutUp:cutDn;
+      o.traverse(function(m){if(m.isMesh){m.material=m.material.clone();m.material.clippingPlanes=[pl];m.material.side=T.DoubleSide;m.material.metalness=.55;m.material.roughness=.55}});return o}
+    // 파이프 중심이 원점. 집게는 파이프 굵기에 맞춰 키우고(cg), 요크는 커진 집게 아래 볼트에 매단다(rig)
+    var cg=new T.Group();sc.add(cg);
+    var clampP=part(yokeScene,true);clampP.rotation.y=Math.PI/2;clampP.position.set(0,-JAW,.01);cg.add(clampP);   // C자 입이 무대 쪽, 등판이 객석 쪽
+    var rig=new T.Group();rig.position.y=-JAW;sc.add(rig);
+    var pan=new T.Group();rig.add(pan);pan.add(part(yokeScene,false));
+    var tl=new T.Group();tl.position.y=ARM;pan.add(tl);
+    var body=bodyScene;body.traverse(function(m){if(m.isMesh){m.material.metalness=.55;m.material.roughness=.55}});
+    body.scale.setScalar(S);body.position.set(0,.015*S,.215*S);tl.add(body);
+    var lensP=new T.Vector3(0,.015*S,.715*S),tmp=new T.Vector3();
+    var cam=new T.OrthographicCamera(-1.5,1.5,.6,-2.4,-10,10);cam.position.z=5;
+    return {cv:cv,
+      // yaw: 렌즈 방향(0 = 화면 쪽, -π/2 = 왼쪽, -π = 무대 쪽), tilt: 아래로 +, px: 모델 1단위의 화면 px, cs: 집게 위아래 배율, sx: 집게 두께 배율, lb: 밝기
+      draw:function(yaw,tilt,px,cs,sx,lb){
+        // 자세 · 크기 · 밝기가 그대로면 다시 그리지 않는다(멈춰 있을 때 GPU를 쉬게)
+        var k=cv._p;if(k&&Math.abs(k[0]-yaw)<2e-4&&Math.abs(k[1]-tilt)<2e-4&&k[2]===px&&k[3]===cs&&k[5]===sx&&Math.abs(k[4]-lb)<.004)return cv._L;
+        cv._p=[yaw,tilt,px,cs,lb,sx];r.toneMappingExposure=1.45*lb;
+        if(cg._s!==cs+'/'+sx){cg._s=cs+'/'+sx;cg.scale.set(sx,cs,cs);rig.position.y=-JAW-(cs-1)*(JAW-CUT);
+          var yc=-(JAW-CUT)*cs;cutUp.constant=-yc;cutDn.constant=yc}   // 집게 아랫면 = 요크 윗면
+        var w=Math.round(3*px),dpr=Math.min(1.5,window.devicePixelRatio||1);
+        if(cv._w!==w){cv._w=w;r.setPixelRatio(dpr);r.setSize(w,w,false);cv.style.width=w+'px';cv.style.height=w+'px'}
+        pan.rotation.y=yaw;tl.rotation.x=tilt;r.render(sc,cam);
+        tmp.copy(lensP);tl.localToWorld(tmp);
+        return cv._L={x:(tmp.x+1.5)*px,y:(.6-tmp.y)*px};   // 캔버스 왼쪽 위 기준 렌즈 중심
+      }};
+  }
+  // 3D 조명기 치수: 파이프는 메뉴 막대 굵기(26px 이상) 그대로, 집게 입(모델 .105)이 그 굵기를 문다.
+  // 집게는 옆면이 보이니 위아래(cs)로만 크게 늘리고 두께(sx)는 조금만 키운다
+  var CLAMP_IN=.105,CLAMP_W=.086,CS_MAX=2.4;
+  function lampGeom(W,H){
+    var ph=Math.max(.022*H,26),kz=Math.min(H,W*.95),Syh=.21*kz*805/720,px=Math.max(Syh*.68,ph/(CLAMP_IN*CS_MAX));
+    var cs=Math.max(1,ph/(CLAMP_IN*px)),sx=Math.min(cs,1.35);
+    return {px:px,cs:cs,sx:sx,ph:ph,cw:CLAMP_W*sx*px,piv:(.612+(cs-1)*.22)*px};   // piv: 파이프 중심에서 요크 팔 축까지(px)
+  }
+  (function(){
+    try{if(!document.createElement('canvas').getContext('webgl2'))return}catch(e){return}
+    var p3=Promise.all([import('three'),import('three/addons/loaders/GLTFLoader.js'),import('three/addons/environments/RoomEnvironment.js')]).then(function(md){
+      var ld=new md[1].GLTFLoader();
+      return Promise.all([ld.loadAsync('assets/stage-lamp-yoke.glb'),ld.loadAsync('assets/stage-lamp-body.glb')]).then(function(g){
+        l3=makeLamp3D(md[0],md[2].RoomEnvironment,g[0].scene,g[1].scene);lcs=document.createElement('i');lcs.className='cshadow';limg.appendChild(lcs);limg.appendChild(l3.cv);limg.classList.add('three');limg._k='';
+      });
+    }).catch(function(e){l3=null;console.warn('3D 조명기를 불러오지 못해 2D 조명기를 씁니다',e)});
+    PRESET.add(p3);
+  })();
+  if(TURN_SRC)(function(){var t=new Image();t.onload=function(){turnOn=true;lbd.classList.add('turn');limg.classList.add('turnmode');lbd.style.backgroundImage='url('+TURN_SRC+')';lclamp=document.createElement('img');lclamp.className='clamp';lclamp.alt='';lclamp.src=CLAMP_SRC;limg.appendChild(lclamp);limg._k=''};t.src=TURN_SRC})();
+  (function(){var ims=limg.querySelectorAll('img'),n=0;ims.forEach(function(im){var ok=function(){if(++n===ims.length){imgOn=true;limg.classList.add('on');lampCv.style.display='none'}};if(im.complete&&im.naturalWidth)ok();else im.addEventListener('load',ok)})})();
   var LFRAG=`#version 300 es
 precision highp float;
 uniform vec2 uRes; uniform vec3 uDir,uCol; uniform float uInt,uWash;
@@ -739,7 +951,7 @@ void main(){
     var lp=lg.createProgram();lg.attachShader(lp,lsh(lg.VERTEX_SHADER,VERT));lg.attachShader(lp,lsh(lg.FRAGMENT_SHADER,LFRAG));lg.linkProgram(lp);
     if(!lg.getProgramParameter(lp,lg.LINK_STATUS))throw new Error(lg.getProgramInfoLog(lp));
     lg.useProgram(lp);['uRes','uDir','uCol','uInt','uWash'].forEach(function(n){LU[n]=lg.getUniformLocation(lp,n)});lg.clearColor(0,0,0,0);
-  }catch(e){console.error(e);lg=null;lampCv.style.display='none';pipeEl.style.display='none'}}
+  }catch(e){console.error(e);lg=null;lampCv.style.display='none';pipeEl.style.display='none';document.documentElement.classList.add('nopipe')}}
 
   /* --- scenes and cues --- */
   var scenes=[].slice.call(document.querySelectorAll('[data-scene]'));
@@ -784,6 +996,7 @@ void main(){
   function frame(now){
     requestAnimationFrame(frame);
     var dt=Math.min(.05,(now-last)/1000);last=now;
+    if(!PRESET.over)t0=now;   // 예열이 끝나 하우스가 열릴 때 공연 시계와 조명 켜짐이 시작된다
     if(document.hidden)return;
     var T=(now-t0)/1000,asp=W/H,tall=asp<0.8;
     if(now-lastClock>500){lastClock=now;var s=Math.floor(T);clock.textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
@@ -793,11 +1006,11 @@ void main(){
     var E=trackEnd(),E2=paperWrap.getBoundingClientRect().bottom+scrollY-H,inCred=scrollY>=E2-1,inPaper=scrollY>=E-1&&!inCred;
     if(inPaper)sc=paperEl;
     if(inCred)sc=scrollY<E2+H*1.62?credEl:contactEl;
-    if(scrollY<H*.9)sc=scrollY<H*.42?heroEl:rulesEl;
+    if(scrollY<H*1.4)sc=scrollY<H*.9?heroEl:rulesEl;   // 하우스 오픈은 화면 0.9장 머문다
     else if(sc===heroEl)sc=rulesEl;
-    var rr=clamp((scrollY-H*.9)/(H*.6),0,5.999),rp=Math.min(5,Math.floor(rr)+ss(.5,1,rr-Math.floor(rr)));
+    var rr=clamp((scrollY-H*1.4)/(H*.6),0,5.999),rp=Math.min(5,Math.floor(rr)+ss(.5,1,rr-Math.floor(rr)));
     if(rp!==rowP){rowP=rp;rowEls.forEach(function(li,i){var d=i-rp;li.style.transform='translateX('+(d*W*1.05).toFixed(1)+'px)';li.style.visibility=Math.abs(d)>=1?'hidden':''});footEl.style.opacity=(1-ss(3.05,3.6,rp)).toFixed(3)}
-    fade(heroEl,1-ss(H*.05,H*.38,scrollY));fade(rulesEl,ss(H*.46,H*.84,scrollY));
+    fade(heroEl,1-ss(H*.55,H*.88,scrollY));fade(rulesEl,ss(H*.96,H*1.34,scrollY));
     fade(credEl,1-ss(E2+H*1.25,E2+H*1.6,scrollY));fade(contactEl,ss(E2+H*1.65,E2+H*2.05,scrollY));
     if(credEl.classList.contains('pre')===inCred)credEl.classList.toggle('pre',!inCred);
     var si=clamp(Math.floor((scrollY-E-H*.62)/(H*.7)),0,slideEls.length-1);
@@ -855,13 +1068,53 @@ void main(){
 
     var nr=navEl.getBoundingClientRect(),navCy=nr.top+nr.height/2;
     var fx0=tall?.42*asp:.60*asp,fx=fx0*lampK,fy=.70-2*navCy/H;      // 파이프 중심이 메뉴 글자 높이에 오도록
+    var lgm=(imgOn&&l3)?lampGeom(W,H):null;
+    if(imgOn){   // 파이프가 메뉴 막대이기도 하니, 집게가 메뉴 글자를 가리지 않게 메뉴 왼쪽 끝 앞에서 멈춘다(2D 조명기도 같이)
+      var xMax=nr.left-(lgm?lgm.cw/2:.12*.21*Math.min(H,W*.95))-14,xNow=(fx/asp*.5+.5)*W;if(xNow>xMax){fx=(xMax/W-.5)*2*asp;if(fx0)lampK=Math.max(-1,fx/fx0)}}
+    if(imgOn){
+      // 요크 피벗이 uFix, 집게 입이 파이프 높이. 몸체는 피벗을 축으로 기울고, 좌우를 넘을 땐 팬처럼 뒤집힌다
+      var kz=Math.min(H,W*.95),Sy=.21*kz,Syh=Sy*805/720,Sb=.22*kz,Sbh=Sb*396/720;
+      var pvx=(fx/asp*.5+.5)*W,pvy=navCy+(.758-.12)*Syh,pfy=1-2*pvy/H;
+      var dxp=(S.ax-fx)*H/2,dyp=-(S.ay-pfy)*H/2;
+      // 좌우: 회전 영상이 있으면 빛이 향하는 가로 거리에 따라 연속으로 돈다(왼쪽 옆 1 → 정면 0 → 오른쪽 옆 -1)
+      var ft=(turnOn||l3)?-clamp(dxp/(H*.28),-1,1):(dxp>0?-1:1);lampF+=(ft-lampF)*Math.min(1,dt*(reduce?60:4));
+      var tilt=clamp(Math.atan2(dyp,Math.abs(dxp)),-1.2,1.45),rot=turnOn?-clamp(lampF*2.5,-1,1)*tilt:-(lampF>=0?1:-1)*tilt;
+      if(turnOn){Sb=Sy*1.04;Sbh=Sb*TURN.asp}
+      var lk=W+'x'+H+'x'+Math.round(navCy)+'x'+fx.toFixed(4)+'x'+!!lgm;
+      if(limg._k!==lk){limg._k=lk;limg.style.left=(pvx-.497*Sy)+'px';limg.style.top=(pvy-.758*Syh)+'px';limg.style.width=Sy+'px';limg.style.height=Syh+'px';
+        lbd.style.width=Sb+'px';lbd.style.left=(.497*Sy-(turnOn?TURN.px:.613)*Sb)+'px';lbd.style.top=(turnOn?.12*Syh-TURN.jaw*Sbh:.758*Syh-.52*Sbh)+'px';
+        if(turnOn){lbd.style.height=Sbh+'px';if(lclamp){lclamp.style.left=lbd.style.left;lclamp.style.top=lbd.style.top;lclamp.style.width=Sb+'px';lclamp.style.height=(CLAMP_H*Sbh)+'px'}}
+        var ph=lgm?lgm.ph:Math.max(.022*H,26);pipeEl.style.top=(navCy-ph/2)+'px';pipeEl.style.height=ph+'px';pipeEl.classList.toggle('tube',!!lgm);
+        if(lgm&&lcs){lcs.style.width=(lgm.cw*2.4)+'px';lcs.style.height=(ph*1.05)+'px';lcs.style.left=(.497*Sy+lgm.cw*.3-lgm.cw*1.2)+'px';lcs.style.top=(.12*Syh-ph*.5)+'px'}}
+      if(l3){}   // 3D일 때 2D 조명기 부품은 숨어 있으니 손대지 않는다
+      else if(turnOn){
+        var fi=Math.min(24,Math.max(0,Math.round((1-lampF)/2*24)||0));
+        if(fi!==turnI){turnI=fi;lbd.style.backgroundPosition=(fi%5*25)+'% '+(Math.floor(fi/5)*25)+'%';lens.style.left=(TURN.lens[fi][0]*100).toFixed(1)+'%';lens.style.top=(TURN.lens[fi][1]*100).toFixed(1)+'%'}
+        lbd.style.transform='none';
+      }else lbd.style.transform='rotate('+rot.toFixed(4)+'rad) scaleX('+lampF.toFixed(4)+')';
+      var ld=.583*Sb,lpx=-ld*lampF*Math.cos(rot),lpy=-ld*lampF*Math.sin(rot);
+      if(turnOn){var L=TURN.lens[Math.max(0,turnI)];lpx=(L[0]-TURN.px)*Sb;lpy=(.12*Syh-TURN.jaw*Sbh+L[1]*Sbh)-.758*Syh}   // 피벗에서 렌즈까지(화면 px, 아래가 +)
+      if(l3){   // 3D: 빛이 닿는 점을 향해 요크와 몸체를 그 프레임에 바로 돌린다(빛과 같은 aim을 쓰므로 늦게 따라가지 않는다)
+        var px3=lgm.px,c3x=.497*Sy-1.5*px3,c3y=.12*Syh-.6*px3,p3y=.12*Syh+lgm.piv;   // 모델 1단위 px, 캔버스 위치, 요크 팔 축 높이
+        var ddy=dyp-(p3y-.758*Syh),D3=H*.2,yaw3=Math.atan2(dxp,-D3),tilt3=Math.atan2(ddy,Math.hypot(dxp,D3));   // 몸체 축 ∝ (가로, 아래, 무대 안쪽 D3)
+        var lbv=.78+.55*S.wash+.12*clamp(S.int*dip*on,0,1.4);
+        var L3=l3.draw(yaw3,tilt3,px3,lgm.cs,lgm.sx,Math.round(lbv*200)/200);
+        sv(l3.cv,'left',c3x.toFixed(1)+'px');sv(l3.cv,'top',c3y.toFixed(1)+'px');
+        lpx=c3x+L3.x-.497*Sy;lpy=c3y+L3.y-.758*Syh;
+      }
+      lampLx=fx+lpx/(H/2);lampLy=pfy-lpy/(H/2);
+      if(!PRESET.over)PRESET.lens((lampLx/asp*.5+.5)*W,(1-lampLy)*H/2);
+      var li=clamp(S.int*dip*on,0,1.4);
+      var vli=(li*.95).toFixed(2),vlb=(.78+.55*S.wash+.12*li).toFixed(2),vlc=Math.round(255*Math.min(1,S.col[0]))+' '+Math.round(255*Math.min(1,S.col[1]))+' '+Math.round(255*Math.min(1,S.col[2]));
+      sv(limg,'--li',vli);sv(limg,'--lb',vlb);sv(limg,'--lc',vlc);
+    }
     fit();gl.viewport(0,0,cv.width,cv.height);
     gl.uniform2f(U.uRes,cv.width,cv.height);gl.uniform2f(U.uFix,fx,fy);gl.uniform2f(U.uAim,S.ax,S.ay);
-    gl.uniform1f(U.uTime,reduce?0:T);gl.uniform1f(U.uR,S.R*1.3);gl.uniform1f(U.uInt,S.int*dip*on);gl.uniform1f(U.uWash,S.wash);gl.uniform1f(U.uAmb,S.amb);gl.uniform1f(U.uPaper,S.paper);gl.uniform1f(U.uLamp,lg?0:1);gl.uniform1f(U.uInk,S.ink);
+    gl.uniform1f(U.uTime,reduce?0:T);gl.uniform1f(U.uR,S.R*1.3);gl.uniform1f(U.uInt,S.int*dip*on);gl.uniform1f(U.uWash,S.wash);gl.uniform1f(U.uAmb,S.amb);gl.uniform1f(U.uPaper,S.paper);gl.uniform1f(U.uLamp,(lg||imgOn)?0:1);gl.uniform1f(U.uLensOn,imgOn?1:0);gl.uniform2f(U.uLensP,lampLx,lampLy);gl.uniform1f(U.uInk,S.ink);
     gl.uniform1f(U.uMix,ss(.35,.65,S.mixT));gl.uniform1f(U.uLA,S.la);gl.uniform1f(U.uLB,S.lb);
     gl.uniform3f(U.uCol,S.col[0],S.col[1],S.col[2]);
     gl.drawArrays(gl.TRIANGLES,0,3);
-    if(lg){
+    if(lg&&!imgOn){
       var bw=.2*H,bh=.28*H,lx=(fx/asp*.5+.5)*W-bw/2,ly=(1-((fy+.36)*.5+.5))*H,key=W+'x'+H+'x'+Math.round(navCy)+'x'+lampK.toFixed(4);
       if(lampCv._k!==key){lampCv._k=key;lampCv.style.cssText+=';left:'+lx+'px;top:'+ly+'px;width:'+bw+'px;height:'+bh+'px';
         var lpr=Math.min(devicePixelRatio||1,2);lampCv.width=Math.round(bw*lpr);lampCv.height=Math.round(bh*lpr);
@@ -874,6 +1127,14 @@ void main(){
   }
   requestAnimationFrame(frame);
   var rz=0;addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(function(){var nw=innerWidth,nh=innerHeight;if(nw===W&&(nh===H||matchMedia('(pointer: coarse)').matches))return;W=nw;H=nh;paint()},160)});
+})();
+
+/* ===== 인쇄: 연출용 배치(js)를 잠시 떼고 접힌 내용을 펼친 채 인쇄, 끝나면 되돌린다 ===== */
+(function(){
+  var de=document.documentElement,opened=[];
+  addEventListener('beforeprint',function(){de.classList.remove('js');opened=[].slice.call(document.querySelectorAll('details:not([open])'));opened.forEach(function(d){d.open=true})});
+  addEventListener('afterprint',function(){de.classList.add('js');opened.forEach(function(d){d.open=false});opened=[]});
+  var b=document.querySelector('.printme');if(b)b.addEventListener('click',function(){window.print()});
 })();
 
 /* ===== 메일과 복사 ===== */
