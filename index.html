@@ -81,6 +81,11 @@ p{text-wrap:pretty}
 .cue-d .cd{font-size:15px;max-width:30em}
 .cue-d .cs{margin-top:8px;max-width:38em;opacity:.72}
 .cue-d .co{margin-top:14px;padding-top:12px;border-top:1px solid currentColor;font:400 11.5px/1.6 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere;max-height:11.5em;overflow:auto}
+.js .cue-d .co{overflow:hidden}
+.js .cue-d .co.more:not(.open){-webkit-mask-image:linear-gradient(#000 62%,transparent);mask-image:linear-gradient(#000 62%,transparent)}
+.js .cue-d .co.open{overflow:auto;max-height:min(42vh,24em)}
+.co-more{appearance:none;background:none;border:0;padding:6px 0 0;color:inherit;font:500 11.5px/1.4 var(--text);cursor:pointer;text-decoration:underline;text-underline-offset:3px;opacity:.8}
+.co-more:hover,.co-more:focus-visible{opacity:1}
 .cue-d .co em{display:block;font:500 11.5px/1.5 var(--text);font-style:normal;opacity:.7;margin-bottom:4px}
 .approve{display:grid;gap:14px;justify-items:start;max-width:440px}
 .approve h3{font-size:clamp(26px,3.1vw,46px)}
@@ -136,7 +141,8 @@ html:not(.js) .approve{padding:32px 0 12vh}
 .js .sign.slide .sg-line{height:70px}
 .js .paper .top{border-bottom:0}
 .js .slides{margin-top:max(12px,calc(56vh - 150px))}
-.js .slide{position:absolute;inset:0;overflow-y:auto;align-content:start;opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .3s;margin:0;padding:18px 0 0;border:0}
+.js .slide{position:absolute;inset:0;overflow-y:hidden;align-content:start;opacity:0;visibility:hidden;transition:opacity .3s,visibility 0s .3s;margin:0;padding:18px 0 0;border:0}
+.js .slide.scrolls{overflow-y:auto}   /* 접힘을 펼쳤을 때만 장 안에서 스크롤 */
 .js .slide.on{opacity:1;visibility:visible;transition:opacity .45s .12s}
 .js .paper.pre .slide{visibility:hidden}
 .rtabs{display:none}
@@ -329,7 +335,8 @@ p .sq{margin-left:4px}
   .cue-h{font-size:10pt;min-height:0}
   .cue-d{display:block!important;position:static!important;width:auto!important}
   .cue-d h3{display:none}
-  .cue-d .co{max-height:none!important;overflow:visible!important;font-size:8.5pt}
+  .cue-d .co{max-height:none!important;overflow:visible!important;font-size:8.5pt;-webkit-mask-image:none!important;mask-image:none!important}
+  .co-more{display:none!important}
   .approve{display:grid!important;position:static!important;padding:4mm 0 0!important}
   .approve h3{font-size:13pt!important}
   .tally b{font-size:16pt!important}
@@ -784,6 +791,14 @@ void main(){
   var lobster=false;
   function script(px){return lobster?'400 '+px+'px "Lobster"':'italic 900 '+px+'px "Snell Roundhand","Brush Script MT","Segoe Script",cursive'}
   function face(px){return gasoek?'400 '+px+'px "Gasoek One"':'900 '+px+'px "Black Han Sans","Noto Sans CJK KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif'}
+  // 세로 화면의 큐 숫자: 위쪽 Q 탭 줄 아래부터, 단계 설명 중 가장 높이 올라오는 것(정보가 가장 많은 단계)의 윗선까지를 띠로 보고 그 가운데에 숫자를 둔다
+  var numGL=null;
+  function numBand(){
+    var st=document.getElementById('cueStage'),cs=st&&st.querySelector('.cues');if(!cs)return null;
+    var sr=st.getBoundingClientRect(),top=cs.getBoundingClientRect().bottom-sr.top,min=1e9;
+    st.querySelectorAll('.cue-d').forEach(function(d){var o=d.style.cssText;d.style.display='block';d.style.visibility='hidden';var t=d.getBoundingClientRect().top-sr.top;d.style.cssText=o;if(t<min)min=t});
+    return min<1e9&&min-top>40?[top,min]:null;
+  }
   function paint(){
     if(!gl)return;
     var dpr=Math.min(devicePixelRatio||1,2),tw=Math.min(1280,Math.round(W*dpr)),th=Math.round(tw*H/W);
@@ -792,7 +807,8 @@ void main(){
     if(tex)gl.deleteTexture(tex);
     tex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D_ARRAY,tex);gl.pixelStorei(gl.UNPACK_ALIGNMENT,1);
     gl.texStorage3D(gl.TEXTURE_2D_ARRAY,1,gl.R8,tw,th,WORDS.length);
-    var tall=W/H<0.8,buf=new Uint8Array(tw*th);
+    var tall=W/H<0.8,buf=new Uint8Array(tw*th),band=tall?numBand():null;
+    numGL=band?1-(band[0]+band[1])/H:null;
     WORDS.forEach(function(w,i){
       x.fillStyle='#000';x.fillRect(0,0,tw,th);x.fillStyle='#fff';x.textBaseline='alphabetic';x.textAlign='left';
       var buf0=function(){var d=x.getImageData(0,0,tw,th).data;for(var k=0;k<buf.length;k++)buf[k]=d[k*4];gl.texSubImage3D(gl.TEXTURE_2D_ARRAY,0,0,0,i,tw,th,1,gl.RED,gl.UNSIGNED_BYTE,buf)};
@@ -803,6 +819,7 @@ void main(){
       var ten=w==='10';
       var cx=side?(tall?.5:(ten?.63:num?.68:.71))*tw:tw/2, cy=act?(tall?.27:.36)*th:side?(tall?.29:.5)*th:(tall?.37:.44)*th;
       var fw=side?(tall?(ten?.9:.78):(ten?.7:num?.5:.52))*tw:tw*.92, fh=act?(tall?.22:.36)*th:side?(tall?.32:.72)*th:th*(tall?.60:.62);
+      if(num&&band){cy=(band[0]+band[1])/2/H*th;fh=Math.min(fh,(band[1]-band[0])*.92/H*th)}
       var ff=i===L_CONTACT?script:face;
       x.font=ff(100);
       var ms=lines.map(function(l){return x.measureText(l)});
@@ -819,6 +836,7 @@ void main(){
     gl.texParameteri(gl.TEXTURE_2D_ARRAY,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D_ARRAY,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
   }
   paint();
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){paint()});   // 글꼴이 바뀌면 설명 높이도 바뀌니 다시 잰다
   if(document.fonts&&document.fonts.load){
     document.fonts.load('400 100px "Gasoek One"',WORDS.map(function(w){return [].concat(w).join('')}).join('')).then(function(r){if(r&&r.length){gasoek=true;paint()}}).catch(function(){});
     document.fonts.load('400 100px "Lobster"','END').then(function(r){if(r&&r.length){lobster=true;paint()}}).catch(function(){});
@@ -957,11 +975,22 @@ void main(){
   var scenes=[].slice.call(document.querySelectorAll('[data-scene]'));
   var track=document.querySelector('.cue-track'),stageEl=document.getElementById('cueStage');
   var items=[].slice.call(document.querySelectorAll('.cues li'));
+  // 코드 박스는 접어 두면 휠이 페이지로 넘어가고, 펼쳤을 때만 박스 안에서 스크롤된다
+  var coBoxes=[].slice.call(document.querySelectorAll('.cue-d .co')).map(function(co){
+    var b=document.createElement('button');b.type='button';b.className='co-more';b.textContent='펼치기';b.hidden=true;b.setAttribute('aria-expanded','false');
+    co.after(b);
+    b.addEventListener('click',function(){var o=co.classList.toggle('open');b.textContent=o?'접기':'펼치기';b.setAttribute('aria-expanded',o);if(!o)co.scrollTop=0});
+    return {co:co,b:b};
+  });
+  function resetCo(){coBoxes.forEach(function(x){x.co.classList.remove('open','more');x.co.scrollTop=0;x.b.textContent='펼치기';x.b.setAttribute('aria-expanded','false');x.b.hidden=true;
+    if(x.co.closest('li.on')&&x.co.scrollHeight>x.co.clientHeight+2){x.co.classList.add('more');x.b.hidden=false}})}
   var goBtn=document.getElementById('goBtn'),nowcue=document.getElementById('nowcue'),clock=document.getElementById('clock');
   var approved=false,curCue=-2,curLabel='';
   var dark=reduce?null:document.getElementById('dark'),paperEl=document.getElementById('reportSec'),paperWrap=document.querySelector('.paper-wrap'),credEl=document.getElementById('creditsSec'),heroEl=document.querySelector('.hero'),rulesEl=document.querySelector('.rules'),contactEl=document.getElementById('contactSec'),darkOp=-1,auto=0;
   var slideEls=[].slice.call(document.querySelectorAll('#slides .slide')),rtabs=[].slice.call(document.querySelectorAll('#rtabs button')),curSlide=-1;
   rtabs.forEach(function(b,i){b.addEventListener('click',function(){window.scrollTo({top:trackEnd()+H*.62+H*.7*(i+.35),behavior:reduce?'auto':'smooth'})})});
+  slideEls.forEach(function(sl){[].forEach.call(sl.querySelectorAll('details'),function(d){d.addEventListener('toggle',function(){sl.classList.toggle('scrolls',!!sl.querySelector('details[open]'));if(!sl.classList.contains('scrolls'))sl.scrollTop=0})})});
+  function closeSlideDetails(){slideEls.forEach(function(sl){[].forEach.call(sl.querySelectorAll('details[open]'),function(d){d.open=false})})}
   var rowEls=[].slice.call(document.querySelectorAll('.pairs li, .pipe-intro')),footEl=document.querySelector('.rules-foot'),rowP=-1;
   function fade(el,o){if(el._o===o)return;el._o=o;el.style.opacity=o.toFixed(3);el.style.pointerEvents=o<.5?'none':'auto';el.style.visibility=o<=0?'hidden':''}
   var UNITS=12.4;      // 큐 10 + 승인 1.5 + 암전 0.9
@@ -1014,7 +1043,7 @@ void main(){
     fade(credEl,1-ss(E2+H*1.25,E2+H*1.6,scrollY));fade(contactEl,ss(E2+H*1.65,E2+H*2.05,scrollY));
     if(credEl.classList.contains('pre')===inCred)credEl.classList.toggle('pre',!inCred);
     var si=clamp(Math.floor((scrollY-E-H*.62)/(H*.7)),0,slideEls.length-1);
-    if(si!==curSlide){curSlide=si;slideEls.forEach(function(el,i){el.classList.toggle('on',i===si)});rtabs.forEach(function(b,i){b.classList.toggle('on',i===si)})}
+    if(si!==curSlide){curSlide=si;closeSlideDetails();slideEls.forEach(function(el,i){el.classList.toggle('on',i===si)});rtabs.forEach(function(b,i){b.classList.toggle('on',i===si)})}
     if(paperEl.classList.contains('pre')===inPaper){paperEl.classList.toggle('pre',!inPaper);stageEl.classList.toggle('gone',inPaper||inCred)}
     var name=sc?sc.dataset.scene:'hero',label=sc&&sc.dataset.cue||'';
 
@@ -1025,7 +1054,7 @@ void main(){
     else if(name==='cues'){
       var u=cueProgress(),tr=track.getBoundingClientRect();
       cue=tr.top>H*.5?0:Math.min(9,Math.floor(u));ap=u>=10;
-      tg.px=tall?0:.36*asp;tg.py=tall?.40:.02;tg.follow=1;
+      tg.px=tall?0:.36*asp;tg.py=tall?(numGL!=null?numGL:.40):.02;tg.follow=1;   // 세로 화면은 조명도 숫자 높이로
       tg.R=CUE_R[cue];tg.gel=GEL[CUE_GEL[cue]];tg.wall=tr.top>1?L_RULES:L_NUM+cue;
       if(ap){
         if(approved){tg.wash=1;tg.int=.25;tg.R=.6;tg.gel=GEL.tung;tg.wall=L_OK;tg.follow=.1}
@@ -1039,7 +1068,7 @@ void main(){
 
     if(name==='cues'){
       var key=ap?10:cue;
-      if(key!==curCue){curCue=key;items.forEach(function(li,i){li.classList.toggle('on',i===cue&&!ap)});stageEl.classList.toggle('ap',ap)}
+      if(key!==curCue){curCue=key;items.forEach(function(li,i){li.classList.toggle('on',i===cue&&!ap)});stageEl.classList.toggle('ap',ap);resetCo()}
     }
     if(label!==curLabel){curLabel=label;nowcue.textContent=label}
     // 암전: 승인 뒤 스크롤하면 꺼지고, 더 내리면 맨 위에 선 보고서가 밝아진다. 보고서 끝에서도 한 번 꺼졌다 켜진다
